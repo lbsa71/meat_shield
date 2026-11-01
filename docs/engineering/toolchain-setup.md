@@ -13,8 +13,8 @@ Checked 1 November 2026:
 | MSVC toolset | 14.44.35207 installed; Unreal acceptance still requires a real build |
 | Windows SDK | 10.0.26100.0 installed |
 | .NET SDK | 10.0.203 installed |
-| Unreal Engine | Not yet installed or verified |
-| Epic Games Launcher | Official installer completed successfully; first-run update and Epic sign-in in progress |
+| Unreal Engine | 5.8.4 selected and partially downloaded on D:; paused for storage clearance; engine validation pending |
+| Epic Games Launcher | Official installer and first-run update completed; Epic sign-in completed |
 | Unreal MCP | Not yet running or connected |
 
 Update this status when setup completes. Installed prerequisites are not proof that a C++ Unreal project builds. Check the pinned engine's requirements and actual build diagnostics before adding or replacing toolchains. [Epic C++ environment guide](https://dev.epicgames.com/documentation/en-us/unreal-engine/setting-up-visual-studio-development-environment-for-cplusplus-projects-in-unreal-engine).
