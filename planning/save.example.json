@@ -1,0 +1,95 @@
+{
+  "schema_version": 1,
+  "rules_version": "prototype-0.1",
+  "content_version": "fortress-fixture-0.1",
+  "generation": 7,
+  "run_id": "fixture-run-001",
+  "classification": "resumed",
+  "active_time_s": 142.5,
+  "deployments": 12,
+  "checkpoint_id": "cp-service-ditch",
+  "current_sector_id": "sector-02",
+  "sector_entry_snapshot_id": "fixture-sector02-entry",
+  "captured_objective_ids": [
+    "control-01"
+  ],
+  "open_gate_ids": [
+    "gate-01"
+  ],
+  "weapon": {
+    "magazine": 18,
+    "reserve": 60,
+    "reload_remaining_s": 0
+  },
+  "threats": [
+    {
+      "id": "threat-01",
+      "state": "Disabled",
+      "remaining_s": 0
+    },
+    {
+      "id": "threat-02",
+      "state": "Suppressed",
+      "remaining_s": 2.5
+    }
+  ],
+  "construction": [
+    {
+      "id": "body-011",
+      "sector_id": "sector-01",
+      "pose_id": "prone-v1",
+      "position_m": [
+        9,
+        2,
+        0
+      ],
+      "yaw_deg": 15,
+      "created_by_life_id": "life-011",
+      "supports": [
+        "world:sector01-floor"
+      ],
+      "shapes": [
+        {
+          "id": "body-011-shape-01",
+          "tile_ids": [
+            "s01-tile-014"
+          ],
+          "kind": "box",
+          "center_m": [
+            9,
+            2,
+            0.15
+          ],
+          "half_extents_m": [
+            0.55,
+            0.25,
+            0.15
+          ],
+          "yaw_deg": 15
+        },
+        {
+          "id": "body-011-shape-02",
+          "tile_ids": [
+            "s01-tile-014"
+          ],
+          "kind": "box",
+          "center_m": [
+            9.75,
+            2.2,
+            0.1
+          ],
+          "half_extents_m": [
+            0.25,
+            0.2,
+            0.1
+          ],
+          "yaw_deg": 15
+        }
+      ]
+    }
+  ],
+  "tile_occupancy": {
+    "s01-tile-014": 2
+  },
+  "notes": "Illustrative committed state. Authored world anchors tiles and content IDs are fixtures to implement. Storage checksum commit marker and sector-entry payload are not expanded here."
+}

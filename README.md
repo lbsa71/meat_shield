@@ -1,1 +1,33 @@
-# meat_shield
+# Meat Shield
+
+A fast first-person fortress assault in which instant respawns and persistent bodies turn each death into a construction move. Reach a useful position, leave cover for the next life, and use the route you built to breach the fortress.
+
+**Repository status:** planning handoff, version 0.1, prepared 1 November 2026. There is no game implementation or engine project yet. Meat Shield is the working name; the commercial title is unresolved.
+
+## Start here
+
+1. Read the [developer handoff](docs/handoff.md) for the first implementation tasks and milestone gates.
+2. Read the [project brief](docs/brief.md), [game design](docs/design/game-design.md), and [technical design](docs/engineering/technical-design.md).
+3. Use the [production plan](docs/production/production-plan.md) and [implementation backlog](docs/production/backlog.md) to assign work.
+4. Review [source decisions and assumptions](docs/source-and-decisions.md) before changing scope.
+
+The [full document index](docs/README.md) covers level design, art and audio, UX and accessibility, engineering contracts, QA, playtesting, risks, resourcing, and release preparation.
+
+Development follows [AGENTS.md](AGENTS.md): specification-driven and test-driven implementation, clean modular boundaries, environment abstractions, and procedural Unreal production with Blender for source assets. Development is AI-led under the product owner's direction.
+
+## Planning baseline
+
+The proposed first release is an offline Windows PC game containing one fortress with three connected sectors, one player weapon, and two fixed defensive threat variants. Unreal Engine 5 is the intended engine, with the exact patch subject to installation and a short feasibility spike. The original 24-week human-team capacity model is retained as a reference scenario. It is not the current AI-led delivery forecast or a staffing, funding, or launch commitment.
+
+The first funded gate should prove a single 1–3 minute greybox assault before the team builds the full fortress. The key test is whether players deliberately place and then exploit bodies, rather than winning through repetitive accumulation.
+
+## Maintain the handoff
+
+Structured requirements, tasks, milestones, assets, and example contracts live in [planning](planning/README.md). The backlog table is generated from JSON.
+
+```powershell
+python tools/validate_planning.py
+python tools/validate_planning.py --write-backlog
+```
+
+Python 3.10 or newer is sufficient; no packages are required. The validator checks planning consistency and local document links. It does not test a game build.

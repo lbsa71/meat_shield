@@ -1,0 +1,1534 @@
+{
+  "version": "0.1",
+  "estimate_unit": "person_day",
+  "status": "unassigned_planned_work",
+  "tasks": [
+    {
+      "id": "MS-001",
+      "epic": "Delivery",
+      "title": "Environment and packaged bootstrap",
+      "role": "Engineering",
+      "milestone": "M0",
+      "priority": "P0",
+      "status": "planned",
+      "dependencies": [],
+      "requirements": [
+        "REQ-019"
+      ],
+      "estimate_days": {
+        "low": 2,
+        "likely": 3,
+        "high": 4.75
+      },
+      "deliverable": "Pinned environment and minimal packaged FPS project",
+      "acceptance": [
+        "Clean checkout packages and launches.",
+        "Benchmark manifest and binary round trip are recorded."
+      ]
+    },
+    {
+      "id": "MS-002",
+      "epic": "Production",
+      "title": "Baseline and ownership review",
+      "role": "Production",
+      "milestone": "M0",
+      "priority": "P0",
+      "status": "planned",
+      "dependencies": [],
+      "requirements": [
+        "REQ-019",
+        "REQ-022"
+      ],
+      "estimate_days": {
+        "low": 0.75,
+        "likely": 1,
+        "high": 1.5
+      },
+      "deliverable": "M0 decision and staffing record",
+      "acceptance": [
+        "Named leads accept or amend defaults.",
+        "Actual rates and availability requested; no release date implied."
+      ]
+    },
+    {
+      "id": "MS-003",
+      "epic": "Content",
+      "title": "Prototype blockout and route fixture",
+      "role": "Design",
+      "milestone": "M0",
+      "priority": "P0",
+      "status": "planned",
+      "dependencies": [],
+      "requirements": [
+        "REQ-004",
+        "REQ-005"
+      ],
+      "estimate_days": {
+        "low": 2,
+        "likely": 3,
+        "high": 4.75
+      },
+      "deliverable": "Annotated courtyard blockout",
+      "acceptance": [
+        "Show one three-body route and protected spawn.",
+        "Record threat arcs and initial movement dimensions."
+      ]
+    },
+    {
+      "id": "MS-004",
+      "epic": "Presentation",
+      "title": "Asset scale silhouette and storage fixture",
+      "role": "Art",
+      "milestone": "M0",
+      "priority": "P0",
+      "status": "planned",
+      "dependencies": [],
+      "requirements": [
+        "REQ-015",
+        "REQ-019"
+      ],
+      "estimate_days": {
+        "low": 2,
+        "likely": 3,
+        "high": 4.75
+      },
+      "deliverable": "Body and wall proxy import fixture",
+      "acceptance": [
+        "Scale pivot and proxy silhouette agree.",
+        "Source provenance and binary locking workflow reviewed."
+      ]
+    },
+    {
+      "id": "MS-005",
+      "epic": "Player",
+      "title": "Movement and traversal controller",
+      "role": "Engineering",
+      "milestone": "M1",
+      "priority": "P0",
+      "status": "planned",
+      "dependencies": [
+        "MS-001"
+      ],
+      "requirements": [
+        "REQ-001",
+        "REQ-005"
+      ],
+      "estimate_days": {
+        "low": 3.25,
+        "likely": 5,
+        "high": 8
+      },
+      "deliverable": "Movement fixture and controller",
+      "acceptance": [
+        "Implement baseline actions and capsule sweeps.",
+        "Demonstrate supported pile traversal and clearance failures."
+      ]
+    },
+    {
+      "id": "MS-006",
+      "epic": "Siege",
+      "title": "Death transaction and pawn replacement",
+      "role": "Engineering",
+      "milestone": "M1",
+      "priority": "P0",
+      "status": "planned",
+      "dependencies": [
+        "MS-001"
+      ],
+      "requirements": [
+        "REQ-002",
+        "REQ-007",
+        "REQ-008"
+      ],
+      "estimate_days": {
+        "low": 2.5,
+        "likely": 4,
+        "high": 6.5
+      },
+      "deliverable": "Persistent siege coordinator",
+      "acceptance": [
+        "Duplicate lethal hits emit one death and one pawn.",
+        "Apply specified lethal and capture ordering."
+      ]
+    },
+    {
+      "id": "MS-007",
+      "epic": "Construction",
+      "title": "Movement-informed stable body proxies",
+      "role": "Engineering",
+      "milestone": "M1",
+      "priority": "P0",
+      "status": "planned",
+      "dependencies": [
+        "MS-003",
+        "MS-006"
+      ],
+      "requirements": [
+        "REQ-003",
+        "REQ-005",
+        "REQ-006",
+        "REQ-013"
+      ],
+      "estimate_days": {
+        "low": 4,
+        "likely": 6,
+        "high": 9.5
+      },
+      "deliverable": "Construction fixture and placement subsystem",
+      "acceptance": [
+        "Use bounded supported anchors and immutable proxies.",
+        "Repeated placement and cover rays pass fixture targets."
+      ]
+    },
+    {
+      "id": "MS-008",
+      "epic": "Combat",
+      "title": "Rifle resources and suppressible emplacement",
+      "role": "Engineering",
+      "milestone": "M1",
+      "priority": "P0",
+      "status": "planned",
+      "dependencies": [
+        "MS-005"
+      ],
+      "requirements": [
+        "REQ-009",
+        "REQ-023",
+        "REQ-007"
+      ],
+      "estimate_days": {
+        "low": 3.25,
+        "likely": 5,
+        "high": 8
+      },
+      "deliverable": "Weapon and first fixed threat",
+      "acceptance": [
+        "Resources and reload survive pawn death.",
+        "Suppression recovers continuously and controls disable permanently."
+      ]
+    },
+    {
+      "id": "MS-009",
+      "epic": "Observability",
+      "title": "Respawn event timing and spawn safety",
+      "role": "Engineering",
+      "milestone": "M1",
+      "priority": "P0",
+      "status": "planned",
+      "dependencies": [
+        "MS-006",
+        "MS-007"
+      ],
+      "requirements": [
+        "REQ-002",
+        "REQ-014",
+        "REQ-018"
+      ],
+      "estimate_days": {
+        "low": 1.25,
+        "likely": 2,
+        "high": 3.25
+      },
+      "deliverable": "Timing events and spawn fallback fixture",
+      "acceptance": [
+        "Capture death-to-control distribution and reason codes.",
+        "Protected spawn does not enter a lethal loop."
+      ]
+    },
+    {
+      "id": "MS-010",
+      "epic": "Content",
+      "title": "Courtyard encounter and capture teaching",
+      "role": "Design",
+      "milestone": "M1",
+      "priority": "P0",
+      "status": "planned",
+      "dependencies": [
+        "MS-003"
+      ],
+      "requirements": [
+        "REQ-004",
+        "REQ-008",
+        "REQ-009"
+      ],
+      "estimate_days": {
+        "low": 4.5,
+        "likely": 7,
+        "high": 11.25
+      },
+      "deliverable": "One complete prototype encounter",
+      "acceptance": [
+        "Useful placement and final breach take place in a short siege.",
+        "Naive repeated charging is compared with a planned route."
+      ]
+    },
+    {
+      "id": "MS-011",
+      "epic": "Presentation",
+      "title": "Body hardening and latest-body feedback",
+      "role": "Art",
+      "milestone": "M1",
+      "priority": "P0",
+      "status": "planned",
+      "dependencies": [
+        "MS-004"
+      ],
+      "requirements": [
+        "REQ-014",
+        "REQ-015"
+      ],
+      "estimate_days": {
+        "low": 4,
+        "likely": 6,
+        "high": 9.5
+      },
+      "deliverable": "Prototype silhouette and feedback",
+      "acceptance": [
+        "Visual result aligns with useful proxy.",
+        "Feedback uses pattern and does not delay respawn."
+      ]
+    },
+    {
+      "id": "MS-012",
+      "epic": "Research",
+      "title": "Observed prototype placement playtest",
+      "role": "Design",
+      "milestone": "M1",
+      "priority": "P0",
+      "status": "planned",
+      "dependencies": [
+        "MS-007",
+        "MS-008",
+        "MS-010"
+      ],
+      "requirements": [
+        "REQ-004",
+        "REQ-018"
+      ],
+      "estimate_days": {
+        "low": 2,
+        "likely": 3,
+        "high": 4.75
+      },
+      "deliverable": "Eight-player prototype report",
+      "acceptance": [
+        "Record deliberate placement and later exploitation.",
+        "Compare matched routes and document go revise or stop recommendation."
+      ]
+    },
+    {
+      "id": "MS-013",
+      "epic": "Quality",
+      "title": "Prototype mechanics verification",
+      "role": "QA",
+      "milestone": "M1",
+      "priority": "P0",
+      "status": "planned",
+      "dependencies": [
+        "MS-008",
+        "MS-009",
+        "MS-010",
+        "MS-011"
+      ],
+      "requirements": [
+        "REQ-001",
+        "REQ-002",
+        "REQ-003",
+        "REQ-005",
+        "REQ-006",
+        "REQ-007",
+        "REQ-008",
+        "REQ-009",
+        "REQ-014",
+        "REQ-023"
+      ],
+      "estimate_days": {
+        "low": 2,
+        "likely": 3,
+        "high": 4.75
+      },
+      "deliverable": "M1 test evidence",
+      "acceptance": [
+        "Run prototype fixture cases with build and hardware IDs.",
+        "Log defects and verify fixed-pawn continuous-world behavior."
+      ]
+    },
+    {
+      "id": "MS-014",
+      "epic": "Production",
+      "title": "Prototype gate review",
+      "role": "Production",
+      "milestone": "M1",
+      "priority": "P0",
+      "status": "planned",
+      "dependencies": [
+        "MS-012",
+        "MS-013"
+      ],
+      "requirements": [
+        "REQ-022"
+      ],
+      "estimate_days": {
+        "low": 0.75,
+        "likely": 1,
+        "high": 1.5
+      },
+      "deliverable": "M1 review and forecast",
+      "acceptance": [
+        "Review observed intent and technical targets.",
+        "Authorize next phase revise or stop with recorded rationale."
+      ]
+    },
+    {
+      "id": "MS-015",
+      "epic": "Construction",
+      "title": "Tile budgets saturation and pooled visuals",
+      "role": "Engineering",
+      "milestone": "M2",
+      "priority": "P0",
+      "status": "planned",
+      "dependencies": [
+        "MS-007",
+        "MS-014"
+      ],
+      "requirements": [
+        "REQ-003",
+        "REQ-013",
+        "REQ-021"
+      ],
+      "estimate_days": {
+        "low": 5.25,
+        "likely": 8,
+        "high": 12.75
+      },
+      "deliverable": "Bounded construction and stress scenario",
+      "acceptance": [
+        "Reserve multi-tile quotas atomically.",
+        "1000 deaths preserve cover and plateau memory."
+      ]
+    },
+    {
+      "id": "MS-016",
+      "epic": "Persistence",
+      "title": "Versioned snapshots recovery and sector reset",
+      "role": "Engineering",
+      "milestone": "M2",
+      "priority": "P0",
+      "status": "planned",
+      "dependencies": [
+        "MS-006",
+        "MS-014"
+      ],
+      "requirements": [
+        "REQ-010",
+        "REQ-011",
+        "REQ-012",
+        "REQ-021"
+      ],
+      "estimate_days": {
+        "low": 5.25,
+        "likely": 8,
+        "high": 12.75
+      },
+      "deliverable": "Save service and migration fixtures",
+      "acceptance": [
+        "Round trip world relative timers weapon and reset baselines.",
+        "Interrupted write and corrupt newest generation preserve previous save."
+      ]
+    },
+    {
+      "id": "MS-017",
+      "epic": "Player",
+      "title": "Settings rebinding and controller foundation",
+      "role": "Engineering",
+      "milestone": "M2",
+      "priority": "P0",
+      "status": "planned",
+      "dependencies": [
+        "MS-005",
+        "MS-014"
+      ],
+      "requirements": [
+        "REQ-016",
+        "REQ-024"
+      ],
+      "estimate_days": {
+        "low": 3.25,
+        "likely": 5,
+        "high": 8
+      },
+      "deliverable": "Persistent input and presentation settings",
+      "acceptance": [
+        "Core screens and siege work with controller and rebound controls.",
+        "Comfort gore subtitles and focus loss behave correctly."
+      ]
+    },
+    {
+      "id": "MS-018",
+      "epic": "Siege",
+      "title": "Representative sector packaged integration",
+      "role": "Engineering",
+      "milestone": "M2",
+      "priority": "P0",
+      "status": "planned",
+      "dependencies": [
+        "MS-015",
+        "MS-016",
+        "MS-017"
+      ],
+      "requirements": [
+        "REQ-008",
+        "REQ-010",
+        "REQ-012",
+        "REQ-017"
+      ],
+      "estimate_days": {
+        "low": 2.5,
+        "likely": 4,
+        "high": 6.5
+      },
+      "deliverable": "Slice candidate build",
+      "acceptance": [
+        "Integrate capture save reset and resource flows.",
+        "No placeholder state bypasses a required transaction."
+      ]
+    },
+    {
+      "id": "MS-019",
+      "epic": "Performance",
+      "title": "Slice benchmark and stress optimization",
+      "role": "Engineering",
+      "milestone": "M2",
+      "priority": "P0",
+      "status": "planned",
+      "dependencies": [
+        "MS-018"
+      ],
+      "requirements": [
+        "REQ-002",
+        "REQ-013"
+      ],
+      "estimate_days": {
+        "low": 2,
+        "likely": 3,
+        "high": 4.75
+      },
+      "deliverable": "Performance traces and benchmark report",
+      "acceptance": [
+        "Run empty half-full and full construction scenes.",
+        "Report p95 frame and respawn p99 frame and memory windows."
+      ]
+    },
+    {
+      "id": "MS-020",
+      "epic": "Content",
+      "title": "Representative sector route refinement",
+      "role": "Design",
+      "milestone": "M2",
+      "priority": "P0",
+      "status": "planned",
+      "dependencies": [
+        "MS-014"
+      ],
+      "requirements": [
+        "REQ-004",
+        "REQ-005",
+        "REQ-017"
+      ],
+      "estimate_days": {
+        "low": 6.5,
+        "likely": 10,
+        "high": 16
+      },
+      "deliverable": "Slice level and authoring specification",
+      "acceptance": [
+        "Validate exact movement and body thresholds.",
+        "Record construction volume coverage and alternative recovery route."
+      ]
+    },
+    {
+      "id": "MS-021",
+      "epic": "Presentation",
+      "title": "Final-intent body weapon and fortress kit",
+      "role": "Art",
+      "milestone": "M2",
+      "priority": "P0",
+      "status": "planned",
+      "dependencies": [
+        "MS-011",
+        "MS-014"
+      ],
+      "requirements": [
+        "REQ-015",
+        "REQ-017"
+      ],
+      "estimate_days": {
+        "low": 10.5,
+        "likely": 16,
+        "high": 25.5
+      },
+      "deliverable": "Slice asset families",
+      "acceptance": [
+        "Review final-intent materials scale silhouette and LOD.",
+        "Asset provenance and cost captured in representative scene."
+      ]
+    },
+    {
+      "id": "MS-022",
+      "epic": "Audio",
+      "title": "Threat weapon and music slice",
+      "role": "Audio",
+      "milestone": "M2",
+      "priority": "P0",
+      "status": "planned",
+      "dependencies": [
+        "MS-014"
+      ],
+      "requirements": [
+        "REQ-015",
+        "REQ-016"
+      ],
+      "estimate_days": {
+        "low": 2.5,
+        "likely": 4,
+        "high": 6.5
+      },
+      "deliverable": "Slice cue set and adaptive music sketch",
+      "acceptance": [
+        "State cues have visual counterparts.",
+        "Music continues through death and supports breach."
+      ]
+    },
+    {
+      "id": "MS-023",
+      "epic": "UX",
+      "title": "Core screens and accessible HUD",
+      "role": "Art",
+      "milestone": "M2",
+      "priority": "P0",
+      "status": "planned",
+      "dependencies": [
+        "MS-014"
+      ],
+      "requirements": [
+        "REQ-014",
+        "REQ-016",
+        "REQ-024"
+      ],
+      "estimate_days": {
+        "low": 2,
+        "likely": 3,
+        "high": 4.75
+      },
+      "deliverable": "Menu HUD pause results and settings layouts",
+      "acceptance": [
+        "Core flow fits text scaling and pseudo-localized labels.",
+        "Save error and reset consequences are legible."
+      ]
+    },
+    {
+      "id": "MS-024",
+      "epic": "Research",
+      "title": "Integrated slice playtest",
+      "role": "Design",
+      "milestone": "M2",
+      "priority": "P0",
+      "status": "planned",
+      "dependencies": [
+        "MS-018",
+        "MS-020",
+        "MS-021",
+        "MS-022",
+        "MS-023"
+      ],
+      "requirements": [
+        "REQ-004",
+        "REQ-015",
+        "REQ-016",
+        "REQ-018"
+      ],
+      "estimate_days": {
+        "low": 1.25,
+        "likely": 2,
+        "high": 3.25
+      },
+      "deliverable": "Slice observation report",
+      "acceptance": [
+        "Participants explain useful bodies and perceive threats.",
+        "Record comfort controller and low-detail findings."
+      ]
+    },
+    {
+      "id": "MS-025",
+      "epic": "Quality",
+      "title": "Slice save accessibility and stress verification",
+      "role": "QA",
+      "milestone": "M2",
+      "priority": "P0",
+      "status": "planned",
+      "dependencies": [
+        "MS-018"
+      ],
+      "requirements": [
+        "REQ-010",
+        "REQ-011",
+        "REQ-012",
+        "REQ-013",
+        "REQ-015",
+        "REQ-016",
+        "REQ-021",
+        "REQ-024"
+      ],
+      "estimate_days": {
+        "low": 3.25,
+        "likely": 5,
+        "high": 8
+      },
+      "deliverable": "M2 regression evidence",
+      "acceptance": [
+        "Verify save corruption reset input and saturation fixtures.",
+        "Check presentation against final slice assets before signoff."
+      ]
+    },
+    {
+      "id": "MS-026",
+      "epic": "Production",
+      "title": "Slice scope and estimate gate",
+      "role": "Production",
+      "milestone": "M2",
+      "priority": "P0",
+      "status": "planned",
+      "dependencies": [
+        "MS-019",
+        "MS-024",
+        "MS-025"
+      ],
+      "requirements": [
+        "REQ-022"
+      ],
+      "estimate_days": {
+        "low": 0.75,
+        "likely": 1,
+        "high": 1.5
+      },
+      "deliverable": "M2 approved scope and resource forecast",
+      "acceptance": [
+        "Use observed throughput and measured performance.",
+        "Accept or replace proposed architecture before content expansion."
+      ]
+    },
+    {
+      "id": "MS-027",
+      "epic": "Content",
+      "title": "Service ditch and inner breach sectors",
+      "role": "Design",
+      "milestone": "M3",
+      "priority": "P0",
+      "status": "planned",
+      "dependencies": [
+        "MS-026"
+      ],
+      "requirements": [
+        "REQ-004",
+        "REQ-017"
+      ],
+      "estimate_days": {
+        "low": 16.25,
+        "likely": 25,
+        "high": 40
+      },
+      "deliverable": "Remaining two playable sectors",
+      "acceptance": [
+        "Implement height crossing and combined placement lessons.",
+        "Include controls safe spawns return paths and route evidence."
+      ]
+    },
+    {
+      "id": "MS-028",
+      "epic": "Combat",
+      "title": "Second emplacement and multi-threat controls",
+      "role": "Engineering",
+      "milestone": "M3",
+      "priority": "P0",
+      "status": "planned",
+      "dependencies": [
+        "MS-026"
+      ],
+      "requirements": [
+        "REQ-008",
+        "REQ-009",
+        "REQ-017"
+      ],
+      "estimate_days": {
+        "low": 6.5,
+        "likely": 10,
+        "high": 16
+      },
+      "deliverable": "Second fixed threat variant and capture mapping",
+      "acceptance": [
+        "Share tested threat state machine.",
+        "All associated threats disable once and remain disabled on resume."
+      ]
+    },
+    {
+      "id": "MS-029",
+      "epic": "Persistence",
+      "title": "Full fortress construction and save integration",
+      "role": "Engineering",
+      "milestone": "M3",
+      "priority": "P0",
+      "status": "planned",
+      "dependencies": [
+        "MS-028"
+      ],
+      "requirements": [
+        "REQ-003",
+        "REQ-010",
+        "REQ-012",
+        "REQ-013",
+        "REQ-017"
+      ],
+      "estimate_days": {
+        "low": 7.75,
+        "likely": 12,
+        "high": 19.25
+      },
+      "deliverable": "Three-sector state integration",
+      "acceptance": [
+        "Retain earlier geometry through every transition.",
+        "Reset current sector without losing captured earlier sectors."
+      ]
+    },
+    {
+      "id": "MS-030",
+      "epic": "Presentation",
+      "title": "Production environment character and animation set",
+      "role": "Art",
+      "milestone": "M3",
+      "priority": "P0",
+      "status": "planned",
+      "dependencies": [
+        "MS-026"
+      ],
+      "requirements": [
+        "REQ-015",
+        "REQ-017"
+      ],
+      "estimate_days": {
+        "low": 19.5,
+        "likely": 30,
+        "high": 48
+      },
+      "deliverable": "Complete baseline visual content",
+      "acceptance": [
+        "Populate three sectors with reusable approved asset families.",
+        "No collision-authoritative details exist only in decorative art."
+      ]
+    },
+    {
+      "id": "MS-031",
+      "epic": "UX",
+      "title": "Production UI and localized string integration",
+      "role": "Art",
+      "milestone": "M3",
+      "priority": "P0",
+      "status": "planned",
+      "dependencies": [
+        "MS-023",
+        "MS-026"
+      ],
+      "requirements": [
+        "REQ-016",
+        "REQ-024"
+      ],
+      "estimate_days": {
+        "low": 4.5,
+        "likely": 7,
+        "high": 11.25
+      },
+      "deliverable": "Final screens icons and string catalog",
+      "acceptance": [
+        "All required states have final layouts.",
+        "Pseudo-localized strings fit with text scaling."
+      ]
+    },
+    {
+      "id": "MS-032",
+      "epic": "Player",
+      "title": "Controller comfort and settings polish",
+      "role": "Engineering",
+      "milestone": "M3",
+      "priority": "P0",
+      "status": "planned",
+      "dependencies": [
+        "MS-017",
+        "MS-026"
+      ],
+      "requirements": [
+        "REQ-001",
+        "REQ-016",
+        "REQ-024"
+      ],
+      "estimate_days": {
+        "low": 5.25,
+        "likely": 8,
+        "high": 12.75
+      },
+      "deliverable": "Final input and presentation options",
+      "acceptance": [
+        "Test device switching toggle modes deadzones and focus.",
+        "Settings persist independently of active run."
+      ]
+    },
+    {
+      "id": "MS-033",
+      "epic": "Siege",
+      "title": "Completion local records and run classification",
+      "role": "Engineering",
+      "milestone": "M3",
+      "priority": "P0",
+      "status": "planned",
+      "dependencies": [
+        "MS-016",
+        "MS-026"
+      ],
+      "requirements": [
+        "REQ-011",
+        "REQ-017"
+      ],
+      "estimate_days": {
+        "low": 4,
+        "likely": 6,
+        "high": 9.5
+      },
+      "deliverable": "Victory route inspection and local records",
+      "acceptance": [
+        "Victory commits once.",
+        "Resume and sector reset cannot improve uninterrupted records."
+      ]
+    },
+    {
+      "id": "MS-034",
+      "epic": "Quality",
+      "title": "Full fortress alpha regression",
+      "role": "QA",
+      "milestone": "M3",
+      "priority": "P0",
+      "status": "planned",
+      "dependencies": [
+        "MS-027",
+        "MS-029",
+        "MS-032",
+        "MS-033"
+      ],
+      "requirements": [
+        "REQ-001",
+        "REQ-003",
+        "REQ-006",
+        "REQ-008",
+        "REQ-010",
+        "REQ-012",
+        "REQ-016",
+        "REQ-017"
+      ],
+      "estimate_days": {
+        "low": 7.75,
+        "likely": 12,
+        "high": 19.25
+      },
+      "deliverable": "M3 packaged regression and defect list",
+      "acceptance": [
+        "Finish all sectors on both input devices.",
+        "Test saves and reset at every checkpoint including same-frame deaths."
+      ]
+    },
+    {
+      "id": "MS-035",
+      "epic": "Audio",
+      "title": "Production effects adaptive suite and subtitles",
+      "role": "Audio",
+      "milestone": "M3",
+      "priority": "P0",
+      "status": "planned",
+      "dependencies": [
+        "MS-022",
+        "MS-026"
+      ],
+      "requirements": [
+        "REQ-015",
+        "REQ-016",
+        "REQ-017"
+      ],
+      "estimate_days": {
+        "low": 4,
+        "likely": 6,
+        "high": 9.5
+      },
+      "deliverable": "Final baseline audio families",
+      "acceptance": [
+        "Complete threat weapon body environment and breach cues.",
+        "Essential cues remain legible at low dynamic range."
+      ]
+    },
+    {
+      "id": "MS-036",
+      "epic": "Content",
+      "title": "Whole fortress balance and teaching",
+      "role": "Design",
+      "milestone": "M3",
+      "priority": "P0",
+      "status": "planned",
+      "dependencies": [
+        "MS-027"
+      ],
+      "requirements": [
+        "REQ-004",
+        "REQ-009",
+        "REQ-017",
+        "REQ-018"
+      ],
+      "estimate_days": {
+        "low": 6.5,
+        "likely": 10,
+        "high": 16
+      },
+      "deliverable": "Balance revision and full-run playtest report",
+      "acceptance": [
+        "Compare early and practiced routes.",
+        "Investigate body farming ammo loops and unreadable placements."
+      ]
+    },
+    {
+      "id": "MS-037",
+      "epic": "Delivery",
+      "title": "Packaged smoke automation and build retention",
+      "role": "Engineering",
+      "milestone": "M3",
+      "priority": "P0",
+      "status": "planned",
+      "dependencies": [
+        "MS-029",
+        "MS-033"
+      ],
+      "requirements": [
+        "REQ-019",
+        "REQ-021",
+        "REQ-022"
+      ],
+      "estimate_days": {
+        "low": 6.5,
+        "likely": 10,
+        "high": 16
+      },
+      "deliverable": "Repeatable candidate pipeline and evidence exports",
+      "acceptance": [
+        "Clean checkout produces versioned packaged artifact.",
+        "Smoke covers launch capture save resume victory and exit."
+      ]
+    },
+    {
+      "id": "MS-038",
+      "epic": "Production",
+      "title": "Alpha completion review",
+      "role": "Production",
+      "milestone": "M3",
+      "priority": "P0",
+      "status": "planned",
+      "dependencies": [
+        "MS-030",
+        "MS-031",
+        "MS-034",
+        "MS-035",
+        "MS-036",
+        "MS-037"
+      ],
+      "requirements": [
+        "REQ-022"
+      ],
+      "estimate_days": {
+        "low": 1.25,
+        "likely": 2,
+        "high": 3.25
+      },
+      "deliverable": "M3 gate and beta defect plan",
+      "acceptance": [
+        "Verify complete content inventory and required features.",
+        "Reforecast defects and cut optional polish if necessary."
+      ]
+    },
+    {
+      "id": "MS-039",
+      "epic": "Engineering",
+      "title": "Beta crash save compatibility and performance fixes",
+      "role": "Engineering",
+      "milestone": "M4",
+      "priority": "P0",
+      "status": "planned",
+      "dependencies": [
+        "MS-038"
+      ],
+      "requirements": [
+        "REQ-002",
+        "REQ-006",
+        "REQ-012",
+        "REQ-013",
+        "REQ-019"
+      ],
+      "estimate_days": {
+        "low": 13,
+        "likely": 20,
+        "high": 32
+      },
+      "deliverable": "Stabilized beta build and regression fixes",
+      "acceptance": [
+        "Resolve critical high defects and cover regression.",
+        "Meet benchmark and recover supported old save fixtures."
+      ]
+    },
+    {
+      "id": "MS-040",
+      "epic": "Content",
+      "title": "Beta balance onboarding and route review",
+      "role": "Design",
+      "milestone": "M4",
+      "priority": "P0",
+      "status": "planned",
+      "dependencies": [
+        "MS-038"
+      ],
+      "requirements": [
+        "REQ-004",
+        "REQ-009",
+        "REQ-017"
+      ],
+      "estimate_days": {
+        "low": 6.5,
+        "likely": 10,
+        "high": 16
+      },
+      "deliverable": "Content lock balance revision",
+      "acceptance": [
+        "Check repeated-charge comparisons and recovery routes.",
+        "Keep all required placements within approved quotas."
+      ]
+    },
+    {
+      "id": "MS-041",
+      "epic": "Research",
+      "title": "Accessibility and pseudo-localization review",
+      "role": "Design",
+      "milestone": "M4",
+      "priority": "P0",
+      "status": "planned",
+      "dependencies": [
+        "MS-038"
+      ],
+      "requirements": [
+        "REQ-016",
+        "REQ-024"
+      ],
+      "estimate_days": {
+        "low": 2.5,
+        "likely": 4,
+        "high": 6.5
+      },
+      "deliverable": "Accessibility review and repair list",
+      "acceptance": [
+        "Observe controller-only and comfort-settings sessions.",
+        "Resolve clipped mandatory text and nonredundant cues."
+      ]
+    },
+    {
+      "id": "MS-042",
+      "epic": "Presentation",
+      "title": "Beta visual polish and cost reduction",
+      "role": "Art",
+      "milestone": "M4",
+      "priority": "P0",
+      "status": "planned",
+      "dependencies": [
+        "MS-038"
+      ],
+      "requirements": [
+        "REQ-015",
+        "REQ-016"
+      ],
+      "estimate_days": {
+        "low": 7.75,
+        "likely": 12,
+        "high": 19.25
+      },
+      "deliverable": "Content-locked presentation",
+      "acceptance": [
+        "Fix silhouette and low-quality visibility issues.",
+        "Reduce visual costs without changing useful collision."
+      ]
+    },
+    {
+      "id": "MS-043",
+      "epic": "Audio",
+      "title": "Final mix and intelligibility pass",
+      "role": "Audio",
+      "milestone": "M4",
+      "priority": "P0",
+      "status": "planned",
+      "dependencies": [
+        "MS-038"
+      ],
+      "requirements": [
+        "REQ-015",
+        "REQ-016"
+      ],
+      "estimate_days": {
+        "low": 2,
+        "likely": 3,
+        "high": 4.75
+      },
+      "deliverable": "Mix review and approved cue balance",
+      "acceptance": [
+        "Check death continuity suppression cues and subtitle coverage.",
+        "Verify independent volume groups and dynamic range."
+      ]
+    },
+    {
+      "id": "MS-044",
+      "epic": "Quality",
+      "title": "Beta full regression compatibility and soak",
+      "role": "QA",
+      "milestone": "M4",
+      "priority": "P0",
+      "status": "planned",
+      "dependencies": [
+        "MS-038"
+      ],
+      "requirements": [
+        "REQ-001",
+        "REQ-002",
+        "REQ-003",
+        "REQ-005",
+        "REQ-006",
+        "REQ-007",
+        "REQ-008",
+        "REQ-009",
+        "REQ-010",
+        "REQ-011",
+        "REQ-012",
+        "REQ-013",
+        "REQ-014",
+        "REQ-015",
+        "REQ-016",
+        "REQ-017",
+        "REQ-021",
+        "REQ-023",
+        "REQ-024"
+      ],
+      "estimate_days": {
+        "low": 9.75,
+        "likely": 15,
+        "high": 24
+      },
+      "deliverable": "Beta test matrix and candidate defect status",
+      "acceptance": [
+        "Run fixture hardware save and 1000-death matrices.",
+        "Recheck fixes from MS-039 through MS-043 before M4 acceptance."
+      ]
+    },
+    {
+      "id": "MS-045",
+      "epic": "Release",
+      "title": "Commercial choices release materials and support setup",
+      "role": "Production",
+      "milestone": "M4",
+      "priority": "P0",
+      "status": "planned",
+      "dependencies": [
+        "MS-038"
+      ],
+      "requirements": [
+        "REQ-020"
+      ],
+      "estimate_days": {
+        "low": 2,
+        "likely": 3,
+        "high": 4.75
+      },
+      "deliverable": "Release decision register and distribution checklist",
+      "acceptance": [
+        "Resolve commercial name store territories and licensing review.",
+        "Assign release and support owners with actual account access."
+      ]
+    },
+    {
+      "id": "MS-046",
+      "epic": "Production",
+      "title": "Beta gate and content lock",
+      "role": "Production",
+      "milestone": "M4",
+      "priority": "P0",
+      "status": "planned",
+      "dependencies": [
+        "MS-039",
+        "MS-040",
+        "MS-041",
+        "MS-042",
+        "MS-043",
+        "MS-044",
+        "MS-045"
+      ],
+      "requirements": [
+        "REQ-022"
+      ],
+      "estimate_days": {
+        "low": 0.75,
+        "likely": 1,
+        "high": 1.5
+      },
+      "deliverable": "M4 acceptance and remaining release checklist",
+      "acceptance": [
+        "No unresolved critical or high defects.",
+        "Freeze content and approve candidate preparation."
+      ]
+    },
+    {
+      "id": "MS-047",
+      "epic": "Engineering",
+      "title": "Release candidate fixes and package verification",
+      "role": "Engineering",
+      "milestone": "M5",
+      "priority": "P0",
+      "status": "planned",
+      "dependencies": [
+        "MS-046"
+      ],
+      "requirements": [
+        "REQ-012",
+        "REQ-019",
+        "REQ-020"
+      ],
+      "estimate_days": {
+        "low": 10.5,
+        "likely": 16,
+        "high": 25.5
+      },
+      "deliverable": "Versioned release candidate and fix log",
+      "acceptance": [
+        "Close candidate blockers and verify install upgrade saves.",
+        "Repeat relevant regressions for each changed system."
+      ]
+    },
+    {
+      "id": "MS-048",
+      "epic": "Quality",
+      "title": "Candidate clean-machine and compatibility checks",
+      "role": "QA",
+      "milestone": "M5",
+      "priority": "P0",
+      "status": "planned",
+      "dependencies": [
+        "MS-046"
+      ],
+      "requirements": [
+        "REQ-012",
+        "REQ-016",
+        "REQ-020"
+      ],
+      "estimate_days": {
+        "low": 7.75,
+        "likely": 12,
+        "high": 19.25
+      },
+      "deliverable": "Release candidate evidence matrix",
+      "acceptance": [
+        "Clean install launch input capture save resume and completion.",
+        "Repeat candidate checks after MS-047 changes."
+      ]
+    },
+    {
+      "id": "MS-049",
+      "epic": "Presentation",
+      "title": "Store screenshots trailer capture and key art",
+      "role": "Art",
+      "milestone": "M5",
+      "priority": "P0",
+      "status": "planned",
+      "dependencies": [
+        "MS-046"
+      ],
+      "requirements": [
+        "REQ-020"
+      ],
+      "estimate_days": {
+        "low": 3.25,
+        "likely": 5,
+        "high": 8
+      },
+      "deliverable": "Approved release media files",
+      "acceptance": [
+        "Show real gameplay and useful-death route.",
+        "Use final commercial title and licensed source assets."
+      ]
+    },
+    {
+      "id": "MS-050",
+      "epic": "Release",
+      "title": "Credits known issues support and rollback instructions",
+      "role": "Production",
+      "milestone": "M5",
+      "priority": "P0",
+      "status": "planned",
+      "dependencies": [
+        "MS-046"
+      ],
+      "requirements": [
+        "REQ-020"
+      ],
+      "estimate_days": {
+        "low": 1.25,
+        "likely": 2,
+        "high": 3.25
+      },
+      "deliverable": "Support and release records",
+      "acceptance": [
+        "Archive provenance credits contact and triage process.",
+        "Document compatible rollback candidate and save restoration."
+      ]
+    },
+    {
+      "id": "MS-051",
+      "epic": "Research",
+      "title": "Final complete-run observation",
+      "role": "Design",
+      "milestone": "M5",
+      "priority": "P0",
+      "status": "planned",
+      "dependencies": [
+        "MS-046"
+      ],
+      "requirements": [
+        "REQ-004",
+        "REQ-017",
+        "REQ-018"
+      ],
+      "estimate_days": {
+        "low": 3.25,
+        "likely": 5,
+        "high": 8
+      },
+      "deliverable": "Final playtest report",
+      "acceptance": [
+        "Observe new and returning participants through the fortress.",
+        "Record comprehension comfort and unresolved release concerns."
+      ]
+    },
+    {
+      "id": "MS-052",
+      "epic": "Audio",
+      "title": "Candidate audio delivery and credits verification",
+      "role": "Audio",
+      "milestone": "M5",
+      "priority": "P0",
+      "status": "planned",
+      "dependencies": [
+        "MS-046"
+      ],
+      "requirements": [
+        "REQ-015",
+        "REQ-020"
+      ],
+      "estimate_days": {
+        "low": 1.25,
+        "likely": 2,
+        "high": 3.25
+      },
+      "deliverable": "Final audio package and source records",
+      "acceptance": [
+        "No missing cues or broken routing.",
+        "Music and voice ownership and credits are recorded."
+      ]
+    },
+    {
+      "id": "MS-053",
+      "epic": "Quality",
+      "title": "Final candidate regression and release checklist",
+      "role": "QA",
+      "milestone": "M5",
+      "priority": "P0",
+      "status": "planned",
+      "dependencies": [
+        "MS-047",
+        "MS-048",
+        "MS-049",
+        "MS-050",
+        "MS-051",
+        "MS-052"
+      ],
+      "requirements": [
+        "REQ-020",
+        "REQ-022"
+      ],
+      "estimate_days": {
+        "low": 2,
+        "likely": 3,
+        "high": 4.75
+      },
+      "deliverable": "Final checklist for exact candidate hash",
+      "acceptance": [
+        "No critical or high defects and no unresolved progress-loss risk.",
+        "Installer package and recovery path match reviewed candidate."
+      ]
+    },
+    {
+      "id": "MS-054",
+      "epic": "Delivery",
+      "title": "Archive candidate source and developer handover",
+      "role": "Engineering",
+      "milestone": "M5",
+      "priority": "P0",
+      "status": "planned",
+      "dependencies": [
+        "MS-047"
+      ],
+      "requirements": [
+        "REQ-019",
+        "REQ-020"
+      ],
+      "estimate_days": {
+        "low": 2.5,
+        "likely": 4,
+        "high": 6.5
+      },
+      "deliverable": "Rebuildable source and artifact archive",
+      "acceptance": [
+        "Record revision engine content rules checksums and build recipe.",
+        "Another developer reproduces the package from documented inputs."
+      ]
+    },
+    {
+      "id": "MS-055",
+      "epic": "Production",
+      "title": "Candidate acceptance and release handover",
+      "role": "Production",
+      "milestone": "M5",
+      "priority": "P0",
+      "status": "planned",
+      "dependencies": [
+        "MS-053",
+        "MS-054"
+      ],
+      "requirements": [
+        "REQ-020",
+        "REQ-022"
+      ],
+      "estimate_days": {
+        "low": 0.75,
+        "likely": 1,
+        "high": 1.5
+      },
+      "deliverable": "M5 release acceptance record",
+      "acceptance": [
+        "Product owner names accepted candidate or defers release.",
+        "Release operator and support owner acknowledge handover."
+      ]
+    }
+  ]
+}

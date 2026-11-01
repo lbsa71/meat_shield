@@ -1,0 +1,34 @@
+# Meat Shield planning index
+
+This handoff defines the proposed game and the work required to prove, build, and release it. Begin with the prototype gate; production proceeds only when placement, feedback, traversal, and performance are convincing.
+
+| Area | Artifact | Primary reader |
+| --- | --- | --- |
+| Kickoff | [Developer handoff](handoff.md) | Entire team |
+| Product | [Project brief](brief.md) | Product owner and producer |
+| Provenance | [Source decisions and assumptions](source-and-decisions.md) | Leads and reviewers |
+| Mechanics | [Game design](design/game-design.md) | Design and engineering |
+| Content | [Level design](design/level-design.md) | Level design and environment art |
+| Presentation | [Art audio UX and accessibility](design/presentation.md) | Art audio UI and design |
+| Architecture | [Technical design](engineering/technical-design.md) | Engineering |
+| Contracts | [Data contracts](engineering/data-contracts.md) | Engineering and tools |
+| Delivery | [Development workflow](engineering/development-workflow.md) | Developers and build owner |
+| Engine | [Engine decision proposal](engineering/adr/0001-engine.md) | Technical lead |
+| Bodies | [Corpse construction proposal](engineering/adr/0002-corpse-geometry.md) | Engineering and design |
+| Persistence | [Continuous siege proposal](engineering/adr/0003-continuous-siege.md) | Design and engineering |
+| Production | [Production and resource plan](production/production-plan.md) | Producer and discipline leads |
+| Work | [Implementation backlog](production/backlog.md) | Delivery team |
+| Risk | [Risk register](production/risks.md) | Producer and leads |
+| Release | [Release and support plan](production/release-plan.md) | Producer QA and build owner |
+| Verification | [Test plan](quality/test-plan.md) | QA and engineering |
+| Evidence | [Playtest and measurement plan](quality/playtest-plan.md) | Design and QA |
+| Data | [Structured planning files](../planning/README.md) | Producer and tools |
+| Records | [Review templates](../templates/README.md) | Review facilitators |
+
+## Authority and changes
+
+The user's concept is recorded separately from analysis suggestions and new planning defaults in [source decisions](source-and-decisions.md). None of the analysis suggestions has been represented as a user-approved production decision.
+
+For the proposed implementation baseline, `planning/requirements.json` defines requirement IDs, `planning/tuning.example.json` defines initial numeric tuning, `planning/backlog.json` defines work, and `planning/milestones.json` defines gates and capacity. Design documents explain behavior; technical documents explain implementation proposals. An unresolved contradiction goes to the design lead and technical lead before the affected work starts.
+
+When a decision changes, update its register entry, affected requirements, tuning, task acceptance criteria, tests, and milestone forecasts in the same review. Record actual acceptance in a milestone review; blank templates and planned tests are not evidence of completion.

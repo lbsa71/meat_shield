@@ -1,0 +1,389 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Meat Shield local event",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "event_id",
+    "event_name",
+    "build_id",
+    "run_id",
+    "life_id",
+    "active_time_s",
+    "rules_version",
+    "payload"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": 1
+    },
+    "event_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "event_name": {
+      "enum": [
+        "life_started",
+        "player_died",
+        "body_committed",
+        "body_rejected",
+        "body_used",
+        "threat_changed",
+        "checkpoint_captured",
+        "respawn_completed",
+        "run_finished",
+        "save_result"
+      ]
+    },
+    "build_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "run_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "life_id": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "active_time_s": {
+      "type": "number",
+      "minimum": 0
+    },
+    "rules_version": {
+      "type": "string",
+      "minLength": 1
+    },
+    "payload": {
+      "type": "object"
+    }
+  },
+  "$defs": {
+    "position": {
+      "type": "array",
+      "items": {
+        "type": "number"
+      },
+      "minItems": 3,
+      "maxItems": 3
+    }
+  },
+  "oneOf": [
+    {
+      "properties": {
+        "event_name": {
+          "const": "life_started"
+        },
+        "payload": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "checkpoint_id",
+            "deployment_index"
+          ],
+          "properties": {
+            "checkpoint_id": {
+              "type": "string"
+            },
+            "deployment_index": {
+              "type": "integer",
+              "minimum": 0
+            }
+          }
+        }
+      }
+    },
+    {
+      "properties": {
+        "event_name": {
+          "const": "player_died"
+        },
+        "payload": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "death_reason",
+            "position_m",
+            "life_duration_s"
+          ],
+          "properties": {
+            "death_reason": {
+              "type": "string"
+            },
+            "position_m": {
+              "$ref": "#/$defs/position"
+            },
+            "life_duration_s": {
+              "type": "number",
+              "minimum": 0
+            }
+          }
+        }
+      }
+    },
+    {
+      "properties": {
+        "event_name": {
+          "const": "body_committed"
+        },
+        "payload": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "body_id",
+            "tile_ids",
+            "pose_id",
+            "position_m",
+            "placement_reason"
+          ],
+          "properties": {
+            "body_id": {
+              "type": "string"
+            },
+            "tile_ids": {
+              "type": "array",
+              "minItems": 1,
+              "items": {
+                "type": "string"
+              }
+            },
+            "pose_id": {
+              "type": "string"
+            },
+            "position_m": {
+              "$ref": "#/$defs/position"
+            },
+            "placement_reason": {
+              "const": "committed"
+            }
+          }
+        }
+      }
+    },
+    {
+      "properties": {
+        "event_name": {
+          "const": "body_rejected"
+        },
+        "payload": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "position_m",
+            "rejection_reason"
+          ],
+          "properties": {
+            "position_m": {
+              "$ref": "#/$defs/position"
+            },
+            "rejection_reason": {
+              "enum": [
+                "out_of_bounds",
+                "no_support",
+                "protected_zone",
+                "occupied",
+                "height_limit",
+                "tile_full"
+              ]
+            }
+          }
+        }
+      }
+    },
+    {
+      "properties": {
+        "event_name": {
+          "const": "body_used"
+        },
+        "payload": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "body_id",
+            "use_kind",
+            "life_id"
+          ],
+          "properties": {
+            "body_id": {
+              "type": "string"
+            },
+            "use_kind": {
+              "enum": [
+                "traversal",
+                "intercepted_fire"
+              ]
+            },
+            "life_id": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    {
+      "properties": {
+        "event_name": {
+          "const": "threat_changed"
+        },
+        "payload": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "threat_id",
+            "previous_state",
+            "next_state",
+            "remaining_s"
+          ],
+          "properties": {
+            "threat_id": {
+              "type": "string"
+            },
+            "previous_state": {
+              "type": "string"
+            },
+            "next_state": {
+              "type": "string"
+            },
+            "remaining_s": {
+              "type": "number",
+              "minimum": 0
+            }
+          }
+        }
+      }
+    },
+    {
+      "properties": {
+        "event_name": {
+          "const": "checkpoint_captured"
+        },
+        "payload": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "objective_id",
+            "checkpoint_id",
+            "transaction_id"
+          ],
+          "properties": {
+            "objective_id": {
+              "type": "string"
+            },
+            "checkpoint_id": {
+              "type": "string"
+            },
+            "transaction_id": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    {
+      "properties": {
+        "event_name": {
+          "const": "respawn_completed"
+        },
+        "payload": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "previous_life_id",
+            "elapsed_ms"
+          ],
+          "properties": {
+            "previous_life_id": {
+              "type": "string"
+            },
+            "elapsed_ms": {
+              "type": "number",
+              "minimum": 0
+            }
+          }
+        }
+      }
+    },
+    {
+      "properties": {
+        "event_name": {
+          "const": "run_finished"
+        },
+        "payload": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "completion_time_s",
+            "deployments",
+            "classification"
+          ],
+          "properties": {
+            "completion_time_s": {
+              "type": "number",
+              "minimum": 0
+            },
+            "deployments": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "classification": {
+              "enum": [
+                "uninterrupted",
+                "resumed",
+                "assisted"
+              ]
+            }
+          }
+        }
+      }
+    },
+    {
+      "properties": {
+        "event_name": {
+          "const": "save_result"
+        },
+        "payload": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "generation",
+            "success",
+            "elapsed_ms"
+          ],
+          "properties": {
+            "generation": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "success": {
+              "type": "boolean"
+            },
+            "elapsed_ms": {
+              "type": "number",
+              "minimum": 0
+            }
+          }
+        }
+      }
+    }
+  ],
+  "examples": [
+    {
+      "schema_version": 1,
+      "event_id": "event-fixture-01",
+      "event_name": "respawn_completed",
+      "build_id": "fixture-build",
+      "run_id": "fixture-run-001",
+      "life_id": "life-012",
+      "active_time_s": 142.5,
+      "rules_version": "prototype-0.1",
+      "payload": {
+        "previous_life_id": "life-011",
+        "elapsed_ms": 95
+      }
+    }
+  ]
+}

@@ -1,0 +1,84 @@
+{
+  "schema_version": 1,
+  "rules_version": "prototype-0.1",
+  "status": "prototype_hypothesis",
+  "movement": {
+    "standing_height_m": 1.8,
+    "crouched_height_m": 1.05,
+    "walk_speed_m_s": 4.5,
+    "sprint_speed_m_s": 8,
+    "step_height_m": 0.45,
+    "vault_height_m": 0.9,
+    "dive_duration_s": 0.45
+  },
+  "respawn": {
+    "death_to_control_p95_ms": 150,
+    "cosmetic_settle_max_s": 0.35,
+    "spawn_to_first_decision_target_s": 3
+  },
+  "construction": {
+    "max_tiles_per_sector": 128,
+    "max_primitives_per_tile": 8,
+    "max_primitives_per_sector": 1024,
+    "max_primitives_per_body": 2,
+    "max_height_above_tile_m": 2,
+    "max_placement_sweep_m": 1,
+    "placement_repeat_tolerance_m": 0.15,
+    "max_support_gap_m": 0.05,
+    "max_active_cosmetic_ragdolls_global": 4,
+    "max_individual_corpse_visuals_per_sector": 128,
+    "max_sectors": 3
+  },
+  "weapon": {
+    "magazine_capacity": 30,
+    "starting_reserve": 90,
+    "reload_duration_s": 2,
+    "resupply_duration_s": 1.5,
+    "ammo_persists_through_death": true,
+    "reload_progress_persists_through_death": true
+  },
+  "threat": {
+    "suppression_hits": 3,
+    "suppression_hit_window_s": 1,
+    "suppression_duration_s": 4,
+    "suppression_refresh_allowed": false,
+    "recovery_duration_s": 1,
+    "telegraph_duration_s": 0.6,
+    "burst_duration_s": 0.8
+  },
+  "objectives": {
+    "capture_duration_s": 1,
+    "damage_interrupts_capture": true,
+    "lethal_damage_wins_same_frame_capture": true
+  },
+  "run": {
+    "unlimited_lives": true,
+    "pause_stops_clock": true,
+    "focus_loss_pauses": true,
+    "save_dirty_interval_s": 5,
+    "prototype_success_time_s": [
+      60,
+      180
+    ],
+    "experimental_life_time_s": [
+      5,
+      15
+    ],
+    "first_clear_time_s": [
+      900,
+      1800
+    ]
+  },
+  "performance": {
+    "resolution": [
+      1920,
+      1080
+    ],
+    "frame_time_p95_ms": 16.7,
+    "frame_time_p99_ms": 25,
+    "stress_duration_s": 600,
+    "soak_deaths": 1000,
+    "memory_growth_investigation_percent": 5,
+    "benchmark_hardware": "Nominate and record at M0; not a published minimum specification"
+  }
+}

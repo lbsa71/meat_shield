@@ -1,0 +1,277 @@
+{
+  "version": "0.1",
+  "prepared_on": "2026-11-01",
+  "status": "proposed_baseline",
+  "requirements": [
+    {
+      "id": "REQ-001",
+      "title": "Responsive first-person movement",
+      "provenance": "source",
+      "gate": "M1",
+      "document": "docs/design/game-design.md",
+      "tests": [
+        "TC-001"
+      ],
+      "acceptance": "Implement walk sprint crouch jump dive and low vault; traverse the approved placement fixture without snagging."
+    },
+    {
+      "id": "REQ-002",
+      "title": "Immediate controlled respawn",
+      "provenance": "source",
+      "gate": "M1",
+      "document": "docs/design/game-design.md",
+      "tests": [
+        "TC-002",
+        "TC-028"
+      ],
+      "acceptance": "Death-to-controllable p95 is at most 150 ms on the recorded benchmark; no level reload or death screen."
+    },
+    {
+      "id": "REQ-003",
+      "title": "Reliable persistent construction",
+      "provenance": "source",
+      "gate": "M1",
+      "document": "docs/engineering/technical-design.md",
+      "tests": [
+        "TC-003",
+        "TC-025"
+      ],
+      "acceptance": "Committed body proxies remain unchanged through deaths impacts checkpoint transitions and visual pooling."
+    },
+    {
+      "id": "REQ-004",
+      "title": "Placement changes the route",
+      "provenance": "analysis",
+      "gate": "M1",
+      "document": "docs/design/level-design.md",
+      "tests": [
+        "TC-004"
+      ],
+      "acceptance": "One to three well-placed bodies alter a demonstrated route; six of eight observed new players deliberately place and exploit one."
+    },
+    {
+      "id": "REQ-005",
+      "title": "Supported traversable body geometry",
+      "provenance": "analysis",
+      "gate": "M1",
+      "document": "docs/engineering/technical-design.md",
+      "tests": [
+        "TC-005",
+        "TC-025"
+      ],
+      "acceptance": "No unsupported or wall-crossing placement; repeated fixture placement varies by no more than 0.15 m."
+    },
+    {
+      "id": "REQ-006",
+      "title": "Consistent cover and occlusion",
+      "provenance": "analysis",
+      "gate": "M1",
+      "document": "docs/engineering/technical-design.md",
+      "tests": [
+        "TC-006"
+      ],
+      "acceptance": "Stable proxies block player movement baseline fire and threat sight consistently with visible silhouettes."
+    },
+    {
+      "id": "REQ-007",
+      "title": "Continuous siege across death",
+      "provenance": "analysis",
+      "gate": "M1",
+      "document": "docs/design/game-design.md",
+      "tests": [
+        "TC-007"
+      ],
+      "acceptance": "Threat timers objectives gates weapon state and active clock continue through pawn replacement."
+    },
+    {
+      "id": "REQ-008",
+      "title": "Atomic captured checkpoints",
+      "provenance": "analysis",
+      "gate": "M1",
+      "document": "docs/design/game-design.md",
+      "tests": [
+        "TC-008"
+      ],
+      "acceptance": "One surviving completed capture atomically disables threats opens its gate and advances spawn; same-frame lethal damage cancels capture."
+    },
+    {
+      "id": "REQ-009",
+      "title": "Combat creates movement opportunities",
+      "provenance": "analysis",
+      "gate": "M1",
+      "document": "docs/design/game-design.md",
+      "tests": [
+        "TC-009"
+      ],
+      "acceptance": "Three sensor hits within one second suppress for four seconds; hits cannot indefinitely refresh suppression; controls disable permanently."
+    },
+    {
+      "id": "REQ-010",
+      "title": "Recoverable sector and run reset",
+      "provenance": "analysis",
+      "gate": "M2",
+      "document": "docs/design/game-design.md",
+      "tests": [
+        "TC-010"
+      ],
+      "acceptance": "Sector reset restores entry state marks assisted and retains all-run time and deployments; fresh run clears the siege only after confirmation."
+    },
+    {
+      "id": "REQ-011",
+      "title": "Time and result classification",
+      "provenance": "analysis",
+      "gate": "M3",
+      "document": "docs/design/game-design.md",
+      "tests": [
+        "TC-011"
+      ],
+      "acceptance": "Pause and loading exclude active time; local records separate rules content and uninterrupted resumed or assisted runs."
+    },
+    {
+      "id": "REQ-012",
+      "title": "Durable compatible save and resume",
+      "provenance": "proposed",
+      "gate": "M2",
+      "document": "docs/engineering/technical-design.md",
+      "tests": [
+        "TC-012",
+        "TC-027"
+      ],
+      "acceptance": "Save round trip restores stable world and relative timers; interruption and corruption recover previous complete generation without silent overwrite."
+    },
+    {
+      "id": "REQ-013",
+      "title": "Finite construction cost with unlimited lives",
+      "provenance": "proposed",
+      "gate": "M2",
+      "document": "docs/engineering/technical-design.md",
+      "tests": [
+        "TC-013",
+        "TC-026"
+      ],
+      "acceptance": "Tile and visual caps bound cost; 1000 deaths reach a memory plateau while useful collision stays intact."
+    },
+    {
+      "id": "REQ-014",
+      "title": "Readable death and placement feedback",
+      "provenance": "analysis",
+      "gate": "M1",
+      "document": "docs/design/presentation.md",
+      "tests": [
+        "TC-014"
+      ],
+      "acceptance": "Newest useful body and rejected placement are distinguishable without color alone; feedback does not delay control."
+    },
+    {
+      "id": "REQ-015",
+      "title": "Coherent photorealistic presentation and audio",
+      "provenance": "source",
+      "gate": "M2",
+      "document": "docs/design/presentation.md",
+      "tests": [
+        "TC-015"
+      ],
+      "acceptance": "Representative sector demonstrates body silhouette alignment realistic materials meaningful threat cues and music continuity across respawns."
+    },
+    {
+      "id": "REQ-016",
+      "title": "Accessible input and presentation",
+      "provenance": "proposed",
+      "gate": "M2",
+      "document": "docs/design/presentation.md",
+      "tests": [
+        "TC-016",
+        "TC-028"
+      ],
+      "acceptance": "Core flow works with rebound keys and controller; comfort subtitle reduced-gore and redundant threat cues preserve gameplay."
+    },
+    {
+      "id": "REQ-017",
+      "title": "Complete bounded fortress content",
+      "provenance": "proposed",
+      "gate": "M3",
+      "document": "docs/design/level-design.md",
+      "tests": [
+        "TC-017"
+      ],
+      "acceptance": "Three linked sectors three controls two gates one rifle and two fixed threat variants support a complete start-to-victory run."
+    },
+    {
+      "id": "REQ-018",
+      "title": "Local measurement and playtest evidence",
+      "provenance": "proposed",
+      "gate": "M1",
+      "document": "docs/quality/playtest-plan.md",
+      "tests": [
+        "TC-018"
+      ],
+      "acceptance": "Versioned events link life body use checkpoint and timing; observation distinguishes intent from incidental use."
+    },
+    {
+      "id": "REQ-019",
+      "title": "Reproducible build and review workflow",
+      "provenance": "proposed",
+      "gate": "M0",
+      "document": "docs/engineering/development-workflow.md",
+      "tests": [
+        "TC-019"
+      ],
+      "acceptance": "Exact environment binary workflow benchmark manifest and clean-checkout packaged build recipe are recorded."
+    },
+    {
+      "id": "REQ-020",
+      "title": "Release recovery and support readiness",
+      "provenance": "proposed",
+      "gate": "M5",
+      "document": "docs/production/release-plan.md",
+      "tests": [
+        "TC-020"
+      ],
+      "acceptance": "Candidate install upgrade save compatibility rollback path credits and support package are reviewed with a named release owner."
+    },
+    {
+      "id": "REQ-021",
+      "title": "Versioned validated configuration",
+      "provenance": "proposed",
+      "gate": "M2",
+      "document": "docs/engineering/data-contracts.md",
+      "tests": [
+        "TC-021"
+      ],
+      "acceptance": "Gameplay values have one versioned source and invalid transforms bounds references or cap relationships fail validation."
+    },
+    {
+      "id": "REQ-022",
+      "title": "Evidence based production gates",
+      "provenance": "proposed",
+      "gate": "M5",
+      "document": "docs/quality/test-plan.md",
+      "tests": [
+        "TC-022"
+      ],
+      "acceptance": "Each milestone records actual build evidence defects decisions and go revise or stop outcome."
+    },
+    {
+      "id": "REQ-023",
+      "title": "Resources survive death without reload exploit",
+      "provenance": "proposed",
+      "gate": "M1",
+      "document": "docs/design/game-design.md",
+      "tests": [
+        "TC-023"
+      ],
+      "acceptance": "Magazine reserve reload and fire cadence persist across death; checkpoint and timed resupply prevent ammunition softlocks."
+    },
+    {
+      "id": "REQ-024",
+      "title": "Persistent settings and localization readiness",
+      "provenance": "proposed",
+      "gate": "M2",
+      "document": "docs/design/presentation.md",
+      "tests": [
+        "TC-024"
+      ],
+      "acceptance": "Settings survive new runs; UI strings are externalized and pseudo-localized core screens remain readable."
+    }
+  ]
+}
