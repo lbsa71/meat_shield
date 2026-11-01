@@ -14,7 +14,7 @@ Checked 1 November 2026:
 | Windows SDK | 10.0.26100.0 installed |
 | .NET SDK | 10.0.203 installed |
 | Unreal Engine | Not yet installed or verified |
-| Epic Games Launcher | Official installer started; waiting for Windows administrator approval |
+| Epic Games Launcher | Official installer completed successfully; first-run update and Epic sign-in in progress |
 | Unreal MCP | Not yet running or connected |
 
 Update this status when setup completes. Installed prerequisites are not proof that a C++ Unreal project builds. Check the pinned engine's requirements and actual build diagnostics before adding or replacing toolchains. [Epic C++ environment guide](https://dev.epicgames.com/documentation/en-us/unreal-engine/setting-up-visual-studio-development-environment-for-cplusplus-projects-in-unreal-engine).
