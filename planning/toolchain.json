@@ -1,0 +1,11 @@
+{
+  "schema_version": 1,
+  "unreal": {
+    "major": 5,
+    "minor": 8,
+    "patch": 4,
+    "changelist": 58902052
+  },
+  "blender_reference_version": "5.2.2 LTS",
+  "status": "installed_editor_automation_validated_packaged_build_pending"
+}

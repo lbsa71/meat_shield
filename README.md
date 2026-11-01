@@ -2,7 +2,7 @@
 
 A fast first-person fortress assault in which instant respawns and persistent bodies turn each death into a construction move. Reach a useful position, leave cover for the next life, and use the route you built to breach the fortress.
 
-**Repository status:** planning handoff, version 0.1, prepared 1 November 2026. There is no game implementation or engine project yet. Meat Shield is the working name; the commercial title is unresolved.
+**Repository status:** planning handoff and editor automation bootstrap, version 0.1, prepared 1 November 2026. Gameplay is not implemented yet. Meat Shield is the working name; the commercial title is unresolved.
 
 ## Start here
 
@@ -15,9 +15,11 @@ The [full document index](docs/README.md) covers level design, art and audio, UX
 
 Development follows [AGENTS.md](AGENTS.md): specification-driven and test-driven implementation, clean modular boundaries, environment abstractions, and procedural Unreal production with Blender for source assets. Development is AI-led under the product owner's direction.
 
+The [editor project](game/README.md) hosts Unreal setup validation. Follow the [toolchain record](docs/engineering/toolchain-setup.md) for installation and automation status.
+
 ## Planning baseline
 
-The proposed first release is an offline Windows PC game containing one fortress with three connected sectors, one player weapon, and two fixed defensive threat variants. Unreal Engine 5 is the intended engine, with the exact patch subject to installation and a short feasibility spike. The original 24-week human-team capacity model is retained as a reference scenario. It is not the current AI-led delivery forecast or a staffing, funding, or launch commitment.
+The proposed first release is an offline Windows PC game containing one fortress with three connected sectors, one player weapon, and two fixed defensive threat variants. The editor bootstrap pins Unreal Engine 5.8.4; gameplay suitability and packaged delivery still require the M0 spike. The original 24-week human-team capacity model is retained as a reference scenario. It is not the current AI-led delivery forecast or a staffing, funding, or launch commitment.
 
 The first funded gate should prove a single 1–3 minute greybox assault before the team builds the full fortress. The key test is whether players deliberately place and then exploit bodies, rather than winning through repetitive accumulation.
 

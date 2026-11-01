@@ -1,0 +1,45 @@
+{
+  "FileVersion": 3,
+  "EngineAssociation": "5.8",
+  "Category": "Games",
+  "Description": "Meat Shield editor automation bootstrap. Gameplay implementation pending.",
+  "Plugins": [
+    {
+      "Name": "AndroidFileServer",
+      "Enabled": false
+    },
+    {
+      "Name": "EnhancedInput",
+      "Enabled": true
+    },
+    {
+      "Name": "ModelContextProtocol",
+      "Enabled": true,
+      "TargetAllowList": ["Editor"]
+    },
+    {
+      "Name": "AllToolsets",
+      "Enabled": true,
+      "TargetAllowList": ["Editor"]
+    },
+    {
+      "Name": "PythonScriptPlugin",
+      "Enabled": true,
+      "TargetAllowList": ["Editor"]
+    },
+    {
+      "Name": "EditorScriptingUtilities",
+      "Enabled": true,
+      "TargetAllowList": ["Editor"]
+    },
+    {
+      "Name": "PCG",
+      "Enabled": true
+    },
+    {
+      "Name": "GeometryScripting",
+      "Enabled": true,
+      "TargetAllowList": ["Editor"]
+    }
+  ]
+}

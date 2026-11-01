@@ -44,6 +44,7 @@ All entries below are **proposed** unless explicitly labeled source requirement.
 | DEC-17 | Specification-driven and test-driven development | User requirement | Development agent | Every behavior change | Specs and failing tests precede implementation |
 | DEC-18 | Clean modularization separation of concerns and environment abstractions | User requirement | Development agent | Every architecture change | Isolate rules engine adapters presentation and platform dependencies |
 | DEC-19 | Full Blender and Unreal capabilities with procedural production primarily in Unreal | User direction | Development agent and product owner | Pipeline setup and each content family | Reproducible recipes seeds exports and validated encounter constraints |
+| DEC-20 | Pin Unreal 5.8.4 for editor bootstrap; use official localhost MCP and independent commandlet tooling | Accepted setup decision; M0 product acceptance pending | Development agent | Packaged environment gate; ADR 0004 | Revalidate engine plugins automation and packaging before changing the pin |
 
 ## External engineering references
 

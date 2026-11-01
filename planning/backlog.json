@@ -23,7 +23,9 @@
       "deliverable": "Pinned environment and minimal packaged FPS project",
       "acceptance": [
         "Clean checkout packages and launches.",
-        "Benchmark manifest and binary round trip are recorded."
+        "Benchmark manifest and binary round trip are recorded.",
+        "Pinned editor launcher rejects invalid inputs and versions without launching, isolates local caches and reports actual subprocess evidence.",
+        "Blender background Python, Unreal Python commandlet and localhost MCP discovery with a reversible editor operation pass; rendered checks use the real GPU."
       ]
     },
     {

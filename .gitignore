@@ -1,2 +1,10 @@
 __pycache__/
 *.py[cod]
+/.local/
+/.artifacts/
+/game/Binaries/
+/game/DerivedDataCache/
+/game/Intermediate/
+/game/Saved/
+/game/.vs/
+/game/.codex/

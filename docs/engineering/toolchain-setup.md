@@ -1,6 +1,6 @@
 # Meat Shield Unreal and Blender setup
 
-Use the full Unreal Engine installation with its command-line and editor automation facilities. The intended first engine series is Unreal Engine 5.8 because it includes Epic's official Unreal MCP; pin the installed release patch after the first build and automation checks. Do not choose a Preview build for the project. [Epic installation guide](https://dev.epicgames.com/documentation/en-us/unreal-engine/install-unreal-engine).
+Use the full Unreal Engine installation with its command-line and editor automation facilities. The editor bootstrap pins Unreal Engine 5.8.4, changelist 58902052, which includes Epic's official Unreal MCP. Packaged-game suitability remains subject to M0 checks. Do not choose a Preview build for the project. [Epic installation guide](https://dev.epicgames.com/documentation/en-us/unreal-engine/install-unreal-engine).
 
 ## Verified starting environment
 
@@ -13,11 +13,11 @@ Checked 1 November 2026:
 | MSVC toolset | 14.44.35207 installed; Unreal acceptance still requires a real build |
 | Windows SDK | 10.0.26100.0 installed |
 | .NET SDK | 10.0.203 installed |
-| Unreal Engine | 5.8.4 selected and partially downloaded on D:; paused for storage clearance; engine validation pending |
+| Unreal Engine | 5.8.4 installed and launcher verification complete; runtime and Python commandlet validated |
 | Epic Games Launcher | Official installer and first-run update completed; Epic sign-in completed |
-| Unreal MCP | Not yet running or connected |
+| Unreal MCP | Official localhost server connected through SDK and native chat tools; 52 toolsets discovered and selection/restore passed |
 
-Update this status when setup completes. Installed prerequisites are not proof that a C++ Unreal project builds. Check the pinned engine's requirements and actual build diagnostics before adding or replacing toolchains. [Epic C++ environment guide](https://dev.epicgames.com/documentation/en-us/unreal-engine/setting-up-visual-studio-development-environment-for-cplusplus-projects-in-unreal-engine).
+See the [validation record](../quality/toolchain-validation.md) for commands, results, and an open engine smoke-test failure. Installed prerequisites are not proof that a C++ Unreal project builds. Check the pinned engine's requirements and actual build diagnostics before adding or replacing toolchains. [Epic C++ environment guide](https://dev.epicgames.com/documentation/en-us/unreal-engine/setting-up-visual-studio-development-environment-for-cplusplus-projects-in-unreal-engine).
 
 ## Installation route
 
@@ -45,10 +45,20 @@ Build and packaging recipes will use the installed engine's `Engine/Build/BatchF
 
 Enable Unreal MCP (`ModelContextProtocol`) and the required toolsets, initially through `AllToolsets`. Start locally with `ModelContextProtocol.StartServer` or `-ModelContextProtocolStartServer`. The default endpoint is `http://127.0.0.1:8000/mcp`. Keep its default loopback binding and serialize editor tool calls. Verify discovery and one reversible editor operation before relying on it. The plugin is Experimental; CLI and tests remain independent delivery paths. [Epic Unreal MCP guide](https://dev.epicgames.com/documentation/en-us/unreal-engine/unreal-mcp-in-unreal-editor).
 
-Client configuration and actual connection verification follow installation. Do not overwrite an existing client configuration or claim this chat has engine tools before they are available and tested.
+The project client configuration and live connection have been checked. Do not overwrite an existing client configuration when adapting the setup on another machine; inspect it first and merge the local endpoint deliberately.
 
 ## Reproducible project setup
 
 Use an explicit local setting such as `MEAT_SHIELD_UNREAL_ROOT` for engine discovery and `MEAT_SHIELD_BLENDER_EXE` for Blender. Keep workstation paths out of reusable rules and shared recipes. Setup tooling must validate versions, executables, plugin availability, disk space, and subprocess results through environment adapters with deterministic tests.
+
+The [editor bootstrap project](../../game/MeatShield.uproject) hosts setup validation before gameplay modules are implemented. It enables the installed official MCP and toolsets, Python, PCG, and Geometry Script. MCP and authoring-only plugins are restricted to Editor targets. Bootstrap acceptance requires the installed 5.8.4 editor to load this descriptor, a headless Python smoke to report the engine version, and a local MCP client to discover tools and perform an editor operation. These are environment checks; they do not complete the packaged FPS, binary collaboration, or gameplay acceptance conditions in MS-001.
+
+All Toolsets enables Game Features through its dependencies. The bootstrap must register the `GameFeatureData` primary asset type with the `AlwaysCook` rule, matching the installed engine editor's own corrective action. The first live commandlet exposed the missing rule and returned a failure despite running the Python probe; successful bootstrap requires a clean commandlet exit as well as its marker. The editor starts in the stock Entry map while authored gameplay levels remain unimplemented.
+
+The Windows bootstrap targets D3D12 and Shader Model 6, matching the installed engine's blank-project template. SM6 makes modern rendering features available; enabling and budgeting those features remains part of the representative scene work. [Epic rendering requirements](https://dev.epicgames.com/documentation/en-us/unreal-engine/hardware-and-software-specifications-for-unreal-engine).
+
+The project-scoped [MCP client configuration](../../.codex/config.toml) points to the local editor endpoint. Start the editor before connecting a client; a configured URL alone does not prove the server is running. Project-scoped Codex configuration applies to trusted projects. [Official MCP configuration documentation](https://learn.chatgpt.com/docs/extend/mcp?surface=cli).
+
+The project launcher must accept an explicit engine root or `MEAT_SHIELD_UNREAL_ROOT`, with the explicit argument taking precedence. Before launching, it must reject a missing project, missing executable, or engine version/changelist differing from [toolchain.json](../../planning/toolchain.json). Smoke mode runs the Python commandlet and exits. Headless mode starts the editor with a null renderer and local MCP; normal editor mode starts MCP while retaining graphics. Every mode uses a process-local derived-data cache override under `.local` by default, preserving the caller's environment. A dry run must launch nothing and print only the command and relevant paths, never the full environment. These contracts trace to REQ-019, REQ-021, and MS-001.
 
 Before M0 acceptance, record the exact engine patch, plugin list, toolchain, benchmark machine, binary asset workflow, clean-checkout build command, test command, packaging command, and generation recipe. Re-run Blender smoke, Unreal commandlet smoke, MCP discovery and reversible edit, C++ build, and packaged launch. Rendering and performance checks must use the real graphics pipeline rather than a no-render logic-test path.

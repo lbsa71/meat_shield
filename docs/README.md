@@ -15,6 +15,8 @@ This handoff defines the proposed game and the work required to prove, build, an
 | Contracts | [Data contracts](engineering/data-contracts.md) | Engineering and tools |
 | Delivery | [Development workflow](engineering/development-workflow.md) | Developers and build owner |
 | Environment | [Unreal and Blender setup](engineering/toolchain-setup.md) | Development agent and product owner |
+| Setup evidence | [Toolchain validation and open issues](quality/toolchain-validation.md) | Engineering and QA |
+| Automation decision | [Pinned editor and local MCP](engineering/adr/0004-editor-automation.md) | Engineering |
 | Engine | [Engine decision proposal](engineering/adr/0001-engine.md) | Technical lead |
 | Bodies | [Corpse construction proposal](engineering/adr/0002-corpse-geometry.md) | Engineering and design |
 | Persistence | [Continuous siege proposal](engineering/adr/0003-continuous-siege.md) | Design and engineering |

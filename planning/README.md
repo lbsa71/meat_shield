@@ -11,6 +11,7 @@ These files make the proposed baseline easy to review, validate, and import into
 | [tuning.example.json](tuning.example.json) | Versioned initial gameplay and performance hypotheses |
 | [save.example.json](save.example.json) | Illustrative committed run snapshot, not a complete authored level |
 | [telemetry.schema.json](telemetry.schema.json) | JSON Schema for local event envelope and ten event payloads |
+| [toolchain.json](toolchain.json) | Exact Unreal patch and changelist required by the project launcher |
 
 Edit JSON with UTF-8 encoding and preserve stable IDs. `source` provenance means the user's concept; `analysis` means a suggestion in the earlier concept discussion; `proposed` means a new implementation or production default. Acceptance numbers beyond the original concept are proposed measurable targets in every category.
 

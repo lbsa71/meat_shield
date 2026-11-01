@@ -216,7 +216,7 @@
       "tests": [
         "TC-019"
       ],
-      "acceptance": "Exact environment binary workflow benchmark manifest and clean-checkout packaged build recipe are recorded."
+      "acceptance": "Exact environment binary workflow benchmark manifest and clean-checkout packaged build recipe are recorded. Editor setup rejects missing inputs and version mismatches, preserves caller configuration, separates rendered and headless execution, and proves a successful Python commandlet plus localhost MCP discovery and a reversible editor operation."
     },
     {
       "id": "REQ-020",

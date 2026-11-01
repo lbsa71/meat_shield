@@ -1,6 +1,6 @@
 # Meat Shield development workflow
 
-Begin with the planning validator and M0 tasks. There is no runnable game, editor configuration, build script, CI runner, or binary storage configuration in this handoff. Establish them in a reviewed bootstrap change once the engine and storage decisions are made.
+Begin with the planning validator and M0 tasks. The repository has a minimal editor automation project; gameplay, a reproducible game build, CI, and the binary asset workflow still require implementation and verification.
 
 Follow [AGENTS.md](../../AGENTS.md) for specification-driven and test-driven behavior changes, modular boundaries, and environment abstractions. The [toolchain setup](toolchain-setup.md) records current setup evidence and the intended Unreal MCP, commandlet, and Blender automation paths.
 
@@ -25,7 +25,7 @@ planning/
 tools/
 ```
 
-No empty engine directories or dummy binaries are required to begin planning review. Bootstrap should include a clean-checkout build recipe with actual commands for the pinned environment.
+The initial `game/MeatShield.uproject` validates editor automation without gameplay modules. Add source and content as their implementation tasks begin. Bootstrap acceptance still requires a clean-checkout game build recipe with actual commands for the pinned environment.
 
 ## Branches and review
 
@@ -54,3 +54,5 @@ After M2, new mechanics require a change record with player value, removed scope
 ## Current validation
 
 Run `python tools/validate_planning.py` from the repo root. Use `--write-backlog` only when intentionally regenerating the backlog table after a data change. The tool checks document links, data shape, identifiers, task dependencies, requirement coverage, milestone capacities, asset references, and example invariants. It does not fetch external links, validate Unreal assets, or certify the game.
+
+Run `python -m unittest discover -s tools/tests -p test_unreal.py` for the fast launcher boundary suite, then follow the [toolchain validation record](../quality/toolchain-validation.md) for actual engine and MCP checks. The record separates successful setup probes from the open engine test issue and unexecuted packaged-build acceptance.

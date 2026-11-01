@@ -41,6 +41,8 @@ Requirements: REQ-019. Estimate: 2 / 3 / 4.75 days, low / likely / high.
 
 - [ ] Clean checkout packages and launches.
 - [ ] Benchmark manifest and binary round trip are recorded.
+- [ ] Pinned editor launcher rejects invalid inputs and versions without launching, isolates local caches and reports actual subprocess evidence.
+- [ ] Blender background Python, Unreal Python commandlet and localhost MCP discovery with a reversible editor operation pass; rendered checks use the real GPU.
 
 ### MS-002 Baseline and ownership review
 
