@@ -2,6 +2,8 @@
 
 Begin with the planning validator and M0 tasks. There is no runnable game, editor configuration, build script, CI runner, or binary storage configuration in this handoff. Establish them in a reviewed bootstrap change once the engine and storage decisions are made.
 
+Follow [AGENTS.md](../../AGENTS.md) for specification-driven and test-driven behavior changes, modular boundaries, and environment abstractions. The [toolchain setup](toolchain-setup.md) records current setup evidence and the intended Unreal MCP, commandlet, and Blender automation paths.
+
 ## M0 environment and repository setup
 
 1. Record the selected Unreal patch, installation source, C++ toolchain, SDK, target platform, plugin versions, and benchmark PC in a tracked environment manifest.

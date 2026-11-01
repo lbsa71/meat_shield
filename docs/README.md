@@ -10,9 +10,11 @@ This handoff defines the proposed game and the work required to prove, build, an
 | Mechanics | [Game design](design/game-design.md) | Design and engineering |
 | Content | [Level design](design/level-design.md) | Level design and environment art |
 | Presentation | [Art audio UX and accessibility](design/presentation.md) | Art audio UI and design |
+| Procedural production | [Unreal and Blender content pipeline](design/procedural-production.md) | Content tooling and art |
 | Architecture | [Technical design](engineering/technical-design.md) | Engineering |
 | Contracts | [Data contracts](engineering/data-contracts.md) | Engineering and tools |
 | Delivery | [Development workflow](engineering/development-workflow.md) | Developers and build owner |
+| Environment | [Unreal and Blender setup](engineering/toolchain-setup.md) | Development agent and product owner |
 | Engine | [Engine decision proposal](engineering/adr/0001-engine.md) | Technical lead |
 | Bodies | [Corpse construction proposal](engineering/adr/0002-corpse-geometry.md) | Engineering and design |
 | Persistence | [Continuous siege proposal](engineering/adr/0003-continuous-siege.md) | Design and engineering |

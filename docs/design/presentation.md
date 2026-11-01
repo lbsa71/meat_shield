@@ -2,6 +2,8 @@
 
 The proposed tone is photorealistic industrial horror with restrained administrative humor. The fortress is heavy, practical, and indifferent. Bodies gradually become infrastructure. Art and sound should make that shift legible while preserving quick decisions.
 
+Follow the [procedural production pipeline](procedural-production.md): assemble and generate repeatable content primarily in Unreal, with Blender for source asset authoring and preparation. Recipes must preserve the authored gameplay constraints and be reproducible.
+
 ## Art direction and production
 
 Use concrete, oxidized steel, wet stone, worn polymer, and mass-produced equipment. A small material library and modular architecture provide most variation. Warm deployment machinery and cool defensive sightlines can separate regions, but shape, pattern, and light placement must also carry the distinction.
