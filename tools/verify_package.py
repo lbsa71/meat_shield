@@ -51,19 +51,25 @@ def main():
     root=Path(__file__).resolve().parents[1]
     parser.add_argument('--package',type=Path,default=root/'.artifacts/TurretApproach/Windows')
     parser.add_argument("--offscreen",action="store_true",help="Render without an interactive window")
+    parser.add_argument("--realism",action="store_true",help="Verify the MetaHuman avatar and wardrobe profile")
     args=parser.parse_args()
     package=args.package.resolve()
     exe=package/'MeatShield/Binaries/Win64/MeatShield.exe'
-    log_path=root/'.local/packaged-scenario.log'
+    log_path=root/('.local/packaged-realism-scenario.log' if args.realism else '.local/packaged-scenario.log')
     try:
         if not exe.is_file(): raise EvidenceError(f'Build the package first; missing {exe}')
         log_path.parent.mkdir(parents=True,exist_ok=True)
         started=time.time()
         command=[str(exe),'-MSScenario','-unattended','-nosplash','-windowed','-ResX=1600','-ResY=900','-stdout','-FullStdOutLogOutput','-UTF8Output']
         if args.offscreen: command.append('-RenderOffscreen')
+        if args.realism: command.append('-MSRealism')
         with log_path.open('w',encoding='utf-8') as log:
             result=subprocess.run(command,cwd=package,stdout=log,stderr=subprocess.STDOUT,timeout=150,shell=False)
         report=inspect_evidence(package/'MeatShield/Saved',started,log_path.read_text(encoding='utf-8',errors='replace'),result.returncode)
+        if args.realism:
+            avatar=package/'MeatShield/Saved/avatar-first-person.png'
+            if report['scenario']['checks']<47 or not avatar.is_file() or avatar.stat().st_mtime<started:
+                raise EvidenceError('Missing current avatar continuity and first-person capture evidence')
         report['log_path']=str(log_path)
         print(json.dumps(report,indent=2));return 0
     except (OSError,ValueError,wave.Error,subprocess.TimeoutExpired) as exc:

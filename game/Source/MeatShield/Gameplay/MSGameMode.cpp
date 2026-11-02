@@ -13,6 +13,8 @@
 #include "GameFramework/PlayerController.h"
 #include "Kismet/GameplayStatics.h"
 #include "Diagnostics/MSSliceScenario.h"
+#include "Diagnostics/MSRealismScenario.h"
+#include "Presentation/MSHumanAppearance.h"
 #include "Misc/CommandLine.h"
 AMSGameMode::AMSGameMode()
 {
@@ -27,6 +29,7 @@ void AMSGameMode::BeginPlay()
     const bool Scenario=FParse::Param(FCommandLine::Get(),TEXT("MSScenario"));
 #if !UE_BUILD_SHIPPING
     if(Scenario) GetWorld()->SpawnActor<AMSSliceScenario>();
+    if(FParse::Param(FCommandLine::Get(),TEXT("MSRealismGallery")) || FParse::Param(FCommandLine::Get(),TEXT("MSRealismBenchmark")) || FParse::Param(FCommandLine::Get(),TEXT("MSArmProbe"))) GetWorld()->SpawnActor<AMSRealismScenario>();
 #endif
     UE_LOG(LogTemp,Display,TEXT("MS_SLICE_READY recipe=yard-01 rules=turret-01 scenario=%d"),Scenario);
 }
@@ -56,7 +59,7 @@ void AMSGameMode::BeginDeath(AMSCharacter* Player,FVector ShotDirection,FVector 
 {
     if(!Death.Start(Run.Life)) return;
     auto* Body=GetWorld()->SpawnActor<AMSCorpse>(Player->GetActorLocation()+FVector(0,0,Player->bIsCrouched?-14:0),Player->GetActorRotation());
-    Body->Initialize(Run.Life,Player->GetVelocity(),ShotDirection,Player->bIsCrouched); Corpses.Add(Body);
+    Body->Initialize(Run.Life,Player->GetVelocity(),ShotDirection,Player->bIsCrouched,Player->Human?Player->GetMesh():nullptr); Corpses.Add(Body);
     Body->ApplyBulletImpact(nullptr,ImpactPoint,ShotDirection);
     if(!DeathCamera) DeathCamera=GetWorld()->SpawnActor<AMSDeathCamera>();
     DeathCamera->BeginDeath(Player->Camera->GetComponentTransform(),Player->GetActorForwardVector(),Body,SpawnPoint()+FVector(0,0,Player->GetCapsuleComponent()->GetScaledCapsuleHalfHeight()-90+Player->EyeOffset()),Player);
@@ -76,6 +79,7 @@ void AMSGameMode::Tick(float Delta)
 void AMSGameMode::RestorePlayer(AMSCharacter* Player)
 {
     Run.Respawn();
+    Player->RefreshAvatar(Run.Life);
     Player->SetActorHiddenInGame(false); Player->GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
     Player->GetCharacterMovement()->SetMovementMode(MOVE_Walking); Player->StopJumping();
     Player->GetCharacterMovement()->StopMovementImmediately();

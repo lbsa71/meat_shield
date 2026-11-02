@@ -1,0 +1,48 @@
+{
+  "schema_version": 1,
+  "requirements": [
+    "REQ-028",
+    "REQ-029"
+  ],
+  "engine": "5.8.4-58902052",
+  "character": {
+    "source": "/Game/MeatShield/SourceCharacters/MC_Realism_A",
+    "assembly": "optimized-medium",
+    "texture_resolution": 2048,
+    "rig": "joints-only",
+    "identity_count": 1,
+    "runtime_root": "/Game/MeatShield/Humans/MC_Realism_A"
+  },
+  "recipes": [
+    {
+      "script": "tools/assemble_metahuman.py",
+      "output": "/Game/MeatShield/Humans",
+      "requires": "Epic-authorized Creator authoring; cooked gameplay has no Creator dependency"
+    },
+    {
+      "script": "tools/create_realism_assets.py",
+      "output": "/Game/MeatShield/Environment",
+      "seed": 71031,
+      "collision": "cosmetic; authored lane remains authoritative"
+    },
+    {
+      "script": "tools/create_uniform_assets.py",
+      "output": "/Game/MeatShield/Wardrobe",
+      "requires": "initialized rendering; -AllowCommandletRendering -RenderOffscreen; rejects missing skin weights",
+      "source_lod": 1,
+      "uniform_inflation_cm": [
+        1.4,
+        2.0
+      ],
+      "vest_inflation_cm": 3.8,
+      "runtime_cloth_simulation": false
+    }
+  ],
+  "variation": {
+    "facial_profiles": 4,
+    "uniform_palettes": 3,
+    "vest": "life-seed parity",
+    "pattern": "stable life-derived seed"
+  },
+  "binary_workflow": "Git LFS for .uasset and .umap; generated cooked dependencies tracked; SourceCharacters excluded from cooking"
+}

@@ -19,8 +19,10 @@ public:
     virtual void Tick(float Delta) override;
     void Impact();
     void Retry();
+    void RefreshAvatar(uint64 Life);
+    UPROPERTY() TObjectPtr<class UMSHumanAppearance> Human;
     FVector TargetPoint() const { return GetActorLocation()+FVector(0,0,bIsCrouched?5:25); }
-    float EyeOffset() const { return bIsCrouched?35.f:65.f; }
+    float EyeOffset() const { return Human?(bIsCrouched?45.f:75.f):(bIsCrouched?35.f:65.f); }
     bool Sprinting = false;
     float HitPulse = 0, StepClock = 0;
     UPROPERTY() TObjectPtr<UCameraComponent> Camera;

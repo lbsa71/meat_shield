@@ -7,6 +7,9 @@
 #include "PhysicsEngine/PhysicsConstraintComponent.h"
 #include "PhysicalMaterials/PhysicalMaterial.h"
 #include "Engine/World.h"
+#include "World/MSHumanRagdoll.h"
+#include "Presentation/MSHumanAppearance.h"
+#include "Misc/CommandLine.h"
 AMSCorpse::AMSCorpse()
 {
     PrimaryActorTick.bCanEverTick=true; PrimaryActorTick.TickGroup=TG_PostPhysics;
@@ -50,10 +53,17 @@ void AMSCorpse::Joint(int A,int B,FVector Position,float Swing)
     C->SetAngularSwing1Limit(ACM_Limited,FMath::Min(Swing,85.f)); C->SetAngularSwing2Limit(ACM_Limited,FMath::Min(Swing,85.f)); C->SetAngularTwistLimit(ACM_Free,0);
     C->SetConstrainedComponents(Bodies[A],NAME_None,Bodies[B],NAME_None); Joints.Add(C);
 }
-bool AMSCorpse::Initialize(uint64 Life,FVector Velocity,FVector ShotDirection,bool Crouched)
+bool AMSCorpse::Initialize(uint64 Life,FVector Velocity,FVector ShotDirection,bool Crouched,USkeletalMeshComponent* Source)
 {
     if(LifeId || !Life) return false;
     LifeId=Life;
+    if(FParse::Param(FCommandLine::Get(),TEXT("MSRealism")) && !ActorHasTag(TEXT("LegacyFixture")))
+    {
+        Human=NewObject<UMSHumanRagdoll>(this); AddInstanceComponent(Human); Human->RegisterComponent();
+        if(!Human->Initialize(Life,Velocity,Crouched,Source)) { Human=nullptr; LifeId=0; return false; }
+        Bodies=Human->Shapes; Dimensions=Human->Sizes; Shapes=Human->Kinds;
+        InitialCenter=Center(); InitialShoulderAxis=Human->ShoulderAxis(); return true;
+    }
     Material=NewObject<UPhysicalMaterial>(this); Material->Friction=.8f; Material->Restitution=.03f;
     const FLinearColor Cloth(.14f,.22f,.17f), Pants(.12f,.14f,.12f), Dark(.035f,.045f,.04f);
     const int Pelvis=Part(TEXT("Pelvis"),{0,0,0},1,{15,18,12},16,Pants);
@@ -100,14 +110,18 @@ TArray<FTransform> AMSCorpse::Pose() const
 void AMSCorpse::Tick(float Delta)
 {
     Super::Tick(Delta); if(!LifeId || Stable) return;
+    if(Human) Human->Sync();
     Age+=Delta; PhysicsMoved|=FVector::Distance(Center(),InitialCenter)>10;
+    const float OffAxis=Human?FMath::RadiansToDegrees(FMath::Acos(FMath::Clamp(FVector::DotProduct(InitialShoulderAxis,Human->ShoulderAxis()),-1.,1.))):FMath::RadiansToDegrees(FMath::Asin(FMath::Clamp(FMath::Abs(Bodies[1]->GetRightVector().Z),0.,1.)));
+    MaxOffAxisRotation=FMath::Max(MaxOffAxisRotation,OffAxis);
     MeatShield::SettleSample Sample;
     for(UPrimitiveComponent* Body : Bodies)
     {
         Sample.LinearCmS=FMath::Max(Sample.LinearCmS,double(Body->GetPhysicsLinearVelocity().Size()));
         Sample.AngularDegS=FMath::Max(Sample.AngularDegS,double(Body->GetPhysicsAngularVelocityInDegrees().Size()));
     }
-    if(ActorHasTag(TEXT("PreDowned")))
+    if(Human) Human->Motion(Sample);
+    if(ActorHasTag(TEXT("PreDowned")) || Human)
     {
         const auto Current=Pose(); bool Changed=RestReference.Num()!=Current.Num();
         if(!Changed) for(int I=0;I<Current.Num();++I)
@@ -123,7 +137,7 @@ void AMSCorpse::Tick(float Delta)
         // Require a bounded pose envelope for the entire quiet interval instead.
         Sample.UsePoseEnvelope=true; Sample.PoseWithinEnvelope=!Changed;
     }
-    Sample.Collapsed=ActorHasTag(TEXT("PreDowned")) || FMath::Abs(Bodies[1]->GetUpVector().Z)<.35;
+    Sample.Collapsed=ActorHasTag(TEXT("PreDowned")) || (Human?Human->Collapsed():FMath::Abs(Bodies[1]->GetUpVector().Z)<.35);
     FCollisionObjectQueryParams Objects; Objects.AddObjectTypesToQuery(ECC_WorldStatic); Objects.AddObjectTypesToQuery(ECC_WorldDynamic);
     FCollisionQueryParams Query(SCENE_QUERY_STAT(CorpseSupport),false,this);
     const FVector P=Center();
@@ -149,6 +163,7 @@ void AMSCorpse::Tick(float Delta)
 void AMSCorpse::CommitPose()
 {
     CommittedAt=Age;
+    if(Human) Human->Freeze();
     for(int I=0;I<Bodies.Num();++I)
     {
         UPrimitiveComponent* Body=Bodies[I]; const FTransform Pose=Body->GetComponentTransform();
@@ -175,6 +190,7 @@ bool AMSCorpse::ApplyBulletImpact(UPrimitiveComponent* Part,FVector Point,FVecto
         Part=Bodies[1]; double Best=MAX_dbl;
         for(UPrimitiveComponent* Body : Bodies) { const double D=FVector::DistSquared(Point,Body->GetComponentLocation()); if(D<Best) {Best=D;Part=Body;} }
     }
+    if(Human) { if(!Human->Impact(Point,Direction,LastImpactTorque)) return false; ++BulletImpacts; return true; }
     const FVector Impulse=Direction.GetSafeNormal()*5000;
     LastImpactTorque=FVector::CrossProduct(Point-Part->GetCenterOfMass(),Impulse);
     Part->WakeAllRigidBodies(); Part->AddImpulseAtLocation(Impulse,Point); ++BulletImpacts;
@@ -185,3 +201,6 @@ bool AMSCorpse::InitializeDowned(uint64 Id)
     if(!Initialize(Id,FVector(0,0,-150),FVector::ZeroVector)) return false;
     Tags.AddUnique(TEXT("PreDowned")); return true;
 }
+bool AMSCorpse::HumanFaceAttached() const { return Human && Human->FaceAttached(); }
+bool AMSCorpse::IsTransferredAvatar() const { return Human && Human->TransferredAvatar && Human->Appearance && Human->Appearance->Seed==LifeId; }
+TArray<FTransform> AMSCorpse::RenderPose() const { return Human?Human->RenderPose():Pose(); }

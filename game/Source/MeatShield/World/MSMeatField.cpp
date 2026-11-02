@@ -2,6 +2,7 @@
 #include "World/MSCorpse.h"
 #include "Engine/World.h"
 #include "EngineUtils.h"
+#include "Misc/CommandLine.h"
 void MSMeatField::Build(UWorld* World)
 {
     for(TActorIterator<AMSMeatPile> It(World);It;++It) return;
@@ -11,7 +12,10 @@ AMSMeatPile::AMSMeatPile() { PrimaryActorTick.bCanEverTick=true; }
 void AMSMeatPile::BeginPlay()
 {
     Super::BeginPlay(); FRandomStream Random(71031);
-    for(int I=0;I<42;++I)
+    int Count=42;
+    if(FParse::Param(FCommandLine::Get(),TEXT("MSRealismBenchmark"))) { FParse::Value(FCommandLine::Get(),TEXT("MSHumanCount="),Count); Count=FMath::Clamp(Count,1,42); }
+    if(FParse::Param(FCommandLine::Get(),TEXT("MSRealismGallery")) || FParse::Param(FCommandLine::Get(),TEXT("MSArmProbe"))) Count=0;
+    for(int I=0;I<Count;++I)
     {
         const FVector P(-1050+(I%3-1)*160+Random.FRandRange(-5,5),((I/3)%2-.5f)*160+Random.FRandRange(-5,5),450+(I/6)*220);
         auto* Body=GetWorld()->SpawnActor<AMSCorpse>(P,FRotator(Random.FRandRange(-15,15),Random.FRandRange(-180,180),Random.FRandRange(-15,15)));

@@ -3,7 +3,13 @@
   "EngineAssociation": "5.8",
   "Category": "Games",
   "Description": "Meat Shield first playable turret approach.",
-  "Modules": [{"Name":"MeatShield","Type":"Runtime","LoadingPhase":"Default"}],
+  "Modules": [
+    {
+      "Name": "MeatShield",
+      "Type": "Runtime",
+      "LoadingPhase": "Default"
+    }
+  ],
   "Plugins": [
     {
       "Name": "AndroidFileServer",
@@ -16,22 +22,30 @@
     {
       "Name": "ModelContextProtocol",
       "Enabled": true,
-      "TargetAllowList": ["Editor"]
+      "TargetAllowList": [
+        "Editor"
+      ]
     },
     {
       "Name": "AllToolsets",
       "Enabled": true,
-      "TargetAllowList": ["Editor"]
+      "TargetAllowList": [
+        "Editor"
+      ]
     },
     {
       "Name": "PythonScriptPlugin",
       "Enabled": true,
-      "TargetAllowList": ["Editor"]
+      "TargetAllowList": [
+        "Editor"
+      ]
     },
     {
       "Name": "EditorScriptingUtilities",
       "Enabled": true,
-      "TargetAllowList": ["Editor"]
+      "TargetAllowList": [
+        "Editor"
+      ]
     },
     {
       "Name": "PCG",
@@ -40,7 +54,20 @@
     {
       "Name": "GeometryScripting",
       "Enabled": true,
-      "TargetAllowList": ["Editor"]
+      "TargetAllowList": [
+        "Editor"
+      ]
+    },
+    {
+      "Name": "MetaHumanCharacter",
+      "Enabled": true,
+      "TargetAllowList": [
+        "Editor"
+      ]
+    },
+    {
+      "Name": "MetaHumanSDK",
+      "Enabled": true
     }
   ]
 }

@@ -310,6 +310,28 @@
         "TC-031"
       ],
       "acceptance": "Hold Ctrl or C to crouch with reduced capsule, eye and speed; release stands only with clearance. Turret aim respects stance. Both falling and committed bodies stop first-hit bullets without penetration and tracers end at the blocking surface. Corpses cannot freeze on age alone: wait for supported collapsed torso and sustained low linear/angular velocity, including after player return. Older committed bodies remain unchanged. Exercise native crouch, overhead clearance, live/stable meat occlusion and actual turret damage prevention, settle timing and a packaged rendered build. Bullet impact on an active ragdoll applies impulse at its struck component and location; off-centre hits generate angular motion, while fixed bodies never move. A deterministic field of at least 40 pre-downed solid bodies populates the yard, excluding safe spawn, authored cover and the central test lane; retries do not duplicate it. Superseding the scattered field: initial bodies drop sequentially from above a seeded central footprint and form a physical pile against previously settled bodies; no immediate authored-pose commitment. Verify all 42 actually move, settle, stack above one-body height, block shots and persist without duplication; safe spawn remains clear. Owner correction supersedes serial release: all 42 bodies must be active within 2 seconds, collide across rigs and settle into a central pile within 90 seconds without force-locking. Turret muzzle is at most 110 cm high, with real shot traces intercepted by two prone bodies for a crouched target and clear above them for a standing target."
+    },
+    {
+      "id": "REQ-028",
+      "title": "MetaHuman realism and procedural environment proof of concept",
+      "provenance": "source",
+      "gate": "M1",
+      "document": "docs/design/realism-poc.md",
+      "tests": [
+        "TC-032"
+      ],
+      "acceptance": "Package an opt-in MetaHuman realism POC with real human skeletal visuals, deterministic facial variants including pained grimace, face/body attachment through physics and settlement, and seeded appearance variation. Compare a close-up expression fixture and the 42-body pile. Preserve stable cover, crouch occlusion and retry invariants. Add reproducible procedural ground and dressing, lighting and contact shadows without changing the tested lane or allowing decorative collision to own gameplay. Validate packaged appearance, expression differences, cook dependencies, frame and memory measurements at increasing body counts and material limits. Missing MetaHuman data or cloud authentication fails with actionable context and cannot silently substitute mannequin art or claim completion."
+    },
+    {
+      "id": "REQ-029",
+      "title": "Limp arms, military outfit variation and continuous player avatar",
+      "provenance": "source",
+      "gate": "M1",
+      "document": "docs/design/realism-poc.md",
+      "tests": [
+        "TC-033"
+      ],
+      "acceptance": "Both upper arms and forearms must articulate relative to the torso under real gravity and impacts, without animation drives holding a dead pose. Validate bilateral joint motion before settlement, supported rest and immutable old bodies. The living first-person avatar uses the same human skeletal mesh, outfit seed and evaluated pose that becomes the corpse; no proxy arms, outfit reroll or reference-pose pop at death. Crouch and movement pose must transfer. Seed at least three military fabric variants with actual fitted garments, not painted bare skin. Clothing follows the live skeleton, falling body and committed pose without adding invisible cover. Missing wardrobe data fails actionably. Validate real engine physics, seed repeatability, identity/pose continuity, dressed first-person and corpse captures, packaged gameplay regression and bounded costs."
     }
   ]
 }

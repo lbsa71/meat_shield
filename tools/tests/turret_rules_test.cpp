@@ -1,9 +1,12 @@
 #include "TurretRules.h"
 #include "DeathRules.h"
 #include "SettleRules.h"
+#include "FaceRules.h"
+#include "AvatarRules.h"
 #include <iostream>
 #include <limits>
 #include <stdexcept>
+#include <cmath>
 using namespace MeatShield;
 int Failures = 0, Checks = 0;
 void Check(bool Value, const char* Message) { ++Checks; if (!Value) { ++Failures; std::cerr << "FAIL " << Message << '\n'; } }
@@ -86,6 +89,18 @@ int main()
     ContactJitter.PoseWithinEnvelope=true; ContactJitter.Supported=false;
     for(int I=0;I<10;++I) PoseMoving.Step(.1,ContactJitter);
     Check(!PoseMoving.Committed,"pose evidence cannot bypass physical support");
+    const auto Neutral=ExpressionFor(0), Grimace=ExpressionFor(1), OpenPain=ExpressionFor(2);
+    Check(Neutral.Preset==0 && Neutral.Values==std::array<float,15>{},"neutral face is explicitly neutral");
+    Check(Grimace.Values[0]>.5f && Grimace.Values[4]>.3f,"grimace pinches brow and squints");
+    Check(OpenPain.Values[6]>Grimace.Values[6],"open pain has visibly different jaw intent");
+    Check(ExpressionFor(81).Values==ExpressionFor(81).Values,"face seed repeats deterministically");
+    bool Bounded=true,AllPresets[4]={}; for(unsigned I=0;I<100;++I) { const auto Face=ExpressionFor(I); AllPresets[Face.Preset]=true;for(float V:Face.Values) Bounded &= std::isfinite(V) && V>=0 && V<=1; }
+    Check(Bounded && AllPresets[0] && AllPresets[1] && AllPresets[2] && AllPresets[3],"all four bounded face profiles occur");
+    Check(Grimace.Values[0]!=Grimace.Values[1],"bounded left-right asymmetry avoids identical masks");
+    bool Palettes[3]={}; bool Vest=false,NoVest=false;
+    for(unsigned I=1;I<=64;++I) { auto S=UniformFor(I); Check(S.Palette<3 && S.Pattern>=0 && S.Pattern<1000,"uniform parameters bounded"); Palettes[S.Palette]=true; Vest|=S.Vest; NoVest|=!S.Vest; }
+    Check(Palettes[0] && Palettes[1] && Palettes[2] && Vest && NoVest,"uniform seed yields three palettes and optional vest");
+    Check(UniformFor(19).Pattern==UniformFor(19).Pattern && UniformFor(19).Pattern!=UniformFor(20).Pattern,"uniform pattern repeats per life and varies between lives");
     std::cout << Checks << " checks, " << Failures << " failures\n";
     return Failures ? 1 : 0;
 }

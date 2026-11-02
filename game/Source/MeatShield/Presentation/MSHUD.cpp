@@ -5,9 +5,11 @@
 #include "Gameplay/MSTurret.h"
 #include "Presentation/MSAudio.h"
 #include "Engine/Canvas.h"
+#include "Misc/CommandLine.h"
 void AMSHUD::DrawHUD()
 {
     Super::DrawHUD();
+    if(FParse::Param(FCommandLine::Get(),TEXT("MSRealismGallery"))) return;
     auto* Mode=GetWorld()->GetAuthGameMode<AMSGameMode>();
     auto* Player=Cast<AMSCharacter>(GetOwningPawn());
     if(!Canvas || !Mode || !Player) return;

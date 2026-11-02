@@ -11,6 +11,8 @@
 #include "Components/DirectionalLightComponent.h"
 #include "Components/SkyLightComponent.h"
 #include "Components/ExponentialHeightFogComponent.h"
+#include "Presentation/MSRealismEnvironment.h"
+#include "Misc/CommandLine.h"
 AMSYard::AMSYard() { SetRootComponent(CreateDefaultSubobject<USceneComponent>(TEXT("RecipeRoot"))); }
 void AMSYard::BeginPlay()
 {
@@ -46,6 +48,7 @@ void AMSYard::BeginPlay()
     auto* Sky = GetWorld()->SpawnActor<ASkyLight>();
     Sky->GetLightComponent()->SetIntensity(1.1f);
     Sky->GetLightComponent()->SetLightColor(FLinearColor(.65f,.78f,1));
+    if(FParse::Param(FCommandLine::Get(),TEXT("MSRealism"))) MSRealismEnvironment::Build(this,Sun,Sky);
     auto* Fog = GetWorld()->SpawnActor<AExponentialHeightFog>();
     Fog->GetComponent()->SetFogDensity(.012f);
     Fog->GetComponent()->SetFogInscatteringColor(FLinearColor(.36f,.46f,.58f));

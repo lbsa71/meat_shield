@@ -6,4 +6,4 @@ if not exist "%GAME_EXE%" (
   pause
   exit /b 1
 )
-start "Meat Shield" "%GAME_EXE%" -windowed -ResX=1600 -ResY=900
+start "Meat Shield" "%GAME_EXE%" -MSRealism -windowed -ResX=1600 -ResY=900

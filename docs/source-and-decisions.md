@@ -66,3 +66,5 @@ DEC-24: Owner requested rotational bullet impacts and an already-downed body fie
 DEC-25: Owner replaces scattered pre-downed poses with a central gravity-built pile; see the [pile design refinement](design/crouch-and-settling.md) and [ADR 0007](engineering/adr/0007-crouch-and-settling.md).
 
 DEC-26: Owner rejects serial pouring and requests lower fire so one or two bodies can provide crouched cover. The batch collision and lowered turret refinement supersedes DEC-25 timing.
+
+DEC-27 / DEC-28: MetaHuman realism POC, continuous live/dead human avatar, limp arms and procedural military wardrobe. See [ADR 0008](engineering/adr/0008-human-avatar-and-wardrobe.md).

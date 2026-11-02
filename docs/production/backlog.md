@@ -115,7 +115,7 @@ Requirements: REQ-002, REQ-007, REQ-008, REQ-026. Estimate: 2.5 / 4 / 6.5 days, 
 
 Construction fixture and placement subsystem.
 
-Requirements: REQ-003, REQ-005, REQ-006, REQ-013, REQ-026, REQ-027. Estimate: 4 / 6 / 9.5 days, low / likely / high.
+Requirements: REQ-003, REQ-005, REQ-006, REQ-013, REQ-026, REQ-027, REQ-028. Estimate: 4 / 6 / 9.5 days, low / likely / high.
 
 - [ ] Use bounded supported anchors and immutable proxies.
 - [ ] Repeated placement and cover rays pass fixture targets.
@@ -124,7 +124,7 @@ Requirements: REQ-003, REQ-005, REQ-006, REQ-013, REQ-026, REQ-027. Estimate: 4 
 
 Weapon and first fixed threat.
 
-Requirements: REQ-009, REQ-023, REQ-007, REQ-025, REQ-027. Estimate: 3.25 / 5 / 8 days, low / likely / high.
+Requirements: REQ-009, REQ-023, REQ-007, REQ-025, REQ-027, REQ-028. Estimate: 3.25 / 5 / 8 days, low / likely / high.
 
 - [ ] Resources and reload survive pawn death.
 - [ ] Suppression recovers continuously and controls disable permanently.
@@ -178,7 +178,7 @@ Requirements: REQ-001, REQ-002, REQ-003, REQ-005, REQ-006, REQ-007, REQ-008, REQ
 
 M1 review and forecast.
 
-Requirements: REQ-022. Estimate: 0.75 / 1 / 1.5 days, low / likely / high.
+Requirements: REQ-022, REQ-028, REQ-029. Estimate: 0.75 / 1 / 1.5 days, low / likely / high.
 
 - [ ] Review observed intent and technical targets.
 - [ ] Authorize next phase revise or stop with recorded rationale.
@@ -368,7 +368,7 @@ Requirements: REQ-003, REQ-010, REQ-012, REQ-013, REQ-017. Estimate: 7.75 / 12 /
 
 Complete baseline visual content.
 
-Requirements: REQ-015, REQ-017. Estimate: 19.5 / 30 / 48 days, low / likely / high.
+Requirements: REQ-015, REQ-017, REQ-028, REQ-029. Estimate: 19.5 / 30 / 48 days, low / likely / high.
 
 - [ ] Populate three sectors with reusable approved asset families.
 - [ ] No collision-authoritative details exist only in decorative art.

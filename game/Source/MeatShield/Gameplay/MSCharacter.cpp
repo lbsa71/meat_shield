@@ -3,6 +3,10 @@
 #include "Gameplay/MSGameMode.h"
 #include "Presentation/MSAudio.h"
 #include "Presentation/MSVisuals.h"
+#include "Presentation/MSHumanAppearance.h"
+#include "Presentation/MSBodyAnim.h"
+#include "Components/SkeletalMeshComponent.h"
+#include "Misc/CommandLine.h"
 #include "Camera/CameraComponent.h"
 #include "Components/CapsuleComponent.h"
 #include "Components/StaticMeshComponent.h"
@@ -18,6 +22,8 @@ AMSCharacter::AMSCharacter()
 {
     PrimaryActorTick.bCanEverTick = true;
     GetCapsuleComponent()->InitCapsuleSize(34,90);
+    // CharacterMovement restores the class-default mesh offset after crouching.
+    GetMesh()->SetRelativeLocation(FVector(0,0,-90)); GetMesh()->SetRelativeRotation(FRotator(0,-90,0));
     GetCapsuleComponent()->SetCollisionResponseToChannel(ECC_Visibility,ECR_Block);
     Camera = CreateDefaultSubobject<UCameraComponent>(TEXT("FirstPersonCamera"));
     Camera->SetupAttachment(GetCapsuleComponent()); Camera->SetRelativeLocation(FVector(0,0,65));
@@ -70,11 +76,21 @@ void AMSCharacter::SetupPlayerInputComponent(UInputComponent* Component)
 void AMSCharacter::BeginPlay()
 {
     Super::BeginPlay();
+    if(FParse::Param(FCommandLine::Get(),TEXT("MSRealism")))
+    {
+        Human=NewObject<UMSHumanAppearance>(this); AddInstanceComponent(Human); Human->RegisterComponent();
+        const auto* Mode=GetWorld()->GetAuthGameMode<AMSGameMode>();
+        if(!Human->Initialize(Mode?Mode->Run.Life:1,GetMesh(),true)) Human=nullptr;
+        else CacheInitialMeshOffset(GetMesh()->GetRelativeLocation(),GetMesh()->GetRelativeRotation());
+    }
+    else
+    {
     const FLinearColor Sleeve(.12f,.19f,.16f), Glove(.045f,.055f,.05f);
     LeftArm = MSVisuals::Part(this,Camera,TEXT("LeftSleeve"),{30,-27,-32},{.40f,.13f,.14f},Sleeve,false,TEXT("Sphere"));
     RightArm = MSVisuals::Part(this,Camera,TEXT("RightSleeve"),{30,27,-32},{.40f,.13f,.14f},Sleeve,false,TEXT("Sphere"));
     MSVisuals::Part(this,LeftArm,TEXT("LeftGlove"),{55,0,0},{.38f,1.1f,1.1f},Glove,false,TEXT("Sphere"));
     MSVisuals::Part(this,RightArm,TEXT("RightGlove"),{55,0,0},{.38f,1.1f,1.1f},Glove,false,TEXT("Sphere"));
+    }
     if (auto* PC=Cast<APlayerController>(GetController()))
     { PC->bShowMouseCursor=false; PC->SetInputMode(FInputModeGameOnly()); PC->PlayerCameraManager->ViewPitchMin=-75; PC->PlayerCameraManager->ViewPitchMax=75; }
 }
@@ -85,9 +101,10 @@ void AMSCharacter::Tick(float Delta)
     const float Speed=GetVelocity().Size2D();
     const float Movement=FMath::Clamp(Speed/450,0.f,1.5f);
     Stride += Delta * (Sprinting?13.f:9.f) * FMath::Min(Movement,1.f);
+    if(Human) if(auto* Anim=Cast<UMSBodyAnim>(GetMesh()->GetAnimInstance())) { Anim->Phase=Stride; Anim->Movement=Movement; Anim->Crouched=bIsCrouched; }
     const bool Ground=GetCharacterMovement()->IsMovingOnGround();
     const float Bob=Ground ? FMath::Sin(Stride*2)*1.25f*Movement : 0;
-    Camera->SetRelativeLocation(FVector(0,0,FMath::FInterpTo(Camera->GetRelativeLocation().Z,EyeOffset()+Bob,Delta,12)));
+    Camera->SetRelativeLocation(FVector(Human?10:0,0,FMath::FInterpTo(Camera->GetRelativeLocation().Z,EyeOffset()+Bob,Delta,12)));
     Camera->SetRelativeRotation(FRotator(HitPulse*FMath::Sin(HitPulse*19)*2,0,HitPulse*2));
     Camera->SetFieldOfView(FMath::FInterpTo(Camera->FieldOfView,Sprinting&&!bIsCrouched&&Speed>40?102.f:96.f,Delta,6));
     if (LeftArm && RightArm)
@@ -115,3 +132,4 @@ void AMSCharacter::Impact() { HitPulse=1; Audio->Play(MSound::Impact,GetActorLoc
 void AMSCharacter::Retry() { if (auto* Mode=GetWorld()->GetAuthGameMode<AMSGameMode>()) Mode->Retry(this); }
 void AMSCharacter::Mute() { auto* Settings=GetWorld()->GetSubsystem<UMSAudioSettings>(); Settings->Muted=!Settings->Muted; }
 void AMSCharacter::Quit() { UKismetSystemLibrary::QuitGame(this,Cast<APlayerController>(GetController()),EQuitPreference::Quit,false); }
+void AMSCharacter::RefreshAvatar(uint64 Life) { if(Human) Human->SetLife(Life,true); }

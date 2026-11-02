@@ -14,6 +14,7 @@ public:
     virtual void Tick(float Delta) override;
 private:
     bool PourChecked=false;
+    bool AvatarCaptured=false;
     bool Failed=false, KeyDown=false, KeyUp=false, SprintObserved=false;
     bool SpawnCaptured=false, HitCaptured=false, RetryPressed=false, RetryObserved=false;
     bool JumpPressed=false, JumpReleased=false, JumpObserved=false, MutePressed=false;
@@ -22,6 +23,7 @@ private:
     bool DuplicateChecked=false, DeathCaptured=false;
     UPROPERTY() TObjectPtr<AMSCorpse> FirstCorpse;
     TArray<FTransform> FirstPose;
+    TArray<FTransform> FirstRenderPose;
     double DeathStartedAt=0;
     bool CameraClearanceChecked=false;
     bool CrouchPressed=false,CrouchChecked=false,CrouchReleased=false,ClearanceChecked=false;

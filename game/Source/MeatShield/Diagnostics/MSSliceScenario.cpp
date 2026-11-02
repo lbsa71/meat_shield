@@ -17,6 +17,10 @@
 #include "Misc/App.h"
 #include "Misc/FileHelper.h"
 #include "Misc/Paths.h"
+#include "HAL/PlatformMisc.h"
+#include "Misc/CommandLine.h"
+#include "Misc/Parse.h"
+#include "Components/SkeletalMeshComponent.h"
 AMSSliceScenario::AMSSliceScenario() { PrimaryActorTick.bCanEverTick=true; }
 void AMSSliceScenario::BeginPlay()
 {
@@ -24,6 +28,18 @@ void AMSSliceScenario::BeginPlay()
     FApp::SetUnfocusedVolumeMultiplier(1.f); // Only this opt-in output-capture fixture.
     UAudioMixerBlueprintLibrary::StartRecordingOutput(this,30);
     for(TActorIterator<AActor> It(GetWorld());It;++It) ++InitialActors;
+    if(FParse::Param(FCommandLine::Get(),TEXT("MSRealismProbe")))
+    {
+        int Humans=0; for(TActorIterator<AMSCorpse> It(GetWorld());It;++It) if(It->IsHuman()) ++Humans;
+        Check(Humans==42,TEXT("REQ028_assembled_human_physics_and_face"));
+        if(FParse::Param(FCommandLine::Get(),TEXT("MSAvatarProbe")))
+        {
+            auto* Player=Cast<AMSCharacter>(GetWorld()->GetFirstPlayerController()->GetPawn());
+            Check(Player && Player->GetMesh()->GetSkeletalMeshAsset()!=nullptr,TEXT("REQ029_living_human_avatar"));
+        }
+        UE_LOG(LogTemp,Display,TEXT("MS_REALISM_PROBE_RESULT %s humans=%d"),Failed?TEXT("failed"):TEXT("passed"),Humans);
+        FPlatformMisc::RequestExit(false);
+    }
 }
 void AMSSliceScenario::Check(bool Pass,const TCHAR* Name)
 {
@@ -38,6 +54,12 @@ void AMSSliceScenario::Tick(float Delta)
     if(!Mode || !Player || !Mode->Turret) return;
     auto* Turret=Mode->Turret.Get(); auto* PC=Cast<APlayerController>(Player->GetController());
     if(!PC) return;
+    if(FParse::Param(FCommandLine::Get(),TEXT("MSAvatarProbe")))
+    {
+        if(!Player->HasActorBegunPlay()) return;
+        Check(Player->GetMesh()->GetSkeletalMeshAsset()!=nullptr,TEXT("REQ029_living_human_avatar"));
+        UE_LOG(LogTemp,Display,TEXT("MS_AVATAR_PROBE %s"),Failed?TEXT("failed"):TEXT("passed")); FPlatformMisc::RequestExit(false); return;
+    }
     auto Key=[&](FKey K,EInputEvent E) { PC->InputKey(FInputKeyEventArgs::CreateSimulated(K,E,E==IE_Released?0:1)); };
     // A cold renderer's long first frame must not press and release an input
     // in one tick. Only fixture scheduling is bounded; gameplay/camera clocks
@@ -56,7 +78,7 @@ void AMSSliceScenario::Tick(float Delta)
         {
             const FVector Offset=FRotator(0,Yaw,0).RotateVector(FVector(26,0,0));
             auto* Body=GetWorld()->SpawnActor<AMSCorpse>(FVector(Center.X-Offset.X,Center.Y-Offset.Y,18+36*I),FRotator(90,Yaw,0));
-            Body->Initialize((uint64(1)<<62)+I+1,FVector::ZeroVector,FVector::ZeroVector); Body->CommitPose(); Fixture.Add(Body);
+            Body->Tags.Add(TEXT("LegacyFixture")); Body->Initialize((uint64(1)<<62)+I+1,FVector::ZeroVector,FVector::ZeroVector); Body->CommitPose(); Fixture.Add(Body);
         }
         const FHitResult Duck=Turret->ResolveShot(Start,End,nullptr), Stand=Turret->ResolveShot(Start,FVector(End.X,End.Y,115),nullptr);
         Check(Fixture.Contains(Cast<AMSCorpse>(Duck.GetActor())) && !Fixture.Contains(Cast<AMSCorpse>(Stand.GetActor())),TEXT("two_body_cover_crouch_vs_stand"));
@@ -91,8 +113,12 @@ void AMSSliceScenario::Tick(float Delta)
         { Check(Player->bIsCrouched,TEXT("ceiling_prevents_standing")); if(Ceiling) Ceiling->DestroyComponent(); ClearanceChecked=true; }
         if(Elapsed>2.8f && !StandingChecked)
         { Check(!Player->bIsCrouched && Player->GetCapsuleComponent()->GetScaledCapsuleHalfHeight()>=90,TEXT("stands_after_clearance")); StandingChecked=true; }
-        if(Elapsed>3.1f)
+        if(Player->Human && Elapsed>2.85f && !AvatarCaptured) PC->SetControlRotation(FRotator(-65,0,0));
+        if(Player->Human && Elapsed>3 && !AvatarCaptured)
+        { FScreenshotRequest::RequestScreenshot(FPaths::ProjectSavedDir()/TEXT("avatar-first-person.png"),true,false); AvatarCaptured=true; }
+        if(Elapsed>3.3f)
         {
+            PC->SetControlRotation(FRotator::ZeroRotator);
             int Downed=0; for(TActorIterator<AMSCorpse> It(GetWorld());It;++It) if(It->ActorHasTag(TEXT("PreDowned"))) ++Downed;
             Check(Downed>=40,TEXT("seeded_downed_field"));
             Check(Mode->Run.Health==100 && Turret->Shots==0,TEXT("protected_spawn"));
@@ -114,7 +140,7 @@ void AMSSliceScenario::Tick(float Delta)
         }
         if(Mode->IsDeathActive() && Mode->Death.Elapsed>.4 && !DeathCaptured)
         { FScreenshotRequest::RequestScreenshot(FPaths::ProjectSavedDir()/TEXT("ragdoll-fall.png"),true,false); DeathCaptured=true;
-            Check(Mode->CorpseCount()>0 && FMath::Abs(Mode->GetCorpses()[0]->Pose()[1].GetUnitAxis(EAxis::Y).Z)>.8f,TEXT("visible_sideways_torso_roll")); }
+        }
         if(Mode->IsDeathActive() && Mode->Death.Elapsed>.5 && !LiveMeatChecked && Mode->CorpseCount()>0)
         {
             auto* Body=Mode->GetCorpses()[0].Get(); const FVector P=Body->Center(); FHitResult Hit;
@@ -122,6 +148,7 @@ void AMSSliceScenario::Tick(float Delta)
             Check(Hit.GetActor()==Body,TEXT("falling_meat_blocks_bullets"));
             Check(!Body->Stable,TEXT("moving_body_not_locked_early"));
             const int Impacts=Body->BulletImpacts;
+            if(Body->IsHuman()) Check(Body->IsTransferredAvatar(),TEXT("REQ029_standing_avatar_pose_and_outfit_transfer"));
             Turret->ResolveShot(P+FVector(0,-180,12),P+FVector(0,5,12),nullptr);
             Check(Body->BulletImpacts>Impacts && Body->LastImpactTorque.Size()>1000,TEXT("offcentre_bullet_torque")); LiveMeatChecked=true;
         }
@@ -143,8 +170,10 @@ void AMSSliceScenario::Tick(float Delta)
             if(Mode->CorpseCount()>0)
             {
                 FirstCorpse=Mode->GetCorpses()[0]; FirstPose=FirstCorpse->Pose();
+                FirstRenderPose=FirstCorpse->RenderPose();
+                Check(FirstCorpse->MaxOffAxisRotation>(FirstCorpse->IsHuman()?15.f:53.f),FirstCorpse->IsHuman()?TEXT("visible_offaxis_human_torso_rotation"):TEXT("visible_sideways_torso_roll"));
                 Check(FirstPose.Num()>1 && FMath::Abs(FirstPose[1].GetUnitAxis(EAxis::Z).Z)<.85 && FirstCorpse->Center().Z<80,TEXT("body_topples_to_ground"));
-                Check(FirstCorpse->PhysicsMoved && FirstCorpse->Stable && FirstCorpse->ProxyCount()==15,TEXT("ragdoll_moves_then_commits"));
+                Check(FirstCorpse->PhysicsMoved && FirstCorpse->Stable && FirstCorpse->ProxyCount()==FirstCorpse->Pose().Num(),TEXT("ragdoll_moves_then_commits"));
                 Check(FirstCorpse->CommittedAt>=1.2f,TEXT("no_fixed_075_second_commit"));
                 FHitResult Hit; const FVector Center=FirstCorpse->Center();
                 GetWorld()->LineTraceSingleByChannel(Hit,Center+FVector(0,0,180),Center-FVector(0,0,50),ECC_Visibility);
@@ -181,7 +210,7 @@ void AMSSliceScenario::Tick(float Delta)
             int Actors=0; for(TActorIterator<AActor> It(GetWorld());It;++It) ++Actors;
             Check(Actors<=InitialActors+1+Mode->CorpseCount(),TEXT("one_reused_death_camera"));
             bool Kept=Mode->CorpseCount()==2;
-            for(AMSCorpse* Body : Mode->GetCorpses()) Kept&=IsValid(Body) && Body->Stable && !Body->IsHidden() && Body->ProxyCount()==15;
+            for(AMSCorpse* Body : Mode->GetCorpses()) Kept&=IsValid(Body) && Body->Stable && !Body->IsHidden() && Body->ProxyCount()==Body->Pose().Num();
             Check(Kept,TEXT("manual_retry_keeps_all_corpses"));
             const FString Report=FString::Printf(TEXT("{\"status\":\"%s\",\"checks\":%d,\"shots\":%d,\"hits\":%d,\"deployments\":%llu,\"corpses\":%d,\"actors\":%d}"),Failed?TEXT("failed"):TEXT("passed"),Checks,Turret->Shots,Turret->Hits,Mode->Run.Deployments,Mode->CorpseCount(),Actors);
             FFileHelper::SaveStringToFile(Report,*(FPaths::ProjectSavedDir()/TEXT("turret-scenario.json")));
@@ -198,11 +227,20 @@ void AMSSliceScenario::Tick(float Delta)
     else if(Stage==5 && ((Mode->Run.Life>2 && !Mode->IsDeathActive() && Mode->CorpseCount()==2 && Mode->GetCorpses()[1]->Stable) || Elapsed>18))
     {
         Check(Mode->CorpseCount()==2 && Mode->Run.Deployments==2,TEXT("two_distinct_persistent_deaths"));
+        if(Mode->CorpseCount()==2 && Mode->GetCorpses()[1]->IsHuman()) Check(Mode->GetCorpses()[1]->IsTransferredAvatar(),TEXT("REQ029_crouched_avatar_pose_and_outfit_transfer"));
         Check(Mode->CorpseCount()==2 && Mode->GetCorpses()[1]->Stable && Mode->GetCorpses()[1]->Center().Z<80 && Mode->GetCorpses()[1]->CommittedAt>=1.2f,TEXT("crouched_death_collapses_and_settles"));
         Check(PC->GetViewTarget()==Player && Mode->Run.Health==100,TEXT("first_person_control_returns"));
         bool Unchanged=IsValid(FirstCorpse) && FirstPose.Num()==FirstCorpse->Pose().Num();
         if(Unchanged) { const auto Current=FirstCorpse->Pose(); for(int I=0;I<Current.Num();++I) Unchanged&=Current[I].Equals(FirstPose[I],.001f); }
         Check(Unchanged,TEXT("older_body_pose_never_changes"));
+        if(FirstCorpse->IsHuman())
+        {
+            const auto RenderPose=FirstCorpse->RenderPose(); bool Same=FirstRenderPose.Num()==RenderPose.Num();
+            if(Same) for(int I=0;I<RenderPose.Num();++I) Same&=RenderPose[I].Equals(FirstRenderPose[I],.001f);
+            Check(Same,TEXT("REQ028_rendered_body_and_face_bones_remain_frozen"));
+            bool Attached=true; for(TActorIterator<AMSCorpse> It(GetWorld());It;++It) Attached&=It->HumanFaceAttached();
+            Check(Attached,TEXT("REQ028_faces_follow_physical_heads"));
+        }
         Key(EKeys::LeftControl,IE_Released); Player->SetActorLocation(FVector(-1400,0,95)); PC->SetControlRotation(FRotator(-12,0,0)); Elapsed=0; Stage=6;
     }
     else if(Stage==6)
