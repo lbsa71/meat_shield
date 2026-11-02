@@ -4,13 +4,13 @@ Use the full Unreal Engine installation with its command-line and editor automat
 
 ## Verified starting environment
 
-Checked 1 November 2026:
+Starting components checked 1 November 2026; game/editor compilation and packaging checked 2 November:
 
 | Component | Observed result |
 | --- | --- |
 | Blender | 5.2.2 LTS; background factory-startup Python invocation passed |
 | Visual Studio Build Tools | 2022 version 17.14.30 installed |
-| MSVC toolset | 14.44.35207 installed; Unreal acceptance still requires a real build |
+| MSVC toolset | 14.44.35207 installed; first-slice game/editor compile, link and package passed |
 | Windows SDK | 10.0.26100.0 installed |
 | .NET SDK | 10.0.203 installed |
 | Unreal Engine | 5.8.4 installed and launcher verification complete; runtime and Python commandlet validated |

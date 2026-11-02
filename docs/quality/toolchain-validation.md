@@ -2,6 +2,8 @@
 
 Observed 1 November 2026. Scope: REQ-019, REQ-021, TC-019, partial MS-001. This record validates editor automation; M0 and all gameplay/release gates remain open.
 
+This is the historical setup record. The [2 November first-playable validation](first-playable-validation.md) records subsequent C++ compilation, clean-checkout packaging, rendered gameplay and audio checks.
+
 ## Environment and results
 
 | Check | Actual result |

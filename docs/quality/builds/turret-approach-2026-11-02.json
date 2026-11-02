@@ -1,0 +1,65 @@
+{
+  "schema_version": 1,
+  "build_id": "turret-approach-0.1+98b324f",
+  "verified_on": "2026-11-02",
+  "source_revision": "98b324fdce3af35930520e2a95b6a504e8dd5a3b",
+  "requirements": [
+    "REQ-025"
+  ],
+  "partial_tasks": [
+    "MS-001",
+    "MS-005",
+    "MS-008"
+  ],
+  "engine": {
+    "version": "5.8.4",
+    "changelist": 58902052
+  },
+  "platform": "Win64",
+  "configuration": "Development",
+  "package_directory": ".artifacts/TurretApproach/Windows",
+  "entrypoint": "MeatShield.exe",
+  "runtime_executable": "MeatShield/Binaries/Win64/MeatShield.exe",
+  "runtime_executable_sha256": "41a771631d0e44daeac6a95f3d79f92c5226a9cadd24f8de7e132c22e521e4a0",
+  "tests": {
+    "native_rule_checks": 31,
+    "python_tests": 30,
+    "root_launcher": {
+      "status": "passed",
+      "scenario": {
+        "status": "passed",
+        "checks": 12,
+        "shots": 7,
+        "hits": 7,
+        "deployments": 1,
+        "actors": 25
+      },
+      "audio_rms": 0.027742749574923738,
+      "audio_peak": 0.346771240234375
+    },
+    "clean_checkout": {
+      "build": "passed",
+      "tracked_source_status_after_checks": "clean",
+      "verification": {
+        "status": "passed",
+        "scenario": {
+          "status": "passed",
+          "checks": 12,
+          "shots": 7,
+          "hits": 7,
+          "deployments": 1,
+          "actors": 25
+        },
+        "audio_rms": 0.02789897900150345,
+        "audio_peak": 0.346771240234375
+      }
+    },
+    "editor_python_commandlet": "passed"
+  },
+  "limits": [
+    "procedural greybox presentation",
+    "no corpse construction or player weapon yet",
+    "no separate-machine installation or physical-device human playtest",
+    "no full-game milestone acceptance"
+  ]
+}
