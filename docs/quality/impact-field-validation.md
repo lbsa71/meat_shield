@@ -1,0 +1,9 @@
+# Bullet rotation and initial body field validation
+
+REQ-027 / TC-031, 2 November 2026. Source `1414406dc5eb308f75c956493e2c3fb89d473755`, Unreal 5.8.4 CL58902052. See [manifest](builds/impact-field-2026-11-02.json).
+
+The native fixture first failed the missing bullet-torque and seeded-field checks. Location-based impulse and authored initial cover then passed the rendered Windows package: 39 checks, two independent deaths, 42 initial bodies and 70 total actors. The stronger orientation assertion requires the torso lateral axis vertical component to exceed 0.8 at the falling-body capture. It passes in both native and rendered runs; rendered fall, populated yard and final bodies were visually reviewed. This verifies visible sideways rotation in addition to an impact call. Committed corpses reject impulses and stay fixed.
+
+The lethal ray transfers its impact location into the rig. Subsequent hits apply impulse to the struck physics component. Small deterministic torso aim offsets vary the moment arm. Uniform whole-rig starting spin has been removed. Initial bodies use a seeded grid with jitter/yaw, exclusions around concrete and a clear central lane. They are authored prone fixed poses, distinct from simulated player deaths. Their high-range IDs do not count as deployments. Creation is idempotent and retry does not rebuild the yard.
+
+60 native rule checks, 34 Python tooling tests, planning validation and editor/game build/cook/stage/archive pass. Master audio RMS 0.0280, peak 0.3468; no logged runtime errors. Raw evidence remains in `.local/impact-final-package.log`, `.local/impact-final-verification.json`, `.local/packaged-scenario.log` and the package Saved PNG/WAV files. No new clean-checkout, clean-machine, many-body performance or save-restoration acceptance is claimed.

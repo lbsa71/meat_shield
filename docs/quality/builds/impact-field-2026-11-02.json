@@ -1,0 +1,45 @@
+{
+  "schema_version": 1,
+  "build_id": "impact-field-0.4+1414406",
+  "source_revision": "1414406dc5eb308f75c956493e2c3fb89d473755",
+  "verified_on": "2026-11-02",
+  "rules_version": "prototype-0.4",
+  "engine": {
+    "version": "5.8.4",
+    "changelist": 58902052
+  },
+  "requirements": [
+    "REQ-027"
+  ],
+  "platform": "Win64",
+  "configuration": "Development",
+  "runtime_executable": "MeatShield/Binaries/Win64/MeatShield.exe",
+  "runtime_executable_sha256": "d168e249427de040fc68ad964107221cfe94129e0ccebd28ea6a0df6bb66205c",
+  "pre_downed_count": 42,
+  "field_seed": 71031,
+  "tests": {
+    "rules": 60,
+    "tooling": 34,
+    "planning": "passed",
+    "rendered_package": {
+      "status": "passed",
+      "scenario": {
+        "status": "passed",
+        "checks": 39,
+        "shots": 15,
+        "hits": 16,
+        "deployments": 2,
+        "corpses": 2,
+        "actors": 70
+      },
+      "audio_rms": 0.02795507292905421,
+      "audio_peak": 0.346771240234375
+    }
+  },
+  "limits": [
+    "prototype mannequin art and authored prone initial poses",
+    "no new clean-checkout or clean-machine reproduction",
+    "no large-count performance acceptance",
+    "loaded-session persistence only"
+  ]
+}
