@@ -22,7 +22,7 @@ def inspect_evidence(saved, started, log_text, returncode):
     if not reports:
         raise EvidenceError('Current process did not emit its completion marker')
     report=reports[-1]
-    if (report.get('status')!='passed' or report.get('checks',0)<39
+    if (report.get('status')!='passed' or report.get('checks',0)<43
             or report.get('corpses')!=2 or report.get('deployments')!=2):
         raise EvidenceError('Scenario did not pass all current checks')
     saved=Path(saved)
@@ -50,6 +50,7 @@ def main():
     parser=argparse.ArgumentParser(description=__doc__)
     root=Path(__file__).resolve().parents[1]
     parser.add_argument('--package',type=Path,default=root/'.artifacts/TurretApproach/Windows')
+    parser.add_argument("--offscreen",action="store_true",help="Render without an interactive window")
     args=parser.parse_args()
     package=args.package.resolve()
     exe=package/'MeatShield/Binaries/Win64/MeatShield.exe'
@@ -59,8 +60,9 @@ def main():
         log_path.parent.mkdir(parents=True,exist_ok=True)
         started=time.time()
         command=[str(exe),'-MSScenario','-unattended','-nosplash','-windowed','-ResX=1600','-ResY=900','-stdout','-FullStdOutLogOutput','-UTF8Output']
+        if args.offscreen: command.append('-RenderOffscreen')
         with log_path.open('w',encoding='utf-8') as log:
-            result=subprocess.run(command,cwd=package,stdout=log,stderr=subprocess.STDOUT,timeout=120,shell=False)
+            result=subprocess.run(command,cwd=package,stdout=log,stderr=subprocess.STDOUT,timeout=150,shell=False)
         report=inspect_evidence(package/'MeatShield/Saved',started,log_path.read_text(encoding='utf-8',errors='replace'),result.returncode)
         report['log_path']=str(log_path)
         print(json.dumps(report,indent=2));return 0

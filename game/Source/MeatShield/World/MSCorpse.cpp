@@ -22,13 +22,14 @@ int AMSCorpse::Part(FName Name,FVector Position,uint8 Shape,FVector Size,float M
     Body->SetRelativeRotation(Rotation);
     Body->SetMobility(EComponentMobility::Movable); Body->SetCollisionProfileName(TEXT("Ragdoll"));
     Body->SetCollisionResponseToChannel(ECC_Pawn,ECR_Ignore); Body->SetCollisionResponseToChannel(ECC_Visibility,ECR_Block);
-    // Active rigs are cosmetic physics, not support authority. Suppress their
-    // mutual/self contacts; WorldStatic and committed WorldDynamic still block.
-    Body->SetCollisionResponseToChannel(ECC_PhysicsBody,ECR_Ignore);
+    // Poured rigs collide mutually; their per-rig filters suppress self contact.
+    // Player-death rigs retain the existing cosmetic-contact policy.
+    Body->SetCollisionResponseToChannel(ECC_PhysicsBody,ActorHasTag(TEXT("PreDowned"))?ECR_Block:ECR_Ignore);
+    Body->BodyInstance.bUseCCD=true;
     Body->SetCollisionResponseToChannel(ECC_Camera,ECR_Ignore); Body->SetPhysMaterialOverride(Material);
-    Body->BodyInstance.PositionSolverIterationCount=8; Body->BodyInstance.VelocitySolverIterationCount=2;
+    Body->BodyInstance.PositionSolverIterationCount=ActorHasTag(TEXT("PreDowned"))?16:8; Body->BodyInstance.VelocitySolverIterationCount=ActorHasTag(TEXT("PreDowned"))?8:2;
     Body->RegisterComponent(); Body->SetSimulatePhysics(true); Body->SetMassOverrideInKg(NAME_None,Mass,true);
-    Body->SetLinearDamping(.8f); Body->SetAngularDamping(1.2f);
+    Body->SetLinearDamping(ActorHasTag(TEXT("PreDowned"))?2.f:.8f); Body->SetAngularDamping(ActorHasTag(TEXT("PreDowned"))?6.f:1.2f);
     const int Index=Bodies.Add(Body); Dimensions.Add(Size); Shapes.Add(Shape);
     auto Visual=[&](FName Suffix,FVector P,FVector Scale,const TCHAR* Mesh)
     { MSVisuals::Part(this,Body,FName(*(Name.ToString()+Suffix.ToString())),P,Scale,Color,false,Mesh); };
@@ -73,6 +74,19 @@ bool AMSCorpse::Initialize(uint64 Life,FVector Velocity,FVector ShotDirection,bo
         const int Hand=Part(FName(*(S+TEXT("Glove"))),{Crouched?53.f:6.f,float(Side*30),Crouched?2.f:-43.f},2,{6,6,6},1,Dark);
         Joint(Torso,Upper,{0,float(Side*25),43},100); Joint(Upper,Lower,{Crouched?18.f:1.f,float(Side*29),Crouched?8.f:2.f},110); Joint(Lower,Hand,{Crouched?50.f:5.f,float(Side*30),Crouched?3.f:-38.f},70);
     }
+    if(ActorHasTag(TEXT("PreDowned")))
+    {
+        // Free constraints supply per-pair collision exclusion without adding
+        // positional or angular constraints. Different rigs still collide.
+        for(int A=0;A<Bodies.Num();++A) for(int B=A+1;B<Bodies.Num();++B)
+        {
+            auto* Filter=NewObject<UPhysicsConstraintComponent>(this,FName(*FString::Printf(TEXT("SelfFilter_%d_%d"),A,B)));
+            AddInstanceComponent(Filter); Filter->SetupAttachment(GetRootComponent()); Filter->RegisterComponent();
+            Filter->SetLinearXLimit(LCM_Free,0); Filter->SetLinearYLimit(LCM_Free,0); Filter->SetLinearZLimit(LCM_Free,0);
+            Filter->SetAngularSwing1Limit(ACM_Free,0); Filter->SetAngularSwing2Limit(ACM_Free,0); Filter->SetAngularTwistLimit(ACM_Free,0);
+            Filter->SetDisableCollision(true); Filter->SetConstrainedComponents(Bodies[A],NAME_None,Bodies[B],NAME_None); Joints.Add(Filter);
+        }
+    }
     InitialCenter=Center();
     for(UPrimitiveComponent* Body : Bodies) Body->SetPhysicsLinearVelocity(Velocity*.45f);
     UE_LOG(LogTemp,Display,TEXT("MS_CORPSE_SPAWN life=%llu parts=%d"),LifeId,Bodies.Num());
@@ -93,14 +107,37 @@ void AMSCorpse::Tick(float Delta)
         Sample.LinearCmS=FMath::Max(Sample.LinearCmS,double(Body->GetPhysicsLinearVelocity().Size()));
         Sample.AngularDegS=FMath::Max(Sample.AngularDegS,double(Body->GetPhysicsAngularVelocityInDegrees().Size()));
     }
-    Sample.Collapsed=FMath::Abs(Bodies[1]->GetUpVector().Z)<.35;
-    FHitResult Support; FCollisionObjectQueryParams Objects; Objects.AddObjectTypesToQuery(ECC_WorldStatic); Objects.AddObjectTypesToQuery(ECC_WorldDynamic);
+    if(ActorHasTag(TEXT("PreDowned")))
+    {
+        const auto Current=Pose(); bool Changed=RestReference.Num()!=Current.Num();
+        if(!Changed) for(int I=0;I<Current.Num();++I)
+        {
+            double Angle=0;
+            if(Shapes[I]==0) Angle=FMath::Acos(FMath::Clamp(FMath::Abs(FVector::DotProduct(Current[I].GetUnitAxis(EAxis::Z),RestReference[I].GetUnitAxis(EAxis::Z))),0.,1.));
+            else if(Shapes[I]==1) Angle=Current[I].GetRotation().AngularDistance(RestReference[I].GetRotation());
+            // Spheres and capsule axial twist have identical geometry/appearance.
+            Changed |= FVector::Distance(Current[I].GetLocation(),RestReference[I].GetLocation())>2 || Angle>FMath::DegreesToRadians(5.f);
+        }
+        if(Changed) RestReference=Current;
+        // Resting contacts can vibrate with high instantaneous derivatives.
+        // Require a bounded pose envelope for the entire quiet interval instead.
+        Sample.UsePoseEnvelope=true; Sample.PoseWithinEnvelope=!Changed;
+    }
+    Sample.Collapsed=ActorHasTag(TEXT("PreDowned")) || FMath::Abs(Bodies[1]->GetUpVector().Z)<.35;
+    FCollisionObjectQueryParams Objects; Objects.AddObjectTypesToQuery(ECC_WorldStatic); Objects.AddObjectTypesToQuery(ECC_WorldDynamic);
     FCollisionQueryParams Query(SCENE_QUERY_STAT(CorpseSupport),false,this);
     const FVector P=Center();
-    if(GetWorld()->LineTraceSingleByObjectType(Support,P,P-FVector(0,0,200),Objects,Query))
+    // A torso can bridge a gap in a pile while its limbs carry its weight.
+    // Require a nearby support surface under at least one physical part.
+    for(UPrimitiveComponent* Body : Bodies)
     {
-        const float Gap=P.Z-Support.ImpactPoint.Z-Bodies[1]->Bounds.BoxExtent.Z;
-        Sample.Supported=Gap>=-8 && Gap<=18;
+        FHitResult Support; const FVector C=Body->GetComponentLocation();
+        const float Extent=Body->Bounds.BoxExtent.Z;
+        if(GetWorld()->LineTraceSingleByObjectType(Support,C,C-FVector(0,0,Extent+18),Objects,Query))
+        {
+            const float Gap=C.Z-Support.ImpactPoint.Z-Extent;
+            if(Gap>=-8 && Gap<=18) { Sample.Supported=true; break; }
+        }
     }
     if(Settling.Step(Delta,Sample).Commit) CommitPose();
     else if(Age>=NextSettleLog)
@@ -145,6 +182,6 @@ bool AMSCorpse::ApplyBulletImpact(UPrimitiveComponent* Part,FVector Point,FVecto
 }
 bool AMSCorpse::InitializeDowned(uint64 Id)
 {
-    if(!Initialize(Id,FVector::ZeroVector,FVector::ZeroVector)) return false;
-    Tags.Add(TEXT("PreDowned")); CommitPose(); return true;
+    if(!Initialize(Id,FVector(0,0,-150),FVector::ZeroVector)) return false;
+    Tags.AddUnique(TEXT("PreDowned")); return true;
 }

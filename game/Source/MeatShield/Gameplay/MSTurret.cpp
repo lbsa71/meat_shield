@@ -8,6 +8,7 @@
 #include "Components/StaticMeshComponent.h"
 #include "Components/PointLightComponent.h"
 #include "Kismet/GameplayStatics.h"
+FVector AMSTurret::ShotOrigin() const { return Muzzle->GetComponentLocation(); }
 FHitResult AMSTurret::ResolveShot(FVector Start,FVector End,AMSCharacter* Target)
 {
     FHitResult Hit; FCollisionQueryParams Query(SCENE_QUERY_STAT(TurretShot),false,this);
@@ -21,7 +22,7 @@ AMSTurret::AMSTurret()
 {
     PrimaryActorTick.bCanEverTick=true;
     SetRootComponent(CreateDefaultSubobject<USceneComponent>(TEXT("TowerRoot")));
-    Aim=CreateDefaultSubobject<USceneComponent>(TEXT("AimingHead")); Aim->SetupAttachment(GetRootComponent()); Aim->SetRelativeLocation(FVector(0,0,360));
+    Aim=CreateDefaultSubobject<USceneComponent>(TEXT("AimingHead")); Aim->SetupAttachment(GetRootComponent()); Aim->SetRelativeLocation(FVector(0,0,95));
     Barrel=CreateDefaultSubobject<USceneComponent>(TEXT("BarrelAssembly")); Barrel->SetupAttachment(Aim); Barrel->SetRelativeLocation(FVector(100,0,0));
     Muzzle=CreateDefaultSubobject<USceneComponent>(TEXT("Muzzle")); Muzzle->SetupAttachment(Aim); Muzzle->SetRelativeLocation(FVector(290,0,0));
     Light=CreateDefaultSubobject<UPointLightComponent>(TEXT("MuzzleLight")); Light->SetupAttachment(Muzzle); Light->SetLightColor(FLinearColor(1,.4f,.08f)); Light->SetAttenuationRadius(600); Light->SetIntensity(0);
@@ -32,8 +33,8 @@ void AMSTurret::BeginPlay()
     Super::BeginPlay();
     const FLinearColor Armor(.14f,.2f,.18f), Metal(.045f,.06f,.07f), Orange(.85f,.25f,.015f);
     MSVisuals::Part(this,GetRootComponent(),TEXT("Foundation"),{0,0,28},{4.5f,4.5f,.56f},Metal,true);
-    MSVisuals::Part(this,GetRootComponent(),TEXT("Pedestal"),{0,0,170},{1.7f,1.7f,2.8f},Armor,true,TEXT("Cylinder"));
-    MSVisuals::Part(this,GetRootComponent(),TEXT("Collar"),{0,0,310},{2.3f,2.3f,.3f},Orange,true,TEXT("Cylinder"));
+    MSVisuals::Part(this,GetRootComponent(),TEXT("Pedestal"),{0,0,50},{1.7f,1.7f,.9f},Armor,true,TEXT("Cylinder"));
+    MSVisuals::Part(this,GetRootComponent(),TEXT("Collar"),{0,0,80},{2.3f,2.3f,.3f},Orange,true,TEXT("Cylinder"));
     MSVisuals::Part(this,Aim,TEXT("ArmoredHead"),{0,0,0},{2.5f,2.1f,1.3f},Armor,true);
     MSVisuals::Part(this,Aim,TEXT("HeadTrim"),{0,0,67},{2.6f,2.2f,.12f},Orange);
     Sensor=MSVisuals::Part(this,Aim,TEXT("Sensor"),{130,0,50},{.25f,.55f,.25f},Orange);

@@ -26,10 +26,12 @@ public:
     float CommittedAt=0;
     int32 ProxyCount() const { return Proxies.Num(); }
 private:
+    friend class AMSSliceScenario; // Builds isolated collision fixtures using real body shapes.
     UPROPERTY() TArray<TObjectPtr<UPrimitiveComponent>> Bodies;
     UPROPERTY() TArray<TObjectPtr<UPrimitiveComponent>> Proxies;
     UPROPERTY() TArray<TObjectPtr<UPhysicsConstraintComponent>> Joints;
     UPROPERTY() TObjectPtr<UPhysicalMaterial> Material;
+    TArray<FTransform> RestReference;
     TArray<FVector> Dimensions;
     TArray<uint8> Shapes;
     FVector InitialCenter;

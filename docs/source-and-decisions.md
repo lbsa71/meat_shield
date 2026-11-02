@@ -62,3 +62,7 @@ Reviewed 1 November 2026. Pin the engine patch at M0 and check these references 
 - Editor source control support does not establish this repo's binary workflow. Choose and verify that workflow at kickoff. [Epic source control documentation](https://dev.epicgames.com/documentation/en-us/unreal-engine/source-control-in-unreal-engine).
 
 DEC-24: Owner requested rotational bullet impacts and an already-downed body field; accepted implementation refinement recorded in [ADR 0007](engineering/adr/0007-crouch-and-settling.md).
+
+DEC-25: Owner replaces scattered pre-downed poses with a central gravity-built pile; see the [pile design refinement](design/crouch-and-settling.md) and [ADR 0007](engineering/adr/0007-crouch-and-settling.md).
+
+DEC-26: Owner rejects serial pouring and requests lower fire so one or two bodies can provide crouched cover. The batch collision and lowered turret refinement supersedes DEC-25 timing.

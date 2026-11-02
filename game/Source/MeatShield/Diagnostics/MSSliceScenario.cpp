@@ -43,6 +43,34 @@ void AMSSliceScenario::Tick(float Delta)
     // in one tick. Only fixture scheduling is bounded; gameplay/camera clocks
     // and the measured death-to-control duration still use real world time.
     Elapsed+=FMath::Min(Delta,.1f);
+    if(!PourChecked && GetWorld()->GetTimeSeconds()>1)
+    {
+        int Active=0; for(TActorIterator<AMSCorpse> It(GetWorld());It;++It) if(It->ActorHasTag(TEXT("PreDowned")) && It->LifeId) ++Active;
+        Check(Active==42,TEXT("batch_pour_active_within_two_seconds"));
+        Check(Turret->ShotOrigin().Z<=110,TEXT("low_turret_muzzle"));
+        const FVector Start=Turret->ShotOrigin(), End(-700,-900,55);
+        const FVector Direction=(End-Start).GetSafeNormal2D(), Center=End-Direction*100;
+        const float Yaw=Direction.Rotation().Yaw;
+        TArray<AMSCorpse*> Fixture;
+        for(int I=0;I<2;++I)
+        {
+            const FVector Offset=FRotator(0,Yaw,0).RotateVector(FVector(26,0,0));
+            auto* Body=GetWorld()->SpawnActor<AMSCorpse>(FVector(Center.X-Offset.X,Center.Y-Offset.Y,18+36*I),FRotator(90,Yaw,0));
+            Body->Initialize((uint64(1)<<62)+I+1,FVector::ZeroVector,FVector::ZeroVector); Body->CommitPose(); Fixture.Add(Body);
+        }
+        const FHitResult Duck=Turret->ResolveShot(Start,End,nullptr), Stand=Turret->ResolveShot(Start,FVector(End.X,End.Y,115),nullptr);
+        Check(Fixture.Contains(Cast<AMSCorpse>(Duck.GetActor())) && !Fixture.Contains(Cast<AMSCorpse>(Stand.GetActor())),TEXT("two_body_cover_crouch_vs_stand"));
+        for(auto* Body : Fixture) Body->Destroy(); PourChecked=true;
+    }
+    if(Stage==0 && !KeyDown)
+    {
+        int Count=0; bool Settled=true, Moved=true; float Highest=0;
+        for(TActorIterator<AMSCorpse> It(GetWorld());It;++It) if(It->ActorHasTag(TEXT("PreDowned")))
+        { ++Count; Settled &= It->Stable; Moved &= It->PhysicsMoved; Highest=FMath::Max(Highest,float(It->Center().Z)); }
+        if(!Settled && GetWorld()->GetTimeSeconds()<90) return;
+        Check(Count==42 && Settled && Moved && Highest>60,TEXT("central_physics_pile"));
+        Elapsed=0;
+    }
     if(Stage==0)
     {
         if(!KeyDown) { Key(EKeys::W,IE_Pressed); Key(EKeys::LeftShift,IE_Pressed); KeyDown=true; }

@@ -1,17 +1,21 @@
-# Crouch, meat cover and settling
-
-Accepted 2 November 2026 from the product owner's playtest. REQ-001, REQ-006, REQ-026, REQ-027 / TC-031. Supersedes the fixed 0.75 s ragdoll lock assumption.
-
-Hold Left Ctrl or C to crouch; release to stand when overhead clearance permits. Use Unreal's native crouch capsule/clearance handling, a 1 m crouched height, lower eye height and slower movement. Sprint cannot override crouch speed. The turret targets a stance-aware torso point, and visible/mechanical collision must agree.
-
-All meat blocks nonpenetrating shots at the first surface, during the fall and after commitment. Use the same first-hit ballistic adapter for gameplay and integration tests; tracer length and damage derive from that hit. Body cover works where its actual silhouette intersects the shot. Preserve older committed shapes throughout.
-
-Replace the hard-age freeze with explicit settle rules: minimum 1.2 s simulation, supported collapsed torso, and at least 0.35 s of low linear/angular motion across the body. Any renewed motion, lost support or noncollapsed posture resets the quiet interval. Invalid/nonfinite inputs cannot advance it. Never freeze a still-moving body merely because a maximum timer elapsed. The 1.05 s camera/control return remains independent, so a corpse can continue falling after the next life begins.
-
-The procedural rig must be free to topple and fold; give it a bounded physical knockdown impulse rather than an animated pose snap. Fit final fixed primitives to the settled pose. Tests cover early-age and interrupted settling, a moving/suspended/upright body, native input and ceiling clearance, stance-aware targeting, actual first-hit interception by both moving and settled meat, unchanged health behind intercepted shots, and persistence after later deaths/retries. Inspect a rendered settled-body capture, not just a mid-fall screenshot.
-
-Active rigs use PhysicsBody and ignore mutual/self PhysicsBody contacts, while retaining world/older fixed-body contacts and Visibility blocking. Only settled WorldDynamic proxies become support authority. This prevents folded limbs fighting their own constraints; two simultaneously falling cosmetic rigs may overlap. Their later fixed poses remain immutable. The prototype has no other PhysicsBody props; revisit this filter when introducing them.
-
-The next playtest refinement adds location-based bullet impulse to active bodies and transfers the lethal hit into the new rig. An off-centre torso impact must create lateral/twist rotation instead of a uniform backward fall. Fixed bodies remain immutable. A seeded field of at least 40 pre-downed bodies uses authored prone poses with fixed collision, avoids the safe start, concrete cover and central lane, and is built once per level. This is initial encounter content, separate from player deployment counts.
-
-Playtest correction: a torque call alone is insufficient evidence. In the open-lane fall, the torso lateral axis must tilt at least 0.8 out of horizontal at the observation capture, proving pronounced sideways rotation rather than only backward pitch. The location-based impact implementation passes this stronger native fixture.
+# Crouch, meat cover and physics pile
+
+Current owner-directed contract, 2 November 2026. REQ-001, REQ-006, REQ-026, REQ-027 / TC-031. See [ADR 0007](../engineering/adr/0007-crouch-and-settling.md) for decisions and superseded approaches.
+
+Hold Left Ctrl or C to crouch; release stands only with clearance. Native CharacterMovement owns the 1 m capsule, 2.2 m/s crouch speed and clearance. Lower the eye and turret torso target with stance. Sprint does not override crouch speed.
+
+All meat stops shots at the first surface while falling and after commitment. A shared ballistic adapter determines damage and tracer endpoint. Lethal shots transfer their actual impact point to the new rig; later hits apply impulse at the struck physics part. Small deterministic torso aim offsets vary moment arms. The falling-body fixture checks pronounced sideways torso rotation, rather than merely counting an impulse call. Fixed bodies reject impacts and remain immutable.
+
+The turret muzzle is about 95 cm above ground. From its actual muzzle, two prone real-body proxies with a combined height of 72 cm must intercept a crouched torso ray (55 cm target) while a standing torso ray (115 cm target) clears them. The fixture lies in the south lane, outside authored concrete sightlines. Cover follows actual silhouettes and gaps.
+
+The initial content is one central gravity-built pile, replacing the scattered authored field. Seed 71031 creates 42 articulated rigs in a separated 3 by 2 by 7 aerial grid centered at (-1050,0) cm. Horizontal spacing is 160 cm, vertical spacing 220 cm, initial heights 450–1770 cm, horizontal jitter 5 cm and initial pitch/roll within 15 degrees. All are active together within two seconds. CCD prevents fast falling parts tunneling. The safe start and concrete cover stay outside the drop footprint. Play remains available while the batch falls.
+
+Poured rigs collide with each other, the world and older fixed geometry. Free collision-only constraints suppress self contacts between parts of the same rig, without constraining motion. Temporary filters and anatomical joints are destroyed at commitment. Stronger poured-body damping (linear 2, angular 6) and solver iterations (16 position, 8 velocity) reduce contact jitter. Player-death rigs retain their existing active-contact policy.
+
+Player deaths require a supported collapsed torso, minimum age 1.2 s and 0.35 s with maximum part speed at most 15 cm/s and 15 deg/s. The 1.05 s camera return is independent, so physical collapse may continue after control returns. Support beneath any physical part is valid when a torso bridges a gap.
+
+For the dense initial pile, require supported gravity-produced rest and an observed stable pose envelope for all 15 parts throughout the same quiet interval: positions within 2 cm and observable orientation within 5 degrees of a fixed reference. Any exceedance resets the reference and quiet time. Spheres have no observable orientation, and capsule axial twist does not change their geometry; compare capsule axis direction and full box rotation. This accepts bounded solver vibration without freezing visibly moving rigs. Minimum age and physical support still apply. Natural curled or inclined resting poses are accepted in the pile. There is no age-only force-lock or eviction.
+
+Use stable high-range IDs for initial bodies, separate from player deployments. Build once per level; retries do not repour or duplicate it. Final primitives match the physical resting transforms and preserve all earlier cover.
+
+The native and rendered diagnostics require all 42 to move under gravity, settle and stack above a single-body height within 90 seconds. A timeout fails acceptance without forcing a pose. Exercise batch activation, low muzzle height, two-body crouch/standing traces, support, pose stability, older transforms, retries, actual damage interception, camera timing, controls and fresh rendered/audio evidence. Review the completed central pile capture. Large-count performance and save restoration remain future gates.

@@ -13,6 +13,7 @@ public:
     virtual void BeginPlay() override;
     virtual void Tick(float Delta) override;
 private:
+    bool PourChecked=false;
     bool Failed=false, KeyDown=false, KeyUp=false, SprintObserved=false;
     bool SpawnCaptured=false, HitCaptured=false, RetryPressed=false, RetryObserved=false;
     bool JumpPressed=false, JumpReleased=false, JumpObserved=false, MutePressed=false;

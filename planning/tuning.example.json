@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "rules_version": "prototype-0.4",
+  "rules_version": "prototype-0.5",
   "status": "prototype_hypothesis",
   "movement": {
     "standing_height_m": 1.8,
@@ -99,22 +99,37 @@
     "shot_vertical_offsets_cm": [
       -6,
       6
-    ]
+    ],
+    "turret_muzzle_height_cm": 95
   },
   "prototype_meat_field": {
     "seed": 71031,
-    "grid_columns": 9,
-    "rows_y_cm": [
+    "body_count": 42,
+    "center_cm": [
       -1050,
-      -750,
-      -450,
-      450,
-      750,
-      1050
+      0
     ],
-    "first_x_cm": -1750,
-    "spacing_x_cm": 350,
-    "jitter_cm": 25,
-    "minimum_bodies": 40
+    "release_height_cm": [
+      450,
+      1770
+    ],
+    "release_jitter_cm": 5,
+    "release_policy": "all 42 together with mutual contacts",
+    "grid_spacing_cm": [
+      160,
+      160,
+      220
+    ],
+    "poured_linear_damping": 2,
+    "poured_angular_damping": 6,
+    "grid_size": [
+      3,
+      2,
+      7
+    ],
+    "pose_quiet_position_cm": 2,
+    "pose_quiet_angle_deg": 5,
+    "solver_position_iterations": 16,
+    "solver_velocity_iterations": 8
   }
 }

@@ -74,6 +74,18 @@ int main()
     Check(Settle.Step(.1,Rest).Commit,"supported quiet body commits");
     Check(!Settle.Step(5,Rest).Commit,"commit emits once");
     SettleRules HitchSettle;Check(!HitchSettle.Step(100,Rest).Commit,"hitch is not proof of sustained quiet");
+    SettleSample ContactJitter{100,100,true,true}; ContactJitter.UsePoseEnvelope=true; ContactJitter.PoseWithinEnvelope=true;
+    SettleRules PoseRest; for(int I=0;I<13;++I) PoseRest.Step(.1,ContactJitter);
+    Check(PoseRest.Committed,"bounded contact vibration can settle through explicit pose evidence");
+    SettleRules PoseMoving; ContactJitter.PoseWithinEnvelope=false;
+    for(int I=0;I<20;++I) PoseMoving.Step(.1,ContactJitter);
+    Check(!PoseMoving.Committed && PoseMoving.Quiet==0,"pose motion always resets quiet interval");
+    ContactJitter.PoseWithinEnvelope=true; PoseMoving.Step(.1,ContactJitter); PoseMoving.Step(.1,ContactJitter);
+    ContactJitter.PoseWithinEnvelope=false; PoseMoving.Step(.1,ContactJitter);
+    Check(PoseMoving.Quiet==0,"renewed pose movement cancels partial quiet");
+    ContactJitter.PoseWithinEnvelope=true; ContactJitter.Supported=false;
+    for(int I=0;I<10;++I) PoseMoving.Step(.1,ContactJitter);
+    Check(!PoseMoving.Committed,"pose evidence cannot bypass physical support");
     std::cout << Checks << " checks, " << Failures << " failures\n";
     return Failures ? 1 : 0;
 }
