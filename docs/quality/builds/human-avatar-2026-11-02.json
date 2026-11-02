@@ -1,0 +1,134 @@
+{
+  "schema_version": 1,
+  "build_id": "human-avatar-0.6+fa7da08",
+  "source_revision": "fa7da08daa13863a23a3e0c4061678e9152cb65a",
+  "verified_on": "2026-11-02",
+  "engine": {
+    "version": "5.8.4",
+    "changelist": 58902052
+  },
+  "requirements": [
+    "REQ-025",
+    "REQ-026",
+    "REQ-027",
+    "REQ-028",
+    "REQ-029"
+  ],
+  "platform": "Win64",
+  "configuration": "Development",
+  "launch_arguments": [
+    "-MSRealism"
+  ],
+  "runtime_executable": "MeatShield/Binaries/Win64/MeatShield.exe",
+  "runtime_executable_sha256": "624fd0c31f0bff015267b878c20e8902ab63aab1404fc76fff4e1d7784e8fdc5",
+  "initial_bodies": 42,
+  "field_seed": 71031,
+  "capture_size_px": [
+    888,
+    500
+  ],
+  "tests": {
+    "native_rule_checks": 136,
+    "tooling_tests": 34,
+    "planning": "passed",
+    "rendered_human_package": {
+      "status": "passed",
+      "scenario": {
+        "status": "passed",
+        "checks": 47,
+        "shots": 15,
+        "hits": 16,
+        "deployments": 2,
+        "corpses": 2,
+        "actors": 74
+      },
+      "audio_rms": 0.027721519800430933,
+      "audio_peak": 0.35577392578125
+    },
+    "rendered_proxy_package": {
+      "status": "passed",
+      "scenario": {
+        "status": "passed",
+        "checks": 43,
+        "shots": 15,
+        "hits": 16,
+        "deployments": 2,
+        "corpses": 2,
+        "actors": 71
+      },
+      "audio_rms": 0.027875586780474453,
+      "audio_peak": 0.3094482421875
+    },
+    "bilateral_hanging_arm_motion_degrees": [
+      33.6,
+      39.5,
+      30.7,
+      43.2
+    ],
+    "screenshot_style_ordering": "four requested/rendered seed pairs match in both packaged galleries"
+  },
+  "hardware": {
+    "cpu": "Intel Core i9-14900HX",
+    "gpu": "NVIDIA GeForce RTX 4090 Laptop GPU",
+    "ram_gib": 31.65,
+    "driver": "616.56"
+  },
+  "benchmark": {
+    "resolution_px": [
+      1280,
+      720
+    ],
+    "method": "180 frames after 18 seconds simulation in each separate offscreen launch; all bodies settled; means, not tail or peak; sequential cache/system effects are uncontrolled",
+    "samples": [
+      {
+        "bodies": 1,
+        "settled": 1,
+        "samples": 180,
+        "frame_ms": 5.537,
+        "game_thread_ms": 3.032,
+        "render_thread_ms": 4.866,
+        "gpu_ms": 2.086,
+        "process_physical_mib": 1440.3
+      },
+      {
+        "bodies": 10,
+        "settled": 10,
+        "samples": 180,
+        "frame_ms": 4.456,
+        "game_thread_ms": 2.492,
+        "render_thread_ms": 3.855,
+        "gpu_ms": 2.202,
+        "process_physical_mib": 1444.6
+      },
+      {
+        "bodies": 42,
+        "settled": 42,
+        "samples": 180,
+        "frame_ms": 3.938,
+        "game_thread_ms": 2.172,
+        "render_thread_ms": 3.489,
+        "gpu_ms": 2.538,
+        "process_physical_mib": 1738.0
+      }
+    ]
+  },
+  "limits": [
+    "one human identity; four facial profiles",
+    "fitted uniform/vest shells, not authored tactical garments or loose cloth simulation",
+    "procedural FK locomotion; foot planting and animation polish remain open",
+    "no formal minimum-hardware or large-count performance acceptance",
+    "loaded-session persistence only; no save/recovery or clean-machine acceptance",
+    "rough hems and occasional skin intersections in fitted prototype clothing"
+  ],
+  "binary_validation": {
+    "lfs_local_fsck": "passed",
+    "largest_source_local_roundtrip": "passed",
+    "remote_upload_objects": 194,
+    "remote_upload_megabytes": 330,
+    "fresh_remote_roundtrip": "passed",
+    "remote_roundtrip_assets": [
+      "game/Content/MeatShield/SourceCharacters/MC_Realism_A.uasset",
+      "game/Content/MeatShield/Wardrobe/SK_FieldUniform.uasset"
+    ]
+  }
+}

@@ -45,7 +45,7 @@ Use automated fixtures for idempotency, state transitions, proxy queries, snapsh
 | TC-031 | REQ-001 REQ-006 REQ-026 REQ-027 | Crouch/release under open and blocked ceilings, observe full collapse before commitment, fire through active/fixed meat and compare health and impact point | Native crouch/clearance, stance-aware aim, no penetration, fixed proxies only after supported quiet pose, earlier cover stays unchanged; off-centre shot produces angular velocity, fixed poses resist impacts, all 42 central bodies start within 2 s and form a settled pile within 90 s; two-body crouch cover blocks the real low muzzle ray, standing remains exposed, and retries preserve the pile |
 
 | TC-032 | REQ-028 | Assemble optimized MetaHumans; compare expression close-ups, 1/10/42-body piles and matched procedural ground/lighting; package without editor/cloud | Real human visuals, varied readable expressions, attached faces, stable cover, deterministic recipes, measured cost and actionable missing-asset errors |
-| TC-033 | REQ-029 | Bilateral arm physics; continuous live/dead human pose and outfit; seeded fitted uniforms; standing/crouched transfer; packaged renders and regression |
+| TC-033 | REQ-029 | Bilateral arm physics; continuous live/dead human pose and outfit; seeded fitted uniforms; standing/crouched transfer; packaged renders and regression | Independent limp arms, matching evaluated LOD pose and life seed, three palettes, attached/frozen garments, retained cover and no packaged runtime errors |
 
 ## Matrix and evidence requirements
 
