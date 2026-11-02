@@ -22,7 +22,7 @@ def inspect_evidence(saved, started, log_text, returncode):
     if not reports:
         raise EvidenceError('Current process did not emit its completion marker')
     report=reports[-1]
-    if (report.get('status')!='passed' or report.get('checks',0)<35
+    if (report.get('status')!='passed' or report.get('checks',0)<39
             or report.get('corpses')!=2 or report.get('deployments')!=2):
         raise EvidenceError('Scenario did not pass all current checks')
     saved=Path(saved)

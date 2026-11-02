@@ -309,7 +309,7 @@
       "tests": [
         "TC-031"
       ],
-      "acceptance": "Hold Ctrl or C to crouch with reduced capsule, eye and speed; release stands only with clearance. Turret aim respects stance. Both falling and committed bodies stop first-hit bullets without penetration and tracers end at the blocking surface. Corpses cannot freeze on age alone: wait for supported collapsed torso and sustained low linear/angular velocity, including after player return. Older committed bodies remain unchanged. Exercise native crouch, overhead clearance, live/stable meat occlusion and actual turret damage prevention, settle timing and a packaged rendered build."
+      "acceptance": "Hold Ctrl or C to crouch with reduced capsule, eye and speed; release stands only with clearance. Turret aim respects stance. Both falling and committed bodies stop first-hit bullets without penetration and tracers end at the blocking surface. Corpses cannot freeze on age alone: wait for supported collapsed torso and sustained low linear/angular velocity, including after player return. Older committed bodies remain unchanged. Exercise native crouch, overhead clearance, live/stable meat occlusion and actual turret damage prevention, settle timing and a packaged rendered build. Bullet impact on an active ragdoll applies impulse at its struck component and location; off-centre hits generate angular motion, while fixed bodies never move. A deterministic field of at least 40 pre-downed solid bodies populates the yard, excluding safe spawn, authored cover and the central test lane; retries do not duplicate it."
     }
   ]
 }

@@ -1,5 +1,6 @@
 #include "Gameplay/MSTurret.h"
 #include "Engine/World.h"
+#include "World/MSCorpse.h"
 #include "Gameplay/MSCharacter.h"
 #include "Gameplay/MSGameMode.h"
 #include "Presentation/MSVisuals.h"
@@ -11,8 +12,9 @@ FHitResult AMSTurret::ResolveShot(FVector Start,FVector End,AMSCharacter* Target
 {
     FHitResult Hit; FCollisionQueryParams Query(SCENE_QUERY_STAT(TurretShot),false,this);
     GetWorld()->LineTraceSingleByChannel(Hit,Start,End,ECC_Visibility,Query);
+    if(auto* Body=Cast<AMSCorpse>(Hit.GetActor())) Body->ApplyBulletImpact(Hit.GetComponent(),Hit.ImpactPoint,End-Start);
     if(Target && Hit.GetActor()==Target && !AMSGameMode::IsProtected(Target->GetActorLocation()))
-    { ++Hits; auto* Mode=GetWorld()->GetAuthGameMode<AMSGameMode>(); Mode->ApplyTurretHit(Target,Mode->Run.Life,(End-Start).GetSafeNormal()); }
+    { ++Hits; auto* Mode=GetWorld()->GetAuthGameMode<AMSGameMode>(); Mode->ApplyTurretHit(Target,Mode->Run.Life,(End-Start).GetSafeNormal(),Hit.ImpactPoint); }
     return Hit;
 }
 AMSTurret::AMSTurret()
@@ -69,7 +71,7 @@ void AMSTurret::Tick(float Delta)
 }
 void AMSTurret::Fire(AMSCharacter* Target)
 {
-    const FVector Start=Muzzle->GetComponentLocation(), End=Target->TargetPoint();
+    const FVector Start=Muzzle->GetComponentLocation(), End=Target->TargetPoint()+Target->GetActorRightVector()*float((Shots%3-1)*16)+FVector(0,0,float((Shots%2)*12-6));
     const FHitResult Hit=ResolveShot(Start,End,Target);
     const FVector Impact=Hit.bBlockingHit?Hit.ImpactPoint:End;
     Tracer->SetWorldLocation((Start+Impact)*.5f); Tracer->SetWorldRotation((Impact-Start).Rotation());

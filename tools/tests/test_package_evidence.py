@@ -17,7 +17,7 @@ class PackageEvidenceTests(unittest.TestCase):
         self.saved=Path(self.temp.name).resolve()
         self.assertTrue(self.saved.is_relative_to(Path(tempfile.gettempdir()).resolve()))
         self.started=time.time()-10
-        self.report={'status':'passed','checks':35,'shots':14,'hits':14,'deployments':2,'corpses':2,'actors':28}
+        self.report={'status':'passed','checks':39,'shots':14,'hits':14,'deployments':2,'corpses':2,'actors':28}
         (self.saved/'turret-scenario.json').write_text(json.dumps(self.report))
         self.log='MS_SCENARIO_RESULT='+json.dumps(self.report)
         for name in ['turret-spawn.png','turret-hit.png','ragdoll-fall.png','ragdoll-two.png','meat-cover.png']:

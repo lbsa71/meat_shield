@@ -17,7 +17,7 @@ public:
     virtual void BeginPlay() override;
     virtual void Tick(float Delta) override;
     virtual void RestartPlayer(AController* Player) override;
-    void ApplyTurretHit(AMSCharacter* Player, uint64 Life,FVector ShotDirection=FVector(-1,0,0));
+    void ApplyTurretHit(AMSCharacter* Player, uint64 Life,FVector ShotDirection=FVector(-1,0,0),FVector ImpactPoint=FVector::ZeroVector);
     void Retry(AMSCharacter* Player);
     bool IsDeathActive() const { return Death.Active(); }
     int32 CorpseCount() const { return Corpses.Num(); }
@@ -31,6 +31,6 @@ private:
     UPROPERTY() TArray<TObjectPtr<AMSCorpse>> Corpses;
     UPROPERTY() TObjectPtr<AMSDeathCamera> DeathCamera;
     UPROPERTY() TObjectPtr<AMSCharacter> DyingPlayer;
-    void BeginDeath(AMSCharacter* Player,FVector ShotDirection);
+    void BeginDeath(AMSCharacter* Player,FVector ShotDirection,FVector ImpactPoint);
     void RestorePlayer(AMSCharacter* Player);
 };

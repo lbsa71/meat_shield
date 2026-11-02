@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "rules_version": "prototype-0.3",
+  "rules_version": "prototype-0.4",
   "status": "prototype_hypothesis",
   "movement": {
     "standing_height_m": 1.8,
@@ -88,5 +88,33 @@
     "soak_deaths": 1000,
     "memory_growth_investigation_percent": 5,
     "benchmark_hardware": "Nominate and record at M0; not a published minimum specification"
+  },
+  "prototype_impact": {
+    "impulse_kg_cm_s": 5000,
+    "shot_lateral_offsets_cm": [
+      -16,
+      0,
+      16
+    ],
+    "shot_vertical_offsets_cm": [
+      -6,
+      6
+    ]
+  },
+  "prototype_meat_field": {
+    "seed": 71031,
+    "grid_columns": 9,
+    "rows_y_cm": [
+      -1050,
+      -750,
+      -450,
+      450,
+      750,
+      1050
+    ],
+    "first_x_cm": -1750,
+    "spacing_x_cm": 350,
+    "jitter_cm": 25,
+    "minimum_bodies": 40
   }
 }

@@ -65,6 +65,8 @@ void AMSSliceScenario::Tick(float Delta)
         { Check(!Player->bIsCrouched && Player->GetCapsuleComponent()->GetScaledCapsuleHalfHeight()>=90,TEXT("stands_after_clearance")); StandingChecked=true; }
         if(Elapsed>3.1f)
         {
+            int Downed=0; for(TActorIterator<AMSCorpse> It(GetWorld());It;++It) if(It->ActorHasTag(TEXT("PreDowned"))) ++Downed;
+            Check(Downed>=40,TEXT("seeded_downed_field"));
             Check(Mode->Run.Health==100 && Turret->Shots==0,TEXT("protected_spawn"));
             Check(Player->GetActorLocation().X>-2700,TEXT("keyboard_movement"));
             Check(SprintObserved && !Player->Sprinting,TEXT("keyboard_sprint_release"));
@@ -83,13 +85,17 @@ void AMSSliceScenario::Tick(float Delta)
             DuplicateChecked=true;
         }
         if(Mode->IsDeathActive() && Mode->Death.Elapsed>.4 && !DeathCaptured)
-        { FScreenshotRequest::RequestScreenshot(FPaths::ProjectSavedDir()/TEXT("ragdoll-fall.png"),true,false); DeathCaptured=true; }
+        { FScreenshotRequest::RequestScreenshot(FPaths::ProjectSavedDir()/TEXT("ragdoll-fall.png"),true,false); DeathCaptured=true;
+            Check(Mode->CorpseCount()>0 && FMath::Abs(Mode->GetCorpses()[0]->Pose()[1].GetUnitAxis(EAxis::Y).Z)>.8f,TEXT("visible_sideways_torso_roll")); }
         if(Mode->IsDeathActive() && Mode->Death.Elapsed>.5 && !LiveMeatChecked && Mode->CorpseCount()>0)
         {
             auto* Body=Mode->GetCorpses()[0].Get(); const FVector P=Body->Center(); FHitResult Hit;
             GetWorld()->LineTraceSingleByChannel(Hit,P+FVector(0,0,180),P-FVector(0,0,30),ECC_Visibility);
             Check(Hit.GetActor()==Body,TEXT("falling_meat_blocks_bullets"));
-            Check(!Body->Stable,TEXT("moving_body_not_locked_early")); LiveMeatChecked=true;
+            Check(!Body->Stable,TEXT("moving_body_not_locked_early"));
+            const int Impacts=Body->BulletImpacts;
+            Turret->ResolveShot(P+FVector(0,-180,12),P+FVector(0,5,12),nullptr);
+            Check(Body->BulletImpacts>Impacts && Body->LastImpactTorque.Size()>1000,TEXT("offcentre_bullet_torque")); LiveMeatChecked=true;
         }
         if(Mode->Death.Phase==MeatShield::DeathPhase::Observe && !CameraClearanceChecked && Mode->CorpseCount()>0)
         {
@@ -185,6 +191,7 @@ void AMSSliceScenario::Tick(float Delta)
         const FVector P=FirstCorpse->Center(), Start=P+FVector(200,0,0), End=Player->GetActorLocation()+FVector(0,0,P.Z-Player->GetActorLocation().Z);
         const int Health=Mode->Run.Health;
         const FHitResult Blocked=Turret->ResolveShot(Start,End,Player);
+        Check(!FirstCorpse->ApplyBulletImpact(nullptr,P,FVector(1,0,0)),TEXT("fixed_body_rejects_impulse"));
         Check(Blocked.GetActor()==FirstCorpse && Mode->Run.Health==Health,TEXT("meat_intercepts_real_damage_trace"));
         const FHitResult Clear=Turret->ResolveShot(Start+FVector(0,500,0),End,Player);
         Check(Clear.GetActor()==Player && Mode->Run.Health==Health-15,TEXT("uncovered_trace_still_damages"));

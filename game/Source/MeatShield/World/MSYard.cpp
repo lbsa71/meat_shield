@@ -1,4 +1,5 @@
 #include "World/MSYard.h"
+#include "World/MSMeatField.h"
 #include "Engine/World.h"
 #include "Presentation/MSVisuals.h"
 #include "Components/SceneComponent.h"
@@ -14,6 +15,7 @@ AMSYard::AMSYard() { SetRootComponent(CreateDefaultSubobject<USceneComponent>(TE
 void AMSYard::BeginPlay()
 {
     Super::BeginPlay();
+    MSMeatField::Build(GetWorld());
     const FLinearColor Concrete(.24f,.27f,.28f), Dark(.07f,.1f,.12f), Orange(.9f,.32f,.04f);
     int N = 0;
     auto Box = [&](FVector P, FVector S, FLinearColor C, bool Collision = true)

@@ -36,7 +36,7 @@ void AMSGameMode::RestartPlayer(AController* Controller)
     if(auto* Player=Cast<AMSCharacter>(Controller->GetPawn()))
     { Player->SetActorLocation(SpawnPoint(),false,nullptr,ETeleportType::TeleportPhysics); Controller->SetControlRotation(FRotator::ZeroRotator); }
 }
-void AMSGameMode::ApplyTurretHit(AMSCharacter* Player,uint64 Life,FVector ShotDirection)
+void AMSGameMode::ApplyTurretHit(AMSCharacter* Player,uint64 Life,FVector ShotDirection,FVector ImpactPoint)
 {
     if(!Player || Life!=Run.Life || Death.Active()) return;
     Player->Impact();
@@ -44,7 +44,7 @@ void AMSGameMode::ApplyTurretHit(AMSCharacter* Player,uint64 Life,FVector ShotDi
     if(Lethal)
     {
         UE_LOG(LogTemp,Display,TEXT("MS_LETHAL life=%llu deployments=%llu"),Life,Run.Deployments);
-        BeginDeath(Player,ShotDirection);
+        BeginDeath(Player,ShotDirection,ImpactPoint.IsNearlyZero()?Player->TargetPoint():ImpactPoint);
     }
 }
 void AMSGameMode::Retry(AMSCharacter* Player)
@@ -52,11 +52,12 @@ void AMSGameMode::Retry(AMSCharacter* Player)
     if(!Player || Death.Active()) return;
     RestorePlayer(Player);
 }
-void AMSGameMode::BeginDeath(AMSCharacter* Player,FVector ShotDirection)
+void AMSGameMode::BeginDeath(AMSCharacter* Player,FVector ShotDirection,FVector ImpactPoint)
 {
     if(!Death.Start(Run.Life)) return;
     auto* Body=GetWorld()->SpawnActor<AMSCorpse>(Player->GetActorLocation()+FVector(0,0,Player->bIsCrouched?-14:0),Player->GetActorRotation());
     Body->Initialize(Run.Life,Player->GetVelocity(),ShotDirection,Player->bIsCrouched); Corpses.Add(Body);
+    Body->ApplyBulletImpact(nullptr,ImpactPoint,ShotDirection);
     if(!DeathCamera) DeathCamera=GetWorld()->SpawnActor<AMSDeathCamera>();
     DeathCamera->BeginDeath(Player->Camera->GetComponentTransform(),Player->GetActorForwardVector(),Body,SpawnPoint()+FVector(0,0,Player->GetCapsuleComponent()->GetScaledCapsuleHalfHeight()-90+Player->EyeOffset()),Player);
     DyingPlayer=Player;

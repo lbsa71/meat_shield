@@ -74,14 +74,7 @@ bool AMSCorpse::Initialize(uint64 Life,FVector Velocity,FVector ShotDirection,bo
         Joint(Torso,Upper,{0,float(Side*25),43},100); Joint(Upper,Lower,{Crouched?18.f:1.f,float(Side*29),Crouched?8.f:2.f},110); Joint(Lower,Hand,{Crouched?50.f:5.f,float(Side*30),Crouched?3.f:-38.f},70);
     }
     InitialCenter=Center();
-    const FVector StartVelocity=Velocity*.45f+ShotDirection.GetSafeNormal()*140;
-    const FVector Spin=FVector::CrossProduct(FVector::UpVector,ShotDirection.GetSafeNormal()).GetSafeNormal()*180;
-    for(UPrimitiveComponent* Body : Bodies)
-    {
-        Body->SetPhysicsLinearVelocity(StartVelocity+FVector::CrossProduct(Spin*(PI/180),Body->GetComponentLocation()-GetActorLocation()));
-        Body->SetPhysicsAngularVelocityInDegrees(Spin);
-    }
-    Bodies[Torso]->AddImpulseAtLocation(ShotDirection.GetSafeNormal()*1800,Center()+FVector(0,0,25));
+    for(UPrimitiveComponent* Body : Bodies) Body->SetPhysicsLinearVelocity(Velocity*.45f);
     UE_LOG(LogTemp,Display,TEXT("MS_CORPSE_SPAWN life=%llu parts=%d"),LifeId,Bodies.Num());
     return true;
 }
@@ -135,4 +128,23 @@ void AMSCorpse::CommitPose()
     for(UPhysicsConstraintComponent* C : Joints) C->DestroyComponent(); Joints.Empty();
     Stable=true; SetActorTickEnabled(false);
     UE_LOG(LogTemp,Display,TEXT("MS_CORPSE_COMMIT life=%llu proxies=%d moved=%d age=%.2f torso_z=%.1f torso_up=%.2f"),LifeId,Proxies.Num(),PhysicsMoved,Age,Center().Z,FMath::Abs(Bodies[1]->GetUpVector().Z));
+}
+
+bool AMSCorpse::ApplyBulletImpact(UPrimitiveComponent* Part,FVector Point,FVector Direction)
+{
+    if(Stable || Bodies.IsEmpty() || Point.ContainsNaN() || Direction.ContainsNaN() || Direction.IsNearlyZero()) return false;
+    if(!Bodies.Contains(Part))
+    {
+        Part=Bodies[1]; double Best=MAX_dbl;
+        for(UPrimitiveComponent* Body : Bodies) { const double D=FVector::DistSquared(Point,Body->GetComponentLocation()); if(D<Best) {Best=D;Part=Body;} }
+    }
+    const FVector Impulse=Direction.GetSafeNormal()*5000;
+    LastImpactTorque=FVector::CrossProduct(Point-Part->GetCenterOfMass(),Impulse);
+    Part->WakeAllRigidBodies(); Part->AddImpulseAtLocation(Impulse,Point); ++BulletImpacts;
+    return true;
+}
+bool AMSCorpse::InitializeDowned(uint64 Id)
+{
+    if(!Initialize(Id,FVector::ZeroVector,FVector::ZeroVector)) return false;
+    Tags.Add(TEXT("PreDowned")); CommitPose(); return true;
 }

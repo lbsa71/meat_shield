@@ -379,7 +379,7 @@
       "run_id": "fixture-run-001",
       "life_id": "life-012",
       "active_time_s": 142.5,
-      "rules_version": "prototype-0.3",
+      "rules_version": "prototype-0.4",
       "payload": {
         "previous_life_id": "life-011",
         "elapsed_ms": 95

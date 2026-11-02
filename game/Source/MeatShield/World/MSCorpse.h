@@ -14,6 +14,10 @@ class AMSCorpse : public AActor
 public:
     AMSCorpse();
     bool Initialize(uint64 Life,FVector Velocity,FVector ShotDirection,bool Crouched=false);
+    bool ApplyBulletImpact(UPrimitiveComponent* Part,FVector Point,FVector Direction);
+    bool InitializeDowned(uint64 Id);
+    int BulletImpacts=0;
+    FVector LastImpactTorque=FVector::ZeroVector;
     virtual void Tick(float Delta) override;
     FVector Center() const;
     TArray<FTransform> Pose() const;

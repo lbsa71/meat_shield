@@ -60,3 +60,5 @@ Reviewed 1 November 2026. Pin the engine patch at M0 and check these references 
 - Unreal provides custom SaveGame objects and asynchronous save operations. [Epic save documentation](https://dev.epicgames.com/documentation/en-us/unreal-engine/saving-and-loading-your-game-in-unreal-engine).
 - Unreal navigation can use local tiles, modifiers, and links. The baseline uses fixed threats to avoid requiring arbitrary navigation over piles. [Epic navigation documentation](https://dev.epicgames.com/documentation/en-us/unreal-engine/overview-of-how-to-modify-the-navigation-mesh-in-unreal-engine).
 - Editor source control support does not establish this repo's binary workflow. Choose and verify that workflow at kickoff. [Epic source control documentation](https://dev.epicgames.com/documentation/en-us/unreal-engine/source-control-in-unreal-engine).
+
+DEC-24: Owner requested rotational bullet impacts and an already-downed body field; accepted implementation refinement recorded in [ADR 0007](engineering/adr/0007-crouch-and-settling.md).
