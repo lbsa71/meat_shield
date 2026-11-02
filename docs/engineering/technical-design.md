@@ -1,6 +1,6 @@
 # Meat Shield technical design
 
-The proposed stack is Unreal Engine 5 with C++ for state, construction, persistence, and measurement, and Blueprints or data assets for encounter content and presentation. Pin an exact engine patch and toolchain during M0 after the build and construction spikes. The repository currently contains no engine project.
+The stack uses Unreal Engine 5 with C++ for state, construction, persistence, and measurement, and Blueprints or data assets where useful for encounter content and presentation. The initial project pins 5.8.4 and contains the [turret approach slice](../design/first-playable.md). Full construction and persistence designs below remain implementation contracts for later work; the slice does not establish their acceptance.
 
 ## System ownership
 

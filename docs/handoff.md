@@ -1,6 +1,6 @@
 # Meat Shield developer handoff
 
-Start by proving one useful death. The repository contains a proposed product baseline, implementation contracts, production work breakdown, verification plan, and an Unreal editor automation bootstrap. Blender background Python, the Unreal Python commandlet, and live editor MCP control have been exercised; see the [toolchain evidence](quality/toolchain-validation.md) for results and open issues. Gameplay, C++ compilation, packaged builds, and release acceptance remain unverified.
+Start by proving one useful death. The repository contains a proposed product baseline, implementation contracts, production work breakdown, verification plan, and a [first runnable turret approach](design/first-playable.md). C++ game/editor builds and a packaged Windows scenario have run; see [run/build instructions](engineering/running-the-prototype.md). Full corpse construction and release acceptance remain open. The earlier [toolchain evidence](quality/toolchain-validation.md) is a dated setup record.
 
 ## Read and assign
 
@@ -33,7 +33,7 @@ M1 continues through weeks 2–4. Finish fixture verification and observed tests
 
 Use [backlog.md](production/backlog.md) for human review and [backlog.json](../planning/backlog.json) for import into the chosen tracker. The JSON is tracker-neutral and does not claim to match a vendor's import API. Preserve IDs, dependencies, requirements, estimates, deliverables, and acceptance when importing. Split multi-day tasks into smaller implementation issues only after their interfaces and owners are known.
 
-The 55-task baseline retains planned and unassigned status; the initial toolchain work provides partial MS-001 evidence without completing its packaged FPS and binary workflow conditions. No remote issues or messages to the development team have been sent. The [templates](../templates/README.md) are ready for implementation reviews, defects, playtests, decisions, and gate records.
+The 55-task baseline records MS-001, MS-005 and MS-008 as active with partial first-slice evidence. Their complete acceptance conditions remain open, including the binary asset workflow and later mechanics. No remote issues or messages to the development team have been sent. The [templates](../templates/README.md) are ready for implementation reviews, defects, playtests, decisions, and gate records.
 
 ## Kickoff decisions
 

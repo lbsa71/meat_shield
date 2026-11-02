@@ -48,6 +48,8 @@ All entries below are **proposed** unless explicitly labeled source requirement.
 
 ## External engineering references
 
+DEC-21: Accepted by the product owner's 2 November 2026 request: deliver the [turret approach](design/first-playable.md) as the first runnable slice. [ADR 0005](engineering/adr/0005-first-playable.md) records procedural proxy presentation and the staged scope.
+
 Reviewed 1 November 2026. Pin the engine patch at M0 and check these references against that patch. The architecture and budgets are project proposals inferred from these capabilities; the documentation does not establish their suitability for this game.
 
 - Unreal supports simple and complex collision with different simulation constraints. The proposed gameplay proxy uses simple shapes. [Epic collision documentation](https://dev.epicgames.com/documentation/en-us/unreal-engine/simple-versus-complex-collision-in-unreal-engine).

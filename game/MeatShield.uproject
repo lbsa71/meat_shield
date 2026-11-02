@@ -2,7 +2,8 @@
   "FileVersion": 3,
   "EngineAssociation": "5.8",
   "Category": "Games",
-  "Description": "Meat Shield editor automation bootstrap. Gameplay implementation pending.",
+  "Description": "Meat Shield first playable turret approach.",
+  "Modules": [{"Name":"MeatShield","Type":"Runtime","LoadingPhase":"Default"}],
   "Plugins": [
     {
       "Name": "AndroidFileServer",

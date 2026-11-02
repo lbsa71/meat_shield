@@ -272,6 +272,17 @@
         "TC-024"
       ],
       "acceptance": "Settings survive new runs; UI strings are externalized and pseudo-localized core screens remain readable."
+    },
+    {
+      "id": "REQ-025",
+      "title": "Runnable turret approach first slice",
+      "provenance": "source",
+      "gate": "M0",
+      "document": "docs/design/first-playable.md",
+      "tests": [
+        "TC-029"
+      ],
+      "acceptance": "A standalone Windows build launches into a lit first-person approach. WASD and mouse move/look, Shift sprints and Space jumps. A fixed turret acquires visible in-range players, telegraphs, fires bounded bursts and damages on first blocking hit only. Cover prevents damage, spawn is safe, lethal damage resets to spawn once, and movement, aiming, recoil, hit feedback and generated sound are observable. Invalid time or tuning is rejected; large frame steps never emit unbounded shots. Package includes prerequisites instructions and launch script."
     }
   ]
 }

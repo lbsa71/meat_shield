@@ -1,6 +1,8 @@
-# Meat Shield editor bootstrap
+# Meat Shield turret approach
 
-`MeatShield.uproject` is a minimal content project for validating Unreal 5.8.4 editor automation. It contains no implemented siege, player controller, authored gameplay level, or C++ gameplay module yet. C++ systems remain the proposed implementation direction.
+`MeatShield.uproject` contains the first runnable C++ slice for Unreal 5.8.4. A first-person character approaches an automatic turret through a procedural yard with cover, health/hit feedback, instant retry, animated movement and firing, and synthesized audio. The full siege and corpse-construction systems remain future work.
+
+Use [run/build instructions](../docs/engineering/running-the-prototype.md) for the standalone Windows executable. Runtime code separates engine-independent rules, gameplay adapters, procedural scene assembly, presentation/audio and opt-in diagnostics under `Source/MeatShield`. Scene and audio recipes are source code; this slice adds no downloaded assets or generated binary content to source control.
 
 Open the project with the verified Unreal installation. The project enables Epic's official MCP and toolsets for Editor targets, together with Python and the procedural authoring foundation. Enable the local MCP server explicitly using `-ModelContextProtocolStartServer` at editor startup or the documented editor console command. The normal endpoint is `http://127.0.0.1:8000/mcp`.
 
@@ -19,4 +21,4 @@ python tools/unreal.py headless
 
 Use `editor` in place of `headless` to keep the normal graphics pipeline and interactive editor. The launcher also accepts `--engine-root` and `--cache-root`. It validates the exact engine pin and keeps the default cache under the checkout's ignored `.local` directory. `headless` and `editor` report that a process started; MCP readiness requires a separate connection check. Smoke mode requires both successful exit and the running engine's explicit version marker.
 
-Editor scripting, headless checks, and MCP interaction validate the toolchain. Gameplay behavior changes must follow [AGENTS.md](../AGENTS.md), including specifications, meaningful failing tests, implementation, and relevant integrated verification.
+Editor scripting, headless checks, and MCP interaction validate the toolchain. Run `tools/test_rules.ps1` for C++ rules, `tools/build.ps1` to build/package and `python tools/verify_package.py` for the rendered packaged scenario. Gameplay changes follow [AGENTS.md](../AGENTS.md), including specifications, meaningful failing tests, implementation, and relevant integrated verification.

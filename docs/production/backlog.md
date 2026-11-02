@@ -2,7 +2,7 @@
 
 Generated from `planning/backlog.json` and `planning/milestones.json`. Edit those files, then run `python tools/validate_planning.py --write-backlog`.
 
-All tasks are planned, unassigned baseline work. Estimates are person-days, not elapsed days. Low and high values are scenarios, not confidence bounds. Dependencies indicate deliverable prerequisites; the producer must schedule named capacity and incremental integration before committing dates.
+Task status is maintained in the JSON; partial slice evidence does not complete a task. Estimates are person-days, not elapsed days. Low and high values are scenarios, not confidence bounds. Dependencies indicate deliverable prerequisites; the producer must schedule named capacity and incremental integration before committing dates.
 
 See [requirements](../../planning/requirements.json), [production plan](production-plan.md), and [test plan](../quality/test-plan.md).
 
@@ -21,7 +21,7 @@ Named work: **377 likely days**, **602.5 days at summed upper bounds**. QA and a
 
 ## M0 Kickoff and feasibility
 
-Relative weeks 1–1.
+Relative weeks 1â€“1.
 
 - Assign owners and confirm platform scope and engine patch.
 - Package from clean checkout and record benchmark and binary workflow.
@@ -37,12 +37,13 @@ Relative weeks 1–1.
 
 Pinned environment and minimal packaged FPS project.
 
-Requirements: REQ-019. Estimate: 2 / 3 / 4.75 days, low / likely / high.
+Requirements: REQ-019, REQ-025. Estimate: 2 / 3 / 4.75 days, low / likely / high.
 
 - [ ] Clean checkout packages and launches.
 - [ ] Benchmark manifest and binary round trip are recorded.
 - [ ] Pinned editor launcher rejects invalid inputs and versions without launching, isolates local caches and reports actual subprocess evidence.
 - [ ] Blender background Python, Unreal Python commandlet and localhost MCP discovery with a reversible editor operation pass; rendered checks use the real GPU.
+- [ ] First turret approach slice packages and launches; see TC-029 and its evidence without marking later FPS/body acceptance complete.
 
 ### MS-002 Baseline and ownership review
 
@@ -73,7 +74,7 @@ Requirements: REQ-015, REQ-019. Estimate: 2 / 3 / 4.75 days, low / likely / high
 
 ## M1 Core prototype
 
-Relative weeks 2–4.
+Relative weeks 2â€“4.
 
 - Demonstrate a 1–3 minute siege and useful 1–3 body route.
 - Meet placement and respawn fixture targets; observe deliberate use in at least six of eight new players.
@@ -96,7 +97,7 @@ Relative weeks 2–4.
 
 Movement fixture and controller.
 
-Requirements: REQ-001, REQ-005. Estimate: 3.25 / 5 / 8 days, low / likely / high.
+Requirements: REQ-001, REQ-005, REQ-025. Estimate: 3.25 / 5 / 8 days, low / likely / high.
 
 - [ ] Implement baseline actions and capsule sweeps.
 - [ ] Demonstrate supported pile traversal and clearance failures.
@@ -123,7 +124,7 @@ Requirements: REQ-003, REQ-005, REQ-006, REQ-013. Estimate: 4 / 6 / 9.5 days, lo
 
 Weapon and first fixed threat.
 
-Requirements: REQ-009, REQ-023, REQ-007. Estimate: 3.25 / 5 / 8 days, low / likely / high.
+Requirements: REQ-009, REQ-023, REQ-007, REQ-025. Estimate: 3.25 / 5 / 8 days, low / likely / high.
 
 - [ ] Resources and reload survive pawn death.
 - [ ] Suppression recovers continuously and controls disable permanently.
@@ -184,7 +185,7 @@ Requirements: REQ-022. Estimate: 0.75 / 1 / 1.5 days, low / likely / high.
 
 ## M2 Representative vertical slice
 
-Relative weeks 5–8.
+Relative weeks 5â€“8.
 
 - One sector integrates final-intent art audio settings save and reset.
 - Meet representative performance and full construction stress targets.
@@ -315,7 +316,7 @@ Requirements: REQ-022. Estimate: 0.75 / 1 / 1.5 days, low / likely / high.
 
 ## M3 Complete fortress alpha
 
-Relative weeks 9–16.
+Relative weeks 9â€“16.
 
 - All three sectors work start to victory in a packaged build.
 - All baseline features assets and support flows are integrated.
@@ -446,7 +447,7 @@ Requirements: REQ-022. Estimate: 1.25 / 2 / 3.25 days, low / likely / high.
 
 ## M4 Beta and content lock
 
-Relative weeks 17–20.
+Relative weeks 17â€“20.
 
 - Full regression compatibility accessibility and benchmark pass.
 - No open critical or high severity defects; content locked.
@@ -537,7 +538,7 @@ Requirements: REQ-022. Estimate: 0.75 / 1 / 1.5 days, low / likely / high.
 
 ## M5 Release candidate and handover
 
-Relative weeks 21–24.
+Relative weeks 21â€“24.
 
 - Candidate passes release checklist and clean-machine checks.
 - Recovery support known issues and provenance are reviewed.

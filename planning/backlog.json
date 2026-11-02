@@ -1,7 +1,7 @@
 {
   "version": "0.1",
   "estimate_unit": "person_day",
-  "status": "unassigned_planned_work",
+  "status": "baseline_with_initial_implementation",
   "tasks": [
     {
       "id": "MS-001",
@@ -10,10 +10,11 @@
       "role": "Engineering",
       "milestone": "M0",
       "priority": "P0",
-      "status": "planned",
+      "status": "active",
       "dependencies": [],
       "requirements": [
-        "REQ-019"
+        "REQ-019",
+        "REQ-025"
       ],
       "estimate_days": {
         "low": 2,
@@ -25,7 +26,8 @@
         "Clean checkout packages and launches.",
         "Benchmark manifest and binary round trip are recorded.",
         "Pinned editor launcher rejects invalid inputs and versions without launching, isolates local caches and reports actual subprocess evidence.",
-        "Blender background Python, Unreal Python commandlet and localhost MCP discovery with a reversible editor operation pass; rendered checks use the real GPU."
+        "Blender background Python, Unreal Python commandlet and localhost MCP discovery with a reversible editor operation pass; rendered checks use the real GPU.",
+        "First turret approach slice packages and launches; see TC-029 and its evidence without marking later FPS/body acceptance complete."
       ]
     },
     {
@@ -107,13 +109,14 @@
       "role": "Engineering",
       "milestone": "M1",
       "priority": "P0",
-      "status": "planned",
+      "status": "active",
       "dependencies": [
         "MS-001"
       ],
       "requirements": [
         "REQ-001",
-        "REQ-005"
+        "REQ-005",
+        "REQ-025"
       ],
       "estimate_days": {
         "low": 3.25,
@@ -189,14 +192,15 @@
       "role": "Engineering",
       "milestone": "M1",
       "priority": "P0",
-      "status": "planned",
+      "status": "active",
       "dependencies": [
         "MS-005"
       ],
       "requirements": [
         "REQ-009",
         "REQ-023",
-        "REQ-007"
+        "REQ-007",
+        "REQ-025"
       ],
       "estimate_days": {
         "low": 3.25,

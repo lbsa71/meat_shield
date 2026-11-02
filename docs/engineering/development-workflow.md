@@ -1,6 +1,6 @@
 # Meat Shield development workflow
 
-Begin with the planning validator and M0 tasks. The repository has a minimal editor automation project; gameplay, a reproducible game build, CI, and the binary asset workflow still require implementation and verification.
+Begin with the planning validator and M0 tasks. The repository has a runnable C++ turret approach and [Windows package recipe](running-the-prototype.md). The full gameplay contract, clean-machine build verification, CI, and binary asset workflow remain open.
 
 Follow [AGENTS.md](../../AGENTS.md) for specification-driven and test-driven behavior changes, modular boundaries, and environment abstractions. The [toolchain setup](toolchain-setup.md) records current setup evidence and the intended Unreal MCP, commandlet, and Blender automation paths.
 
@@ -25,7 +25,7 @@ planning/
 tools/
 ```
 
-The initial `game/MeatShield.uproject` validates editor automation without gameplay modules. Add source and content as their implementation tasks begin. Bootstrap acceptance still requires a clean-checkout game build recipe with actual commands for the pinned environment.
+`game/MeatShield.uproject` now includes a runtime module with separate Rules, Gameplay, World, Presentation and Diagnostics directories. Add further modules when a real dependency boundary warrants them. Bootstrap acceptance still requires the complete clean-checkout and binary workflow checks.
 
 ## Branches and review
 

@@ -55,6 +55,8 @@ The [editor bootstrap project](../../game/MeatShield.uproject) hosts setup valid
 
 All Toolsets enables Game Features through its dependencies. The bootstrap must register the `GameFeatureData` primary asset type with the `AlwaysCook` rule, matching the installed engine editor's own corrective action. The first live commandlet exposed the missing rule and returned a failure despite running the Python probe; successful bootstrap requires a clean commandlet exit as well as its marker. The editor starts in the stock Entry map while authored gameplay levels remain unimplemented.
 
+The first runtime slice marks that scan type editor-only, matching the toolset dependency boundary. The first packaged test exposed a handled ensure when the runtime attempted to load the editor-only Game Features class; the editor-only scan flag removes that dependency from normal game startup.
+
 The Windows bootstrap targets D3D12 and Shader Model 6, matching the installed engine's blank-project template. SM6 makes modern rendering features available; enabling and budgeting those features remains part of the representative scene work. [Epic rendering requirements](https://dev.epicgames.com/documentation/en-us/unreal-engine/hardware-and-software-specifications-for-unreal-engine).
 
 The project-scoped [MCP client configuration](../../.codex/config.toml) points to the local editor endpoint. Start the editor before connecting a client; a configured URL alone does not prove the server is running. Project-scoped Codex configuration applies to trusted projects. [Official MCP configuration documentation](https://learn.chatgpt.com/docs/extend/mcp?surface=cli).

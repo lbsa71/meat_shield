@@ -41,7 +41,10 @@ Use automated fixtures for idempotency, state transitions, proxy queries, snapsh
 | TC-027 | REQ-012 | Interrupt writes corrupt newest generation load older supported and unknown newer fixtures exhaust disk space | Previous valid generation recoverable; migrations explicit; newer or failed saves not silently overwritten |
 | TC-028 | REQ-002 REQ-016 | Die while holding inputs, open menu during possession, switch device and lose/regain focus | No stuck fire repeated interaction accidental capture or extra pawn; focus loss pauses offline siege |
 
+| TC-029 | REQ-025 | Build the turret-approach slice, exercise safe spawn, walk/sprint/jump, exposed approach, cover, lethal reset, mute and quit in the packaged Windows game | Visible procedural locomotion/aim/recoil/hit animations and audible effects; first blocking trace governs damage; bounded burst and one reset per life; standalone launch works |
+
 ## Matrix and evidence requirements
+
 
 At M2, use the nominated performance PC at 1080p and record the actual preset and drivers. At M4, add a lower-spec candidate and a higher-spec reference machine, supported window modes and aspect ratios, keyboard/mouse and controller, minimum and large text, full and reduced gore, and camera comfort settings. These machines determine published specifications; no hardware requirement is invented here.
 

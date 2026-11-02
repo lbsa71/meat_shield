@@ -46,7 +46,7 @@ def render_backlog(backlog, milestones):
     lines = ["# Meat Shield implementation backlog", "",
              "Generated from `planning/backlog.json` and `planning/milestones.json`. "
              "Edit those files, then run `python tools/validate_planning.py --write-backlog`.", "",
-             "All tasks are planned, unassigned baseline work. Estimates are person-days, "
+             "Task status is maintained in the JSON; partial slice evidence does not complete a task. Estimates are person-days, "
              "not elapsed days. Low and high values are scenarios, not confidence bounds. "
              "Dependencies indicate deliverable prerequisites; the producer must schedule "
              "named capacity and incremental integration before committing dates.", "",
@@ -67,7 +67,7 @@ def render_backlog(backlog, milestones):
     for milestone in milestones["milestones"]:
         mid = milestone["id"]
         lines.extend([f"## {mid} {milestone['title']}", "",
-                      f"Relative weeks {milestone['start_week']}–{milestone['end_week']}.", ""])
+                      f"Relative weeks {milestone['start_week']}â€“{milestone['end_week']}.", ""])
         for gate in milestone["gates"]:
             lines.append(f"- {gate}")
         lines.extend(["", "| ID | Task | Role | Likely days | Dependencies |",

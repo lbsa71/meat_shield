@@ -2,7 +2,9 @@
 
 A fast first-person fortress assault in which instant respawns and persistent bodies turn each death into a construction move. Reach a useful position, leave cover for the next life, and use the route you built to breach the fortress.
 
-**Repository status:** planning handoff and editor automation bootstrap, version 0.1, prepared 1 November 2026. Gameplay is not implemented yet. Meat Shield is the working name; the commercial title is unresolved.
+**Repository status:** first playable turret approach, 2 November 2026, alongside the full-game planning baseline. Meat Shield is the working name; the commercial title is unresolved.
+
+Run the Windows prototype with `Run-MeatShield.cmd` after packaging. It includes first-person movement, sprint/jump, an automatic turret, cover, damage and instant retry, procedural animation, and synthesized effects. See [run/build instructions](docs/engineering/running-the-prototype.md). The full corpse-construction game remains in development.
 
 ## Start here
 
@@ -15,7 +17,7 @@ The [full document index](docs/README.md) covers level design, art and audio, UX
 
 Development follows [AGENTS.md](AGENTS.md): specification-driven and test-driven implementation, clean modular boundaries, environment abstractions, and procedural Unreal production with Blender for source assets. Development is AI-led under the product owner's direction.
 
-The [editor project](game/README.md) hosts Unreal setup validation. Follow the [toolchain record](docs/engineering/toolchain-setup.md) for installation and automation status.
+The [game project](game/README.md) contains the playable slice and editor automation setup. Follow the [toolchain record](docs/engineering/toolchain-setup.md) for installation and automation status.
 
 ## Planning baseline
 
