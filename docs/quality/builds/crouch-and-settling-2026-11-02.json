@@ -1,0 +1,93 @@
+{
+  "schema_version": 1,
+  "build_id": "crouch-and-settling-0.3+aa9fcc0",
+  "verified_on": "2026-11-02",
+  "source_revision": "aa9fcc065e1bbd3a4939ada66040c0e8efc76e82",
+  "rules_version": "prototype-0.3",
+  "requirements": [
+    "REQ-001",
+    "REQ-006",
+    "REQ-026",
+    "REQ-027"
+  ],
+  "engine": {
+    "version": "5.8.4",
+    "changelist": 58902052
+  },
+  "platform": "Win64",
+  "configuration": "Development",
+  "package_directory": ".artifacts/TurretApproach/Windows",
+  "entrypoint": "MeatShield.exe",
+  "runtime_executable": "MeatShield/Binaries/Win64/MeatShield.exe",
+  "runtime_executable_sha256": "942bd2cc08ecf78d307363936456166c23236e99fa1047866c1dd609685ac1bf",
+  "delivered_from": "verified clean source checkout",
+  "death_camera_seconds": 1.05,
+  "physics_commit_policy": "supported collapsed torso; minimum age 1.2 s; quiet 0.35 s; linear <=15 cm/s and angular <=15 deg/s; no age-only timeout",
+  "corpse_eviction": false,
+  "tests": {
+    "native_rule_checks": 60,
+    "python_tests": 34,
+    "planning": "passed",
+    "telemetry_schema_examples": "passed",
+    "initial_rendered_package": {
+      "status": "passed",
+      "scenario": {
+        "status": "passed",
+        "checks": 35,
+        "shots": 14,
+        "hits": 15,
+        "deployments": 2,
+        "corpses": 2,
+        "actors": 28
+      },
+      "audio_rms": 0.02788727431621761,
+      "audio_peak": 0.346771240234375
+    },
+    "clean_checkout": {
+      "build": "passed",
+      "tracked_source_status_after_checks": "clean",
+      "verification": {
+        "status": "passed",
+        "scenario": {
+          "status": "passed",
+          "checks": 35,
+          "shots": 15,
+          "hits": 16,
+          "deployments": 2,
+          "corpses": 2,
+          "actors": 28
+        },
+        "audio_rms": 0.028146263416072674,
+        "audio_peak": 0.346771240234375
+      },
+      "settled_bodies": [
+        {
+          "life": 1,
+          "commit_age_s": 3.88,
+          "torso_height_cm": 19.1,
+          "torso_abs_up_z": 0.11
+        },
+        {
+          "life": 2,
+          "commit_age_s": 4.07,
+          "torso_height_cm": 19.0,
+          "torso_abs_up_z": 0.1
+        }
+      ]
+    },
+    "regression_evidence": [
+      "settle stub failed 3 checks before implementation",
+      "earlier game failed 7 new engine checks",
+      "unstable crouched rig failed settlement and retention",
+      "two evidence-verifier cases failed before enforcement",
+      "first clean renderer exposed skipped movement holds; corrected fixture passes"
+    ]
+  },
+  "limits": [
+    "procedural articulated mannequin art",
+    "active cosmetic rigs ignore mutual/self PhysicsBody contacts",
+    "persistence within loaded session; no save/relaunch restoration",
+    "no formal large-count performance or full-game acceptance",
+    "separate clean-machine deployment and physical-device playtest remain open"
+  ]
+}

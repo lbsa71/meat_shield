@@ -22,6 +22,7 @@ This handoff defines the proposed game and the work required to prove, build, an
 | Setup evidence | [Toolchain validation and open issues](quality/toolchain-validation.md) | Engineering and QA |
 | Playable evidence | [First playable validation](quality/first-playable-validation.md) | Engineering and product owner |
 | Death-loop evidence | [Persistent ragdoll validation](quality/persistent-deaths-validation.md) | Engineering and product owner |
+| Crouch and cover evidence | [Crouch and settling validation](quality/crouch-and-settling-validation.md) | Engineering and product owner |
 | Automation decision | [Pinned editor and local MCP](engineering/adr/0004-editor-automation.md) | Engineering |
 | Engine | [Engine decision proposal](engineering/adr/0001-engine.md) | Technical lead |
 | Bodies | [Corpse construction proposal](engineering/adr/0002-corpse-geometry.md) | Engineering and design |
