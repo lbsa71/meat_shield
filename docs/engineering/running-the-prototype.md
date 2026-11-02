@@ -1,6 +1,6 @@
 # Run the first turret approach
 
-REQ-025, REQ-026, REQ-027 / TC-029–031. The C++ game/editor build, Windows BuildCookRun package and rendered collision/damage scenario have run successfully. Current results are in the [crouch and settling validation record](../quality/crouch-and-settling-validation.md), following the [first-slice validation](../quality/first-playable-validation.md). This is a development prototype; the full corpse-construction siege is not implemented in this slice.
+REQ-025, REQ-026, REQ-027 / TC-029–031. The C++ game/editor build, Windows BuildCookRun package and rendered collision/damage scenario have run successfully. Current results are in the [batch pile and low turret validation record](../quality/physics-pile-validation.md), following the [first-slice validation](../quality/first-playable-validation.md). This is a development prototype; the full corpse-construction siege is not implemented in this slice.
 
 On this development checkout, double-click `Run-MeatShield.cmd` at the repository root after a successful package. It launches `.artifacts/TurretApproach/Windows/MeatShield.exe` in a 1600Ã—900 window. Keep the Windows folder together when copying the build. The standalone package runs without Unreal Editor or Blender installed. Another PC may need the included Unreal prerequisites installer under `Engine/Extras/Redist/en-us`; install it if the executable reports missing runtime dependencies.
 

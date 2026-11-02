@@ -1,0 +1,53 @@
+{
+  "schema_version": 1,
+  "build_id": "physics-pile-0.5+c07edae",
+  "source_revision": "c07edae5dae6adeb01d4b981f758b3da5b2fad67",
+  "verified_on": "2026-11-02",
+  "rules_version": "prototype-0.5",
+  "engine": {
+    "version": "5.8.4",
+    "changelist": 58902052
+  },
+  "requirements": [
+    "REQ-027"
+  ],
+  "platform": "Win64",
+  "configuration": "Development",
+  "runtime_executable": "MeatShield/Binaries/Win64/MeatShield.exe",
+  "runtime_executable_sha256": "982497b903c7a2e6cc18cddd48ecf7293a2e7a5a62807d41f14abadf368428c8",
+  "initial_bodies": 42,
+  "all_settled_by_seconds": 11.33,
+  "highest_torso_cm": 75.4,
+  "muzzle_base_height_cm": 95,
+  "capture_size_px": [
+    888,
+    500
+  ],
+  "field_seed": 71031,
+  "tests": {
+    "native_rule_checks": 64,
+    "tooling_tests": 34,
+    "planning": "passed",
+    "telemetry_schema_examples": "passed",
+    "rendered_package": {
+      "status": "passed",
+      "scenario": {
+        "status": "passed",
+        "checks": 43,
+        "shots": 15,
+        "hits": 16,
+        "deployments": 2,
+        "corpses": 2,
+        "actors": 71
+      },
+      "audio_rms": 0.028057749503441542,
+      "audio_peak": 0.3094482421875
+    }
+  },
+  "limits": [
+    "prototype articulated primitive art",
+    "no new clean-checkout or clean-machine reproduction",
+    "no formal performance acceptance",
+    "loaded-session persistence only"
+  ]
+}

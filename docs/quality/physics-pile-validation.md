@@ -1,0 +1,11 @@
+# Batch physics pile and low turret validation
+
+REQ-027 / TC-031, 2 November 2026. Source `c07edae5dae6adeb01d4b981f758b3da5b2fad67`, Unreal 5.8.4 CL58902052. See [build manifest](builds/physics-pile-2026-11-02.json).
+
+The prior scattered/serial content failed the physical-pile check. The serial/high-muzzle build then failed all three new batch activation, low muzzle and two-body cover cases. Mutual-contact jitter also failed complete settlement. Per-rig contact filtering and a symmetry-aware pose envelope resolved it. One new pure pose-evidence rule test first failed before implementation; all 64 native rule checks now pass. All 34 tooling tests, planning consistency and telemetry schema/examples pass.
+
+Editor/game compile and Windows build/cook/stage/archive pass. The final offscreen rendered package passes all 43 checks: all 42 rigs active within two seconds; all move under gravity and settle into the middle pile by 11.33 s; highest torso 75.4 cm above ground. Actual lowered muzzle rays hit two real prone body fixtures for a 55 cm crouched torso target and clear the 72 cm stack for a 115 cm standing target. The corpse fixtures are cleared afterward. Player crouch/clearance, exposed damage, actual meat interception, two deaths, sideways falling rotation, unchanged older player-body transforms, camera return, retries, actor bounds, sound and quit all pass. Total scene actors: 71 including diagnostics, pile controller, 42 initial bodies and two later deaths.
+
+Fresh 888 by 500 captures were reviewed: a dense central mound, rather than scattered authored bodies, and the lowered gun. Offscreen rendering avoids interference from normal play. Master audio RMS 0.0281, peak 0.3094; current process exits cleanly with no logged runtime errors. The earlier visible test was closed before completion and is not counted as acceptance.
+
+Raw evidence: `.local/batch-package.log`, `.local/batch-verification.json`, `.local/packaged-scenario.log`, `.local/batch-red.log`, `.local/pose-rules-red.log`, and fresh PNG/WAV files under the package Saved directory. The normal launch location contains this verified executable and manifest. No new clean-checkout/clean-machine reproduction, formal performance gate or save-restoration acceptance is claimed.
