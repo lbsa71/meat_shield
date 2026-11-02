@@ -16,11 +16,12 @@ REQ-002, REQ-003, REQ-026 / TC-030. Tested 2 November 2026 on the setup workstat
 | Camera and controls | Independent death view, open-lane clearance over 2.2 m, first-person return within 1.2 s; duplicate hit and R during death do not restart or duplicate it; controls and Escape exit pass |
 | Retention | Both visible corpse actors and their fixed proxies remain after later death and R; no age/count eviction implemented |
 | Render/audio | Fresh 1600×900 fall, two-corpse and turret captures reviewed; master audio RMS about 0.029, peak 0.347 without clipping |
+| Clean source reproduction | Detached source revision `56bcacd` compiled and packaged from a clean checkout; 44 native checks, 32 tooling tests and the rendered 25-check ragdoll scenario passed; tracked source remained clean |
 
 The camera fixture uncovered a real visual defect that passing persistence checks alone did not establish: the sweep began inside the dying avatar's capsule. It now explicitly ignores that avatar while retaining world collision checks. The return endpoint is applied before switching back to the player, avoiding a final-frame snap to the corpse.
 
 Bodies are native Chaos primitive rigid bodies connected by joints. Visible meshes follow those bodies while falling. At 0.75 s the pose is frozen and independent hidden primitives own fixed movement/fire/sight collision. The camera sequence is 0.35 s pull-back, 0.35 s observation and 0.35 s return; the world is not paused. The old 150 ms/350 ms assumptions are superseded for this accepted slice.
 
-Use [run/build instructions](../engineering/running-the-prototype.md). The sanitized build manifest will record the exact verified source and binary hash. Raw captures and logs stay in ignored local artifacts.
+Use [run/build instructions](../engineering/running-the-prototype.md). The [sanitized build manifest](builds/persistent-deaths-2026-11-02.json) records the verified source and binary hash. Raw captures and logs stay in ignored local artifacts. Clean-checkout verification reused the installed engine and SDKs; a separate clean-machine deployment test is not claimed.
 
 This is a procedural mannequin proxy and a loaded-session persistence implementation. No save/relaunch restoration, final skeletal art, supported placement solver, two-shape corpse budget, large-count performance acceptance or full-game milestone acceptance is claimed. A physical-device human playtest remains separate from the automated engine-key fixture.
