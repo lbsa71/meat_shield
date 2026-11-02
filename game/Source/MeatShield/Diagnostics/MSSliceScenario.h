@@ -24,7 +24,7 @@ private:
     double DeathStartedAt=0;
     bool CameraClearanceChecked=false;
     bool CrouchPressed=false,CrouchChecked=false,CrouchReleased=false,ClearanceChecked=false;
-    bool StandingChecked=false,LiveMeatChecked=false,CoverCaptured=false;
+    bool StandingChecked=false,LiveMeatChecked=false,CoverCaptured=false,TwoCaptured=false;
     double CameraReturnSeconds=0;
     UPROPERTY() TObjectPtr<class UStaticMeshComponent> Ceiling;
     float Elapsed=0;

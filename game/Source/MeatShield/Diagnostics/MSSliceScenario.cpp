@@ -39,7 +39,10 @@ void AMSSliceScenario::Tick(float Delta)
     auto* Turret=Mode->Turret.Get(); auto* PC=Cast<APlayerController>(Player->GetController());
     if(!PC) return;
     auto Key=[&](FKey K,EInputEvent E) { PC->InputKey(FInputKeyEventArgs::CreateSimulated(K,E,E==IE_Released?0:1)); };
-    Elapsed+=Delta;
+    // A cold renderer's long first frame must not press and release an input
+    // in one tick. Only fixture scheduling is bounded; gameplay/camera clocks
+    // and the measured death-to-control duration still use real world time.
+    Elapsed+=FMath::Min(Delta,.1f);
     if(Stage==0)
     {
         if(!KeyDown) { Key(EKeys::W,IE_Pressed); Key(EKeys::LeftShift,IE_Pressed); KeyDown=true; }
@@ -170,7 +173,8 @@ void AMSSliceScenario::Tick(float Delta)
     }
     else if(Stage==6)
     {
-        if(Elapsed>.2f && Elapsed<.3f) FScreenshotRequest::RequestScreenshot(FPaths::ProjectSavedDir()/TEXT("ragdoll-two.png"),true,false);
+        if(Elapsed>.2f && !TwoCaptured)
+        { FScreenshotRequest::RequestScreenshot(FPaths::ProjectSavedDir()/TEXT("ragdoll-two.png"),true,false); TwoCaptured=true; }
         if(Elapsed>.4f) { Key(EKeys::LeftControl,IE_Pressed); Player->SetActorLocation(FirstCorpse->Center()+FVector(-200,0,50-FirstCorpse->Center().Z)); Elapsed=0; Stage=7; }
     }
     else if(Stage==7)
