@@ -48,6 +48,8 @@ All entries below are **proposed** unless explicitly labeled source requirement.
 
 ## External engineering references
 
+DEC-23: Accepted playtest refinement: native crouch, shots stopped by moving and fixed meat, and condition-based collapse before commitment. [ADR 0007](engineering/adr/0007-crouch-and-settling.md) supersedes the hard freeze age.
+
 DEC-22: User direction accepts a visible ragdoll death, short camera pull-back/return and retention of every old body. [ADR 0006](engineering/adr/0006-persistent-ragdolls.md) replaces the earlier timing and describes the first implementation contract.
 
 DEC-21: Accepted by the product owner's 2 November 2026 request: deliver the [turret approach](design/first-playable.md) as the first runnable slice. [ADR 0005](engineering/adr/0005-first-playable.md) records procedural proxy presentation and the staged scope.

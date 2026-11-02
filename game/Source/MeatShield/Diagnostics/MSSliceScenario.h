@@ -23,6 +23,10 @@ private:
     TArray<FTransform> FirstPose;
     double DeathStartedAt=0;
     bool CameraClearanceChecked=false;
+    bool CrouchPressed=false,CrouchChecked=false,CrouchReleased=false,ClearanceChecked=false;
+    bool StandingChecked=false,LiveMeatChecked=false,CoverCaptured=false;
+    double CameraReturnSeconds=0;
+    UPROPERTY() TObjectPtr<class UStaticMeshComponent> Ceiling;
     float Elapsed=0;
     int Stage=0, BaselineHits=0, InitialActors=0, Checks=0;
     void Check(bool Pass,const TCHAR* Name);

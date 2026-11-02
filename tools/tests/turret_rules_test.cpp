@@ -1,5 +1,6 @@
 #include "TurretRules.h"
 #include "DeathRules.h"
+#include "SettleRules.h"
 #include <iostream>
 #include <limits>
 #include <stdexcept>
@@ -59,6 +60,20 @@ int main()
     Check(!Death.Step(100).Completed && !Death.Start(2) && !Death.Start(1), "old lives cannot replay death");
     Check(Death.Start(3) && Death.Step(100).Completed, "large delta finishes one new death");
     DeathConfig Invalid; Invalid.Return=-1; Check(!Invalid.IsValid(), "negative camera timing rejected");
+    SettleRules Settle;
+    const SettleSample Rest{0,0,true,true};
+    for(int I=0;I<7;++I) Check(!Settle.Step(.1,Rest).Commit,"early body cannot commit");
+    Check(!Settle.Step(-1,Rest).Valid && Settle.Age<.8,"negative settle delta rejected");
+    Check(!Settle.Step(.1,{std::numeric_limits<double>::quiet_NaN(),0,true,true}).Valid,"invalid body velocity rejected");
+    Settle.Step(.6,{50,0,true,true}); Check(Settle.Quiet==0,"motion resets quiet interval");
+    Settle.Step(.1,Rest);Settle.Step(.1,Rest);
+    Settle.Step(.1,{0,0,false,true});Check(Settle.Quiet==0,"lost support resets quiet");
+    Settle.Step(.1,{0,0,true,false});Check(!Settle.Committed,"upright body never commits");
+    Settle.Step(.1,{0,40,true,true});Check(Settle.Quiet==0,"angular motion prevents lock");
+    Settle.Step(.1,Rest);Settle.Step(.1,Rest);Settle.Step(.1,Rest);
+    Check(Settle.Step(.1,Rest).Commit,"supported quiet body commits");
+    Check(!Settle.Step(5,Rest).Commit,"commit emits once");
+    SettleRules HitchSettle;Check(!HitchSettle.Step(100,Rest).Commit,"hitch is not proof of sustained quiet");
     std::cout << Checks << " checks, " << Failures << " failures\n";
     return Failures ? 1 : 0;
 }

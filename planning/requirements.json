@@ -10,7 +10,8 @@
       "gate": "M1",
       "document": "docs/design/game-design.md",
       "tests": [
-        "TC-001"
+        "TC-001",
+        "TC-031"
       ],
       "acceptance": "Implement walk sprint crouch jump dive and low vault; traverse the approved placement fixture without snagging."
     },
@@ -70,7 +71,8 @@
       "gate": "M1",
       "document": "docs/engineering/technical-design.md",
       "tests": [
-        "TC-006"
+        "TC-006",
+        "TC-031"
       ],
       "acceptance": "Stable proxies block player movement baseline fire and threat sight consistently with visible silhouettes."
     },
@@ -293,9 +295,21 @@
       "gate": "M1",
       "document": "docs/design/persistent-deaths.md",
       "tests": [
-        "TC-030"
+        "TC-030",
+        "TC-031"
       ],
-      "acceptance": "Each lethal life creates exactly one articulated physics corpse. Camera pulls back to show the fall and returns to protected first-person control within 1.2 s. All older bodies remain visible and solid across later lives and R retries. Freeze the visible pose into separate stable collision before control returns. Duplicate hits/retry during death do not duplicate corpses or restart the camera. Invalid simulation deltas do not mutate death progress; completion emits once. Validate two real deaths, physics motion, stable old transforms, corpse visibility/occlusion, camera view target, controls and packaged rendered/audio output."
+      "acceptance": "Each lethal life creates exactly one articulated physics corpse. Camera pulls back to show the fall and returns to protected first-person control within 1.2 s. All older bodies remain visible and solid across later lives and R retries. Freeze into separate stable collision only after supported collapse and sustained low motion; physics may continue after control returns. Duplicate hits/retry during death do not duplicate corpses or restart the camera. Invalid simulation deltas do not mutate death progress; completion emits once. Validate two real deaths, physics motion, stable old transforms, corpse visibility/occlusion, camera view target, controls and packaged rendered/audio output."
+    },
+    {
+      "id": "REQ-027",
+      "title": "Crouching, meat occlusion and complete settling",
+      "provenance": "source",
+      "gate": "M1",
+      "document": "docs/design/crouch-and-settling.md",
+      "tests": [
+        "TC-031"
+      ],
+      "acceptance": "Hold Ctrl or C to crouch with reduced capsule, eye and speed; release stands only with clearance. Turret aim respects stance. Both falling and committed bodies stop first-hit bullets without penetration and tracers end at the blocking surface. Corpses cannot freeze on age alone: wait for supported collapsed torso and sustained low linear/angular velocity, including after player return. Older committed bodies remain unchanged. Exercise native crouch, overhead clearance, live/stable meat occlusion and actual turret damage prevention, settle timing and a packaged rendered build."
     }
   ]
 }

@@ -10,6 +10,7 @@ This handoff defines the proposed game and the work required to prove, build, an
 | Mechanics | [Game design](design/game-design.md) | Design and engineering |
 | First build | [Turret approach slice](design/first-playable.md) | Development and product owner |
 | Death loop | [Persistent ragdoll and return camera](design/persistent-deaths.md) | Development and product owner |
+| Cover refinement | [Crouch and complete settling](design/crouch-and-settling.md) | Development and product owner |
 | Run | [Run and rebuild the prototype](engineering/running-the-prototype.md) | Product owner and development |
 | Content | [Level design](design/level-design.md) | Level design and environment art |
 | Presentation | [Art audio UX and accessibility](design/presentation.md) | Art audio UI and design |

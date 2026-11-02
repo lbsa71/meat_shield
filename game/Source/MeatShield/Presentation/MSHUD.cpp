@@ -21,12 +21,12 @@ void AMSHUD::DrawHUD()
     DrawRect(FLinearColor(.3f,.12f,.1f),42*S,H-68*S,200*S,8*S);
     DrawRect(Mode->Run.Health>30?Green:Amber,42*S,H-68*S,2.f*Mode->Run.Health*S,8*S);
     DrawText(FString::Printf(TEXT("DEPLOYMENTS  %llu"),static_cast<unsigned long long>(Mode->Run.Deployments)),White,265*S,H-99*S,nullptr,.85f*S);
-    DrawText(TEXT("WASD move   SHIFT run   SPACE jump   R retry   M sound   ESC quit"),White,42*S,H-43*S,nullptr,.72f*S);
+    DrawText(TEXT("WASD move  CTRL/C crouch  SHIFT run  SPACE jump  R retry  M sound  ESC quit"),White,42*S,H-43*S,nullptr,.65f*S);
     FString Status=TEXT("SAFE ZONE  /  CROSS THE GREEN LINE TO ADVANCE");
     FLinearColor StatusColor=Green;
     if(!AMSGameMode::IsProtected(Player->GetActorLocation()))
     {
-        Status=TEXT("APPROACH THE TOWER  /  CONCRETE BLOCKS STOP FIRE"); StatusColor=White;
+        Status=TEXT("APPROACH THE TOWER  /  MEAT AND CONCRETE STOP FIRE"); StatusColor=White;
         if(Mode->Turret)
         {
             switch(Mode->Turret->Rules.Phase)

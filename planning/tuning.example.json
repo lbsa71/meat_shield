@@ -1,23 +1,28 @@
 {
   "schema_version": 1,
-  "rules_version": "prototype-0.2",
+  "rules_version": "prototype-0.3",
   "status": "prototype_hypothesis",
   "movement": {
     "standing_height_m": 1.8,
-    "crouched_height_m": 1.05,
+    "crouched_height_m": 1.0,
     "walk_speed_m_s": 4.5,
     "sprint_speed_m_s": 8,
     "step_height_m": 0.45,
     "vault_height_m": 0.9,
-    "dive_duration_s": 0.45
+    "dive_duration_s": 0.45,
+    "crouch_speed_m_s": 2.2
   },
   "respawn": {
     "death_to_control_p95_ms": 1200,
-    "cosmetic_settle_max_s": 0.75,
     "spawn_to_first_decision_target_s": 3,
     "death_camera_pull_back_s": 0.35,
     "death_camera_hold_s": 0.35,
-    "death_camera_return_s": 0.35
+    "death_camera_return_s": 0.35,
+    "cosmetic_settle_min_s": 1.2,
+    "cosmetic_settle_quiet_s": 0.35,
+    "cosmetic_settle_linear_max_m_s": 0.15,
+    "cosmetic_settle_angular_max_deg_s": 15,
+    "cosmetic_settle_torso_up_max": 0.35
   },
   "construction": {
     "max_tiles_per_sector": 128,

@@ -17,10 +17,10 @@ class PackageEvidenceTests(unittest.TestCase):
         self.saved=Path(self.temp.name).resolve()
         self.assertTrue(self.saved.is_relative_to(Path(tempfile.gettempdir()).resolve()))
         self.started=time.time()-10
-        self.report={'status':'passed','checks':25,'shots':14,'hits':14,'deployments':2,'corpses':2,'actors':28}
+        self.report={'status':'passed','checks':35,'shots':14,'hits':14,'deployments':2,'corpses':2,'actors':28}
         (self.saved/'turret-scenario.json').write_text(json.dumps(self.report))
         self.log='MS_SCENARIO_RESULT='+json.dumps(self.report)
-        for name in ['turret-spawn.png','turret-hit.png','ragdoll-fall.png','ragdoll-two.png']:
+        for name in ['turret-spawn.png','turret-hit.png','ragdoll-fall.png','ragdoll-two.png','meat-cover.png']:
             (self.saved/name).write_bytes(b'\x89PNG\r\n\x1a\n'+bytes(2000))
         self.audio()
 
@@ -64,6 +64,13 @@ class PackageEvidenceTests(unittest.TestCase):
         with self.assertRaises(EvidenceError):self.inspect(log='MS_SCENARIO_RESULT='+json.dumps(self.report))
     def test_missing_death_camera_capture_fails(self):
         (self.saved/'ragdoll-fall.png').unlink()
+        with self.assertRaises(EvidenceError):self.inspect()
+    def test_old_fixed_timer_build_cannot_pass_crouch_and_settle_contract(self):
+        self.report['checks']=25
+        (self.saved/'turret-scenario.json').write_text(json.dumps(self.report))
+        with self.assertRaises(EvidenceError):self.inspect(log='MS_SCENARIO_RESULT='+json.dumps(self.report))
+    def test_missing_close_settled_meat_capture_fails(self):
+        (self.saved/'meat-cover.png').unlink()
         with self.assertRaises(EvidenceError):self.inspect()
 
 if __name__=='__main__':unittest.main()

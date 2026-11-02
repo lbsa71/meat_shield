@@ -24,6 +24,9 @@ AMSCharacter::AMSCharacter()
     Camera->bUsePawnControlRotation = true; Camera->FieldOfView = 96;
     GetCharacterMovement()->MaxWalkSpeed = 450; GetCharacterMovement()->JumpZVelocity = 500;
     GetCharacterMovement()->AirControl = .4f; GetCharacterMovement()->MaxStepHeight = 45;
+    GetCharacterMovement()->GetNavAgentPropertiesRef().bCanCrouch=true;
+    GetCharacterMovement()->SetCrouchedHalfHeight(50);
+    GetCharacterMovement()->MaxWalkSpeedCrouched=220;
     Audio = CreateDefaultSubobject<UMSAudio>(TEXT("FootstepsAndImpact"));
 }
 UInputAction* AMSCharacter::Axis(FName Name, FKey Positive, FKey Negative)
@@ -53,6 +56,9 @@ void AMSCharacter::SetupPlayerInputComponent(UInputComponent* Component)
     auto* JumpAction = Button(TEXT("Jump"),EKeys::SpaceBar);
     Input->BindAction(JumpAction,ETriggerEvent::Started,this,&AMSCharacter::JumpStart);
     Input->BindAction(JumpAction,ETriggerEvent::Completed,this,&AMSCharacter::JumpEnd);
+    auto* Duck=Button(TEXT("Crouch"),EKeys::LeftControl); Mapping->MapKey(Duck,EKeys::C);
+    Input->BindAction(Duck,ETriggerEvent::Started,this,&AMSCharacter::CrouchStart);
+    Input->BindAction(Duck,ETriggerEvent::Completed,this,&AMSCharacter::CrouchEnd);
     Input->BindAction(Button(TEXT("Retry"),EKeys::R),ETriggerEvent::Started,this,&AMSCharacter::Retry);
     Input->BindAction(Button(TEXT("Quit"),EKeys::Escape),ETriggerEvent::Started,this,&AMSCharacter::Quit);
     Input->BindAction(Button(TEXT("Mute"),EKeys::M),ETriggerEvent::Started,this,&AMSCharacter::Mute);
@@ -81,9 +87,9 @@ void AMSCharacter::Tick(float Delta)
     Stride += Delta * (Sprinting?13.f:9.f) * FMath::Min(Movement,1.f);
     const bool Ground=GetCharacterMovement()->IsMovingOnGround();
     const float Bob=Ground ? FMath::Sin(Stride*2)*1.25f*Movement : 0;
-    Camera->SetRelativeLocation(FVector(0,0,65+Bob));
+    Camera->SetRelativeLocation(FVector(0,0,FMath::FInterpTo(Camera->GetRelativeLocation().Z,EyeOffset()+Bob,Delta,12)));
     Camera->SetRelativeRotation(FRotator(HitPulse*FMath::Sin(HitPulse*19)*2,0,HitPulse*2));
-    Camera->SetFieldOfView(FMath::FInterpTo(Camera->FieldOfView,Sprinting&&Speed>40?102.f:96.f,Delta,6));
+    Camera->SetFieldOfView(FMath::FInterpTo(Camera->FieldOfView,Sprinting&&!bIsCrouched&&Speed>40?102.f:96.f,Delta,6));
     if (LeftArm && RightArm)
     {
         const float Swing=FMath::Sin(Stride)*Movement;
@@ -93,7 +99,7 @@ void AMSCharacter::Tick(float Delta)
         RightArm->SetRelativeRotation(FRotator(-Swing*12,8,8));
     }
     StepClock-=Delta;
-    if (Ground && Speed>80 && StepClock<=0) { Audio->Play(MSound::Step,GetActorLocation()); StepClock=Sprinting?.28f:.43f; }
+    if (Ground && Speed>80 && StepClock<=0) { Audio->Play(MSound::Step,GetActorLocation()); StepClock=bIsCrouched?.6f:Sprinting?.28f:.43f; }
 }
 void AMSCharacter::Forward(const FInputActionValue& V) { AddMovementInput(GetActorForwardVector(),V.Get<float>()); }
 void AMSCharacter::Right(const FInputActionValue& V) { AddMovementInput(GetActorRightVector(),V.Get<float>()); }
@@ -103,6 +109,8 @@ void AMSCharacter::SprintStart() { Sprinting=true; GetCharacterMovement()->MaxWa
 void AMSCharacter::SprintEnd() { Sprinting=false; GetCharacterMovement()->MaxWalkSpeed=450; }
 void AMSCharacter::JumpStart() { Jump(); }
 void AMSCharacter::JumpEnd() { StopJumping(); }
+void AMSCharacter::CrouchStart() { Crouch(); }
+void AMSCharacter::CrouchEnd() { UnCrouch(); }
 void AMSCharacter::Impact() { HitPulse=1; Audio->Play(MSound::Impact,GetActorLocation()); }
 void AMSCharacter::Retry() { if (auto* Mode=GetWorld()->GetAuthGameMode<AMSGameMode>()) Mode->Retry(this); }
 void AMSCharacter::Mute() { auto* Settings=GetWorld()->GetSubsystem<UMSAudioSettings>(); Settings->Muted=!Settings->Muted; }

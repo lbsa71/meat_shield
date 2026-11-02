@@ -14,6 +14,7 @@ public:
     AMSTurret();
     virtual void BeginPlay() override;
     virtual void Tick(float Delta) override;
+    FHitResult ResolveShot(FVector Start,FVector End,class AMSCharacter* Target);
     MeatShield::ThreatRules Rules;
     int Shots = 0, Hits = 0;
     bool HasSight = false;

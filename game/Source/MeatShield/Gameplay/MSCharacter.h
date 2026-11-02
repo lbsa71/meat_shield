@@ -19,6 +19,8 @@ public:
     virtual void Tick(float Delta) override;
     void Impact();
     void Retry();
+    FVector TargetPoint() const { return GetActorLocation()+FVector(0,0,bIsCrouched?5:25); }
+    float EyeOffset() const { return bIsCrouched?35.f:65.f; }
     bool Sprinting = false;
     float HitPulse = 0, StepClock = 0;
     UPROPERTY() TObjectPtr<UCameraComponent> Camera;
@@ -39,6 +41,8 @@ private:
     void SprintEnd();
     void JumpStart();
     void JumpEnd();
+    void CrouchStart();
+    void CrouchEnd();
     void Quit();
     void Mute();
 };

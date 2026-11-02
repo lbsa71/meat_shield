@@ -55,10 +55,10 @@ void AMSGameMode::Retry(AMSCharacter* Player)
 void AMSGameMode::BeginDeath(AMSCharacter* Player,FVector ShotDirection)
 {
     if(!Death.Start(Run.Life)) return;
-    auto* Body=GetWorld()->SpawnActor<AMSCorpse>(Player->GetActorLocation(),Player->GetActorRotation());
-    Body->Initialize(Run.Life,Player->GetVelocity(),ShotDirection); Corpses.Add(Body);
+    auto* Body=GetWorld()->SpawnActor<AMSCorpse>(Player->GetActorLocation()+FVector(0,0,Player->bIsCrouched?-14:0),Player->GetActorRotation());
+    Body->Initialize(Run.Life,Player->GetVelocity(),ShotDirection,Player->bIsCrouched); Corpses.Add(Body);
     if(!DeathCamera) DeathCamera=GetWorld()->SpawnActor<AMSDeathCamera>();
-    DeathCamera->BeginDeath(Player->Camera->GetComponentTransform(),Player->GetActorForwardVector(),Body,SpawnPoint()+FVector(0,0,65),Player);
+    DeathCamera->BeginDeath(Player->Camera->GetComponentTransform(),Player->GetActorForwardVector(),Body,SpawnPoint()+FVector(0,0,Player->GetCapsuleComponent()->GetScaledCapsuleHalfHeight()-90+Player->EyeOffset()),Player);
     DyingPlayer=Player;
     Player->GetCharacterMovement()->StopMovementImmediately(); Player->GetCharacterMovement()->DisableMovement();
     Player->GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision); Player->SetActorHiddenInGame(true);
@@ -78,7 +78,7 @@ void AMSGameMode::RestorePlayer(AMSCharacter* Player)
     Player->SetActorHiddenInGame(false); Player->GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
     Player->GetCharacterMovement()->SetMovementMode(MOVE_Walking); Player->StopJumping();
     Player->GetCharacterMovement()->StopMovementImmediately();
-    Player->SetActorLocationAndRotation(SpawnPoint(),FRotator::ZeroRotator,false,nullptr,ETeleportType::TeleportPhysics);
+    Player->SetActorLocationAndRotation(SpawnPoint()+FVector(0,0,Player->GetCapsuleComponent()->GetScaledCapsuleHalfHeight()-90),FRotator::ZeroRotator,false,nullptr,ETeleportType::TeleportPhysics);
     if(auto* PC=Cast<APlayerController>(Player->GetController()))
     { PC->SetControlRotation(FRotator::ZeroRotator); PC->SetIgnoreMoveInput(false); PC->SetIgnoreLookInput(false); PC->SetViewTarget(Player); }
     Player->Audio->Play(MSound::Respawn,SpawnPoint());

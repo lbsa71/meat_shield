@@ -1,6 +1,7 @@
 #pragma once
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
+#include "Rules/SettleRules.h"
 #include "MSCorpse.generated.h"
 class UPrimitiveComponent;
 class UPhysicsConstraintComponent;
@@ -12,12 +13,13 @@ class AMSCorpse : public AActor
     GENERATED_BODY()
 public:
     AMSCorpse();
-    bool Initialize(uint64 Life,FVector Velocity,FVector ShotDirection);
+    bool Initialize(uint64 Life,FVector Velocity,FVector ShotDirection,bool Crouched=false);
     virtual void Tick(float Delta) override;
     FVector Center() const;
     TArray<FTransform> Pose() const;
     bool Stable=false, PhysicsMoved=false;
     uint64 LifeId=0;
+    float CommittedAt=0;
     int32 ProxyCount() const { return Proxies.Num(); }
 private:
     UPROPERTY() TArray<TObjectPtr<UPrimitiveComponent>> Bodies;
@@ -28,7 +30,9 @@ private:
     TArray<uint8> Shapes;
     FVector InitialCenter;
     float Age=0;
-    int Part(FName Name,FVector Position,uint8 Shape,FVector Size,float Mass,FLinearColor Color);
+    MeatShield::SettleRules Settling;
+    float NextSettleLog=2;
+    int Part(FName Name,FVector Position,uint8 Shape,FVector Size,float Mass,FLinearColor Color,FRotator Rotation=FRotator::ZeroRotator);
     void Joint(int A,int B,FVector Position,float Swing);
     void CommitPose();
 };

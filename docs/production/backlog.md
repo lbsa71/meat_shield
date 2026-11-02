@@ -97,7 +97,7 @@ Relative weeks 2â€“4.
 
 Movement fixture and controller.
 
-Requirements: REQ-001, REQ-005, REQ-025. Estimate: 3.25 / 5 / 8 days, low / likely / high.
+Requirements: REQ-001, REQ-005, REQ-025, REQ-027. Estimate: 3.25 / 5 / 8 days, low / likely / high.
 
 - [ ] Implement baseline actions and capsule sweeps.
 - [ ] Demonstrate supported pile traversal and clearance failures.
@@ -115,7 +115,7 @@ Requirements: REQ-002, REQ-007, REQ-008, REQ-026. Estimate: 2.5 / 4 / 6.5 days, 
 
 Construction fixture and placement subsystem.
 
-Requirements: REQ-003, REQ-005, REQ-006, REQ-013, REQ-026. Estimate: 4 / 6 / 9.5 days, low / likely / high.
+Requirements: REQ-003, REQ-005, REQ-006, REQ-013, REQ-026, REQ-027. Estimate: 4 / 6 / 9.5 days, low / likely / high.
 
 - [ ] Use bounded supported anchors and immutable proxies.
 - [ ] Repeated placement and cover rays pass fixture targets.
@@ -124,7 +124,7 @@ Requirements: REQ-003, REQ-005, REQ-006, REQ-013, REQ-026. Estimate: 4 / 6 / 9.5
 
 Weapon and first fixed threat.
 
-Requirements: REQ-009, REQ-023, REQ-007, REQ-025. Estimate: 3.25 / 5 / 8 days, low / likely / high.
+Requirements: REQ-009, REQ-023, REQ-007, REQ-025, REQ-027. Estimate: 3.25 / 5 / 8 days, low / likely / high.
 
 - [ ] Resources and reload survive pawn death.
 - [ ] Suppression recovers continuously and controls disable permanently.

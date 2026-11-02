@@ -7,6 +7,14 @@
 #include "Components/StaticMeshComponent.h"
 #include "Components/PointLightComponent.h"
 #include "Kismet/GameplayStatics.h"
+FHitResult AMSTurret::ResolveShot(FVector Start,FVector End,AMSCharacter* Target)
+{
+    FHitResult Hit; FCollisionQueryParams Query(SCENE_QUERY_STAT(TurretShot),false,this);
+    GetWorld()->LineTraceSingleByChannel(Hit,Start,End,ECC_Visibility,Query);
+    if(Target && Hit.GetActor()==Target && !AMSGameMode::IsProtected(Target->GetActorLocation()))
+    { ++Hits; auto* Mode=GetWorld()->GetAuthGameMode<AMSGameMode>(); Mode->ApplyTurretHit(Target,Mode->Run.Life,(End-Start).GetSafeNormal()); }
+    return Hit;
+}
 AMSTurret::AMSTurret()
 {
     PrimaryActorTick.bCanEverTick=true;
@@ -42,7 +50,7 @@ void AMSTurret::Tick(float Delta)
     Super::Tick(Delta);
     auto* Player=Cast<AMSCharacter>(UGameplayStatics::GetPlayerPawn(this,0));
     if(!Player) return;
-    const FVector Target=Player->GetActorLocation()+FVector(0,0,40);
+    const FVector Target=Player->TargetPoint();
     const float Distance=FVector::Distance(Aim->GetComponentLocation(),Target);
     const FRotator Wanted=(Target-Aim->GetComponentLocation()).Rotation();
     Aim->SetWorldRotation(FMath::RInterpTo(Aim->GetComponentRotation(),Wanted,Delta,5));
@@ -61,16 +69,11 @@ void AMSTurret::Tick(float Delta)
 }
 void AMSTurret::Fire(AMSCharacter* Target)
 {
-    const FVector Start=Muzzle->GetComponentLocation(), End=Target->GetActorLocation()+FVector(0,0,40);
-    auto* Mode=GetWorld()->GetAuthGameMode<AMSGameMode>();
-    const uint64 Life=Mode->Run.Life;
-    FHitResult Hit; FCollisionQueryParams Query(SCENE_QUERY_STAT(TurretShot),false,this);
-    const bool Blocked=GetWorld()->LineTraceSingleByChannel(Hit,Start,End,ECC_Visibility,Query);
-    const FVector Impact=Blocked?Hit.ImpactPoint:End;
+    const FVector Start=Muzzle->GetComponentLocation(), End=Target->TargetPoint();
+    const FHitResult Hit=ResolveShot(Start,End,Target);
+    const FVector Impact=Hit.bBlockingHit?Hit.ImpactPoint:End;
     Tracer->SetWorldLocation((Start+Impact)*.5f); Tracer->SetWorldRotation((Impact-Start).Rotation());
     Tracer->SetWorldScale3D(FVector(FVector::Distance(Start,Impact)/100,.008f,.008f));
     Recoil=18; FlashTime=.04f; ++Shots;
     Audio->Play(MSound::Shot,Start,true);
-    if(Hit.GetActor()==Target && !AMSGameMode::IsProtected(Target->GetActorLocation()))
-    { ++Hits; Mode->ApplyTurretHit(Target,Life,(End-Start).GetSafeNormal()); }
 }

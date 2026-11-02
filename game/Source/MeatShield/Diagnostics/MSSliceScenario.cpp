@@ -4,6 +4,10 @@
 #include "Gameplay/MSTurret.h"
 #include "World/MSCorpse.h"
 #include "Presentation/MSAudio.h"
+#include "Presentation/MSVisuals.h"
+#include "Components/CapsuleComponent.h"
+#include "Components/StaticMeshComponent.h"
+#include "Camera/CameraComponent.h"
 #include "GameFramework/PlayerController.h"
 #include "Kismet/GameplayStatics.h"
 #include "AudioMixerBlueprintLibrary.h"
@@ -43,7 +47,20 @@ void AMSSliceScenario::Tick(float Delta)
         if(Elapsed>1.1f && !KeyUp) { Key(EKeys::W,IE_Released); Key(EKeys::LeftShift,IE_Released); KeyUp=true; }
         if(Elapsed>1.6f && !SpawnCaptured)
         { FScreenshotRequest::RequestScreenshot(FPaths::ProjectSavedDir()/TEXT("turret-spawn.png"),true,false); SpawnCaptured=true; }
-        if(Elapsed>2)
+        if(Elapsed>1.25f && !CrouchPressed) { Key(EKeys::LeftControl,IE_Pressed); CrouchPressed=true; }
+        if(Elapsed>1.65f && !CrouchChecked)
+        {
+            Check(Player->bIsCrouched && Player->GetCapsuleComponent()->GetScaledCapsuleHalfHeight()<=50,TEXT("native_crouch_capsule"));
+            Check(Player->Camera->GetComponentLocation().Z<100 && Player->TargetPoint().Z<90,TEXT("crouched_eye_and_target"));
+            if(Player->bIsCrouched) Ceiling=MSVisuals::Part(this,nullptr,TEXT("ClearanceFixture"),FVector(Player->GetActorLocation().X,Player->GetActorLocation().Y,130),{3,3,.3f},FLinearColor(.4f,.4f,.4f),true);
+            CrouchChecked=true;
+        }
+        if(Elapsed>1.85f && !CrouchReleased) { Key(EKeys::LeftControl,IE_Released); CrouchReleased=true; }
+        if(Elapsed>2.2f && !ClearanceChecked)
+        { Check(Player->bIsCrouched,TEXT("ceiling_prevents_standing")); if(Ceiling) Ceiling->DestroyComponent(); ClearanceChecked=true; }
+        if(Elapsed>2.8f && !StandingChecked)
+        { Check(!Player->bIsCrouched && Player->GetCapsuleComponent()->GetScaledCapsuleHalfHeight()>=90,TEXT("stands_after_clearance")); StandingChecked=true; }
+        if(Elapsed>3.1f)
         {
             Check(Mode->Run.Health==100 && Turret->Shots==0,TEXT("protected_spawn"));
             Check(Player->GetActorLocation().X>-2700,TEXT("keyboard_movement"));
@@ -64,6 +81,13 @@ void AMSSliceScenario::Tick(float Delta)
         }
         if(Mode->IsDeathActive() && Mode->Death.Elapsed>.4 && !DeathCaptured)
         { FScreenshotRequest::RequestScreenshot(FPaths::ProjectSavedDir()/TEXT("ragdoll-fall.png"),true,false); DeathCaptured=true; }
+        if(Mode->IsDeathActive() && Mode->Death.Elapsed>.5 && !LiveMeatChecked && Mode->CorpseCount()>0)
+        {
+            auto* Body=Mode->GetCorpses()[0].Get(); const FVector P=Body->Center(); FHitResult Hit;
+            GetWorld()->LineTraceSingleByChannel(Hit,P+FVector(0,0,180),P-FVector(0,0,30),ECC_Visibility);
+            Check(Hit.GetActor()==Body,TEXT("falling_meat_blocks_bullets"));
+            Check(!Body->Stable,TEXT("moving_body_not_locked_early")); LiveMeatChecked=true;
+        }
         if(Mode->Death.Phase==MeatShield::DeathPhase::Observe && !CameraClearanceChecked && Mode->CorpseCount()>0)
         {
             Check(FVector::Distance(PC->GetViewTarget()->GetActorLocation(),Mode->GetCorpses()[0]->Center())>220,TEXT("camera_clears_avatar_capsule"));
@@ -71,11 +95,12 @@ void AMSSliceScenario::Tick(float Delta)
         }
         if(Mode->Run.Health<=55 && Mode->Run.Health>0 && !HitCaptured)
         { FScreenshotRequest::RequestScreenshot(FPaths::ProjectSavedDir()/TEXT("turret-hit.png"),true,false); HitCaptured=true; }
-        if((Mode->Run.Life>1 && !Mode->IsDeathActive()) || Elapsed>14)
+        if(Mode->Run.Life>1 && !Mode->IsDeathActive() && CameraReturnSeconds==0) CameraReturnSeconds=GetWorld()->GetTimeSeconds()-DeathStartedAt;
+        if((Mode->Run.Life>1 && !Mode->IsDeathActive() && Mode->CorpseCount()>0 && Mode->GetCorpses()[0]->Stable) || Elapsed>18)
         {
             Check(DeathObserved,TEXT("death_camera_sequence"));
             Check(Mode->CorpseCount()==1,TEXT("one_persistent_corpse"));
-            Check(DeathStartedAt>0 && GetWorld()->GetTimeSeconds()-DeathStartedAt<=1.2,TEXT("bounded_death_camera_duration"));
+            Check(DeathStartedAt>0 && CameraReturnSeconds>0 && CameraReturnSeconds<=1.2,TEXT("bounded_death_camera_duration"));
             Check(Turret->Hits>=7,TEXT("exposed_trace_damage"));
             Check(Mode->Run.Deployments==1 && Mode->Run.Life==2 && Mode->Run.Health==100 && AMSGameMode::IsProtected(Player->GetActorLocation()),TEXT("single_lethal_reset"));
             if(Mode->CorpseCount()>0)
@@ -83,6 +108,7 @@ void AMSSliceScenario::Tick(float Delta)
                 FirstCorpse=Mode->GetCorpses()[0]; FirstPose=FirstCorpse->Pose();
                 Check(FirstPose.Num()>1 && FMath::Abs(FirstPose[1].GetUnitAxis(EAxis::Z).Z)<.85 && FirstCorpse->Center().Z<80,TEXT("body_topples_to_ground"));
                 Check(FirstCorpse->PhysicsMoved && FirstCorpse->Stable && FirstCorpse->ProxyCount()==15,TEXT("ragdoll_moves_then_commits"));
+                Check(FirstCorpse->CommittedAt>=1.2f,TEXT("no_fixed_075_second_commit"));
                 FHitResult Hit; const FVector Center=FirstCorpse->Center();
                 GetWorld()->LineTraceSingleByChannel(Hit,Center+FVector(0,0,180),Center-FVector(0,0,50),ECC_Visibility);
                 Check(Hit.GetActor()==FirstCorpse,TEXT("committed_body_blocks_queries"));
@@ -94,7 +120,7 @@ void AMSSliceScenario::Tick(float Delta)
     {
         Check(Turret->Hits==BaselineHits && Mode->Run.Health==100,TEXT("cover_blocks_damage"));
         Check(Turret->Audio->Played>0 && Player->Audio->Played>0,TEXT("feedback_audio_triggered"));
-        Player->SetActorLocation(FVector(-700,0,95)); Elapsed=0; Stage=5;
+        Key(EKeys::LeftControl,IE_Pressed); Player->SetActorLocation(FVector(-700,0,95)); Elapsed=0; Stage=5;
     }
     else if(Stage==3)
     {
@@ -132,19 +158,33 @@ void AMSSliceScenario::Tick(float Delta)
         Check(false,TEXT("escape_quit_did_not_exit"));
         FPlatformMisc::RequestExitWithStatus(false,1);
     }
-    else if(Stage==5 && ((Mode->Run.Life>2 && !Mode->IsDeathActive()) || Elapsed>14))
+    else if(Stage==5 && ((Mode->Run.Life>2 && !Mode->IsDeathActive() && Mode->CorpseCount()==2 && Mode->GetCorpses()[1]->Stable) || Elapsed>18))
     {
         Check(Mode->CorpseCount()==2 && Mode->Run.Deployments==2,TEXT("two_distinct_persistent_deaths"));
+        Check(Mode->CorpseCount()==2 && Mode->GetCorpses()[1]->Stable && Mode->GetCorpses()[1]->Center().Z<80 && Mode->GetCorpses()[1]->CommittedAt>=1.2f,TEXT("crouched_death_collapses_and_settles"));
         Check(PC->GetViewTarget()==Player && Mode->Run.Health==100,TEXT("first_person_control_returns"));
         bool Unchanged=IsValid(FirstCorpse) && FirstPose.Num()==FirstCorpse->Pose().Num();
         if(Unchanged) { const auto Current=FirstCorpse->Pose(); for(int I=0;I<Current.Num();++I) Unchanged&=Current[I].Equals(FirstPose[I],.001f); }
         Check(Unchanged,TEXT("older_body_pose_never_changes"));
-        Player->SetActorLocation(FVector(-1400,0,95)); PC->SetControlRotation(FRotator(-12,0,0)); Elapsed=0; Stage=6;
+        Key(EKeys::LeftControl,IE_Released); Player->SetActorLocation(FVector(-1400,0,95)); PC->SetControlRotation(FRotator(-12,0,0)); Elapsed=0; Stage=6;
     }
     else if(Stage==6)
     {
         if(Elapsed>.2f && Elapsed<.3f) FScreenshotRequest::RequestScreenshot(FPaths::ProjectSavedDir()/TEXT("ragdoll-two.png"),true,false);
-        if(Elapsed>.4f)
-        { UAudioMixerBlueprintLibrary::StopRecordingOutput(this,EAudioRecordingExportType::WavFile,TEXT("turret-audio"),FPaths::ConvertRelativePathToFull(FPaths::ProjectSavedDir())); Elapsed=0; Stage=3; }
+        if(Elapsed>.4f) { Key(EKeys::LeftControl,IE_Pressed); Player->SetActorLocation(FirstCorpse->Center()+FVector(-200,0,50-FirstCorpse->Center().Z)); Elapsed=0; Stage=7; }
+    }
+    else if(Stage==7)
+    {
+        if(Elapsed>.35f && !CoverCaptured)
+        { FScreenshotRequest::RequestScreenshot(FPaths::ProjectSavedDir()/TEXT("meat-cover.png"),true,false); CoverCaptured=true; }
+        if(Elapsed<=.5f) return;
+        const FVector P=FirstCorpse->Center(), Start=P+FVector(200,0,0), End=Player->GetActorLocation()+FVector(0,0,P.Z-Player->GetActorLocation().Z);
+        const int Health=Mode->Run.Health;
+        const FHitResult Blocked=Turret->ResolveShot(Start,End,Player);
+        Check(Blocked.GetActor()==FirstCorpse && Mode->Run.Health==Health,TEXT("meat_intercepts_real_damage_trace"));
+        const FHitResult Clear=Turret->ResolveShot(Start+FVector(0,500,0),End,Player);
+        Check(Clear.GetActor()==Player && Mode->Run.Health==Health-15,TEXT("uncovered_trace_still_damages"));
+        Key(EKeys::LeftControl,IE_Released);
+        UAudioMixerBlueprintLibrary::StopRecordingOutput(this,EAudioRecordingExportType::WavFile,TEXT("turret-audio"),FPaths::ConvertRelativePathToFull(FPaths::ProjectSavedDir())); Elapsed=0; Stage=3;
     }
 }
