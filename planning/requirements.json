@@ -22,9 +22,10 @@
       "document": "docs/design/game-design.md",
       "tests": [
         "TC-002",
-        "TC-028"
+        "TC-028",
+        "TC-030"
       ],
-      "acceptance": "Death-to-controllable p95 is at most 150 ms on the recorded benchmark; no level reload or death screen."
+      "acceptance": "Lethal damage starts one short pull-back and return camera sequence. The falling corpse is visible; control returns at the protected start in at most 1.2 seconds without a level reload. This user-directed death presentation supersedes the earlier 150 ms target."
     },
     {
       "id": "REQ-003",
@@ -34,9 +35,10 @@
       "document": "docs/engineering/technical-design.md",
       "tests": [
         "TC-003",
-        "TC-025"
+        "TC-025",
+        "TC-030"
       ],
-      "acceptance": "Committed body proxies remain unchanged through deaths impacts checkpoint transitions and visual pooling."
+      "acceptance": "Every death leaves a visible body in the loaded scene across later lives and manual retries. After its short physics presentation, committed corpse collision and pose remain unchanged through later deaths and impacts; no age/count eviction."
     },
     {
       "id": "REQ-004",
@@ -283,6 +285,17 @@
         "TC-029"
       ],
       "acceptance": "A standalone Windows build launches into a lit first-person approach. WASD and mouse move/look, Shift sprints and Space jumps. A fixed turret acquires visible in-range players, telegraphs, fires bounded bursts and damages on first blocking hit only. Cover prevents damage, spawn is safe, lethal damage resets to spawn once, and movement, aiming, recoil, hit feedback and generated sound are observable. Invalid time or tuning is rejected; large frame steps never emit unbounded shots. Package includes prerequisites instructions and launch script."
+    },
+    {
+      "id": "REQ-026",
+      "title": "Persistent ragdoll death and return camera",
+      "provenance": "source",
+      "gate": "M1",
+      "document": "docs/design/persistent-deaths.md",
+      "tests": [
+        "TC-030"
+      ],
+      "acceptance": "Each lethal life creates exactly one articulated physics corpse. Camera pulls back to show the fall and returns to protected first-person control within 1.2 s. All older bodies remain visible and solid across later lives and R retries. Freeze the visible pose into separate stable collision before control returns. Duplicate hits/retry during death do not duplicate corpses or restart the camera. Invalid simulation deltas do not mutate death progress; completion emits once. Validate two real deaths, physics motion, stable old transforms, corpse visibility/occlusion, camera view target, controls and packaged rendered/audio output."
     }
   ]
 }

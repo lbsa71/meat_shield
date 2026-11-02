@@ -1,4 +1,5 @@
 #include "TurretRules.h"
+#include "DeathRules.h"
 #include <iostream>
 #include <limits>
 #include <stdexcept>
@@ -44,6 +45,20 @@ int main()
     Check(!L.Damage(1, 1000) && L.Deployments == 1, "duplicate lethal ignored");
     L.Respawn(); Check(L.Health == 100 && L.Life == 2 && L.Deployments == 1, "new life preserves run count");
     Check(!L.Damage(1, 1000) && L.Health == 100, "previous life cannot damage replacement");
+    DeathTimeline Death;
+    Check(DeathConfig{}.IsValid(), "death timing valid");
+    Check(!Death.Start(0), "zero life rejected");
+    Check(Death.Start(2) && Death.Active(), "death begins once");
+    Check(!Death.Start(2) && !Death.Start(3), "duplicate or overlapping death rejected");
+    Check(!Death.Step(-1).Valid && Death.Elapsed==0, "invalid death delta does not advance");
+    Check(!Death.Step(std::numeric_limits<double>::quiet_NaN()).Valid, "nonfinite death delta rejected");
+    Death.Step(.349); Check(Death.Phase==DeathPhase::PullBack && Death.Progress()<1, "pullback boundary");
+    Death.Step(.001001); Check(Death.Phase==DeathPhase::Observe, "observe follows pullback");
+    Death.Step(.35); Check(Death.Phase==DeathPhase::Return, "return follows observation");
+    Check(Death.Step(.35).Completed && !Death.Active(), "one return completion");
+    Check(!Death.Step(100).Completed && !Death.Start(2) && !Death.Start(1), "old lives cannot replay death");
+    Check(Death.Start(3) && Death.Step(100).Completed, "large delta finishes one new death");
+    DeathConfig Invalid; Invalid.Return=-1; Check(!Invalid.IsValid(), "negative camera timing rejected");
     std::cout << Checks << " checks, " << Failures << " failures\n";
     return Failures ? 1 : 0;
 }

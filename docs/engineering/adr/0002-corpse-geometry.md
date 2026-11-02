@@ -2,6 +2,8 @@
 
 Status: Proposed. Owners: Technical lead and designer. Decision gate: M1, representative performance recheck M2.
 
+The [accepted persistent-ragdoll slice](0006-persistent-ragdolls.md) supersedes immediate authored pose placement for the current demo. This original proposal remains a future constrained-placement/performance option, not a description of the current ragdoll implementation.
+
 ## Context
 
 Pure persistent ragdolls can vary under repeated impacts and require ongoing simulation. Players must trust a death placement, and unlimited attempts cannot create unlimited active simulation or draw cost.

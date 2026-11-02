@@ -40,8 +40,10 @@ void AMSHUD::DrawHUD()
         }
     }
     const float BannerWidth=600*S;
+    if(Mode->IsDeathActive()) { Status=TEXT("BODY LEFT BEHIND  //  REDEPLOYING"); StatusColor=Amber; }
     DrawRect(FLinearColor(.018f,.028f,.035f,.75f),(W-BannerWidth)/2,140*S,BannerWidth,44*S);
     DrawText(Status,StatusColor,(W-BannerWidth)/2+20*S,154*S,nullptr,.82f*S);
+    DrawText(FString::Printf(TEXT("BODIES  %d"),Mode->CorpseCount()),White,W-170*S,40*S,nullptr,.9f*S);
     DrawLine(W/2-6*S,H/2,W/2-2*S,H/2,White); DrawLine(W/2+2*S,H/2,W/2+6*S,H/2,White);
     DrawLine(W/2,H/2-6*S,W/2,H/2-2*S,White); DrawLine(W/2,H/2+2*S,W/2,H/2+6*S,White);
     if(GetWorld()->GetSubsystem<UMSAudioSettings>()->Muted) DrawText(TEXT("SOUND MUTED  [M]"),Amber,W-210*S,H-50*S,nullptr,.9f*S);

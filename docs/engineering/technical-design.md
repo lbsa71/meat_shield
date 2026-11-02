@@ -32,6 +32,8 @@ Process an update in this order:
 
 A previous-update capture remains valid if the player dies now. Victory is terminal and emits once. Apply explicit event precedence in automated scenarios; do not rely on incidental actor tick order or asynchronous callbacks for gameplay decisions.
 
+The current [persistent ragdoll slice](../design/persistent-deaths.md) uses a brief articulated physics fall followed by frozen visual poses and separate collision authority. Its accepted camera timing and retention behavior supersede the immediate authored placement details below for this demo. Those details remain future constrained-placement/performance proposals.
+
 ## Placement algorithm proposal
 
 The mechanical result is a stable authored proxy chosen from a small pose library, initially prone and compact wall-collapse. A proxy uses at most two simple convex shapes. Visual impact may briefly simulate, but it does not determine the saved or walkable result. Unreal distinguishes simple and complex collision and restricts simulation with complex-as-simple geometry. [Epic collision reference](https://dev.epicgames.com/documentation/en-us/unreal-engine/simple-versus-complex-collision-in-unreal-engine).

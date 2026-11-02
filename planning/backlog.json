@@ -136,14 +136,15 @@
       "role": "Engineering",
       "milestone": "M1",
       "priority": "P0",
-      "status": "planned",
+      "status": "active",
       "dependencies": [
         "MS-001"
       ],
       "requirements": [
         "REQ-002",
         "REQ-007",
-        "REQ-008"
+        "REQ-008",
+        "REQ-026"
       ],
       "estimate_days": {
         "low": 2.5,
@@ -163,7 +164,7 @@
       "role": "Engineering",
       "milestone": "M1",
       "priority": "P0",
-      "status": "planned",
+      "status": "active",
       "dependencies": [
         "MS-003",
         "MS-006"
@@ -172,7 +173,8 @@
         "REQ-003",
         "REQ-005",
         "REQ-006",
-        "REQ-013"
+        "REQ-013",
+        "REQ-026"
       ],
       "estimate_days": {
         "low": 4,
@@ -220,7 +222,7 @@
       "role": "Engineering",
       "milestone": "M1",
       "priority": "P0",
-      "status": "planned",
+      "status": "active",
       "dependencies": [
         "MS-006",
         "MS-007"
@@ -228,7 +230,8 @@
       "requirements": [
         "REQ-002",
         "REQ-014",
-        "REQ-018"
+        "REQ-018",
+        "REQ-026"
       ],
       "estimate_days": {
         "low": 1.25,
@@ -275,13 +278,14 @@
       "role": "Art",
       "milestone": "M1",
       "priority": "P0",
-      "status": "planned",
+      "status": "active",
       "dependencies": [
         "MS-004"
       ],
       "requirements": [
         "REQ-014",
-        "REQ-015"
+        "REQ-015",
+        "REQ-026"
       ],
       "estimate_days": {
         "low": 4,

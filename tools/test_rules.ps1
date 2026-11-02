@@ -16,7 +16,7 @@ try {
     @"
 @call "$devCmd" -no_logo -arch=x64 -host_arch=x64
 @if errorlevel 1 exit /b 1
-@cl.exe /nologo /std:c++20 /EHsc /W4 /I"$rules" "$test" "$rules\TurretRules.cpp" /Fe:"$exe"
+@cl.exe /nologo /std:c++20 /EHsc /W4 /I"$rules" "$test" "$rules\TurretRules.cpp" "$rules\DeathRules.cpp" /Fe:"$exe"
 @exit /b %ERRORLEVEL%
 "@ | Set-Content -LiteralPath $batch -Encoding ascii
     & cmd.exe /d /c $batch

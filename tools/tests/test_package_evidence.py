@@ -17,10 +17,10 @@ class PackageEvidenceTests(unittest.TestCase):
         self.saved=Path(self.temp.name).resolve()
         self.assertTrue(self.saved.is_relative_to(Path(tempfile.gettempdir()).resolve()))
         self.started=time.time()-10
-        self.report={'status':'passed','checks':12,'shots':7,'hits':7,'deployments':1,'actors':25}
+        self.report={'status':'passed','checks':25,'shots':14,'hits':14,'deployments':2,'corpses':2,'actors':28}
         (self.saved/'turret-scenario.json').write_text(json.dumps(self.report))
         self.log='MS_SCENARIO_RESULT='+json.dumps(self.report)
-        for name in ['turret-spawn.png','turret-hit.png']:
+        for name in ['turret-spawn.png','turret-hit.png','ragdoll-fall.png','ragdoll-two.png']:
             (self.saved/name).write_bytes(b'\x89PNG\r\n\x1a\n'+bytes(2000))
         self.audio()
 
@@ -57,6 +57,13 @@ class PackageEvidenceTests(unittest.TestCase):
         with self.assertRaises(EvidenceError):self.inspect(log='MS_SCENARIO_RESULT='+json.dumps(self.report))
     def test_report_disagrees_with_current_process(self):
         self.report['status']='failed';(self.saved/'turret-scenario.json').write_text(json.dumps(self.report))
+        with self.assertRaises(EvidenceError):self.inspect()
+    def test_instant_reset_build_cannot_pass_the_death_contract(self):
+        self.report.update(checks=12,deployments=1);self.report.pop('corpses')
+        (self.saved/'turret-scenario.json').write_text(json.dumps(self.report))
+        with self.assertRaises(EvidenceError):self.inspect(log='MS_SCENARIO_RESULT='+json.dumps(self.report))
+    def test_missing_death_camera_capture_fails(self):
+        (self.saved/'ragdoll-fall.png').unlink()
         with self.assertRaises(EvidenceError):self.inspect()
 
 if __name__=='__main__':unittest.main()

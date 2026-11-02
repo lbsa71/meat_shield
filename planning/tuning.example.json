@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "rules_version": "prototype-0.1",
+  "rules_version": "prototype-0.2",
   "status": "prototype_hypothesis",
   "movement": {
     "standing_height_m": 1.8,
@@ -12,9 +12,12 @@
     "dive_duration_s": 0.45
   },
   "respawn": {
-    "death_to_control_p95_ms": 150,
-    "cosmetic_settle_max_s": 0.35,
-    "spawn_to_first_decision_target_s": 3
+    "death_to_control_p95_ms": 1200,
+    "cosmetic_settle_max_s": 0.75,
+    "spawn_to_first_decision_target_s": 3,
+    "death_camera_pull_back_s": 0.35,
+    "death_camera_hold_s": 0.35,
+    "death_camera_return_s": 0.35
   },
   "construction": {
     "max_tiles_per_sector": 128,

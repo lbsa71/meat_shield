@@ -4,7 +4,7 @@ A fast first-person fortress assault in which instant respawns and persistent bo
 
 **Repository status:** first playable turret approach, 2 November 2026, alongside the full-game planning baseline. Meat Shield is the working name; the commercial title is unresolved.
 
-Run the Windows prototype with `Run-MeatShield.cmd` after packaging. It includes first-person movement, sprint/jump, an automatic turret, cover, damage and instant retry, procedural animation, and synthesized effects. See [run/build instructions](docs/engineering/running-the-prototype.md). The full corpse-construction game remains in development.
+Run the Windows prototype with `Run-MeatShield.cmd` after packaging. It includes first-person movement, sprint/jump, an automatic turret, cover, damage, persistent physical ragdolls, a short death-camera pull-back/return, procedural animation, and synthesized effects. Every corpse stays across lives and R retries in the loaded level. See [run/build instructions](docs/engineering/running-the-prototype.md). The full fortress, constrained placement and save systems remain in development.
 
 ## Start here
 

@@ -72,5 +72,5 @@ void AMSTurret::Fire(AMSCharacter* Target)
     Recoil=18; FlashTime=.04f; ++Shots;
     Audio->Play(MSound::Shot,Start,true);
     if(Hit.GetActor()==Target && !AMSGameMode::IsProtected(Target->GetActorLocation()))
-    { ++Hits; Mode->ApplyTurretHit(Target,Life); }
+    { ++Hits; Mode->ApplyTurretHit(Target,Life,(End-Start).GetSafeNormal()); }
 }

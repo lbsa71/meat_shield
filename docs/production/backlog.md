@@ -106,7 +106,7 @@ Requirements: REQ-001, REQ-005, REQ-025. Estimate: 3.25 / 5 / 8 days, low / like
 
 Persistent siege coordinator.
 
-Requirements: REQ-002, REQ-007, REQ-008. Estimate: 2.5 / 4 / 6.5 days, low / likely / high.
+Requirements: REQ-002, REQ-007, REQ-008, REQ-026. Estimate: 2.5 / 4 / 6.5 days, low / likely / high.
 
 - [ ] Duplicate lethal hits emit one death and one pawn.
 - [ ] Apply specified lethal and capture ordering.
@@ -115,7 +115,7 @@ Requirements: REQ-002, REQ-007, REQ-008. Estimate: 2.5 / 4 / 6.5 days, low / lik
 
 Construction fixture and placement subsystem.
 
-Requirements: REQ-003, REQ-005, REQ-006, REQ-013. Estimate: 4 / 6 / 9.5 days, low / likely / high.
+Requirements: REQ-003, REQ-005, REQ-006, REQ-013, REQ-026. Estimate: 4 / 6 / 9.5 days, low / likely / high.
 
 - [ ] Use bounded supported anchors and immutable proxies.
 - [ ] Repeated placement and cover rays pass fixture targets.
@@ -133,7 +133,7 @@ Requirements: REQ-009, REQ-023, REQ-007, REQ-025. Estimate: 3.25 / 5 / 8 days, l
 
 Timing events and spawn fallback fixture.
 
-Requirements: REQ-002, REQ-014, REQ-018. Estimate: 1.25 / 2 / 3.25 days, low / likely / high.
+Requirements: REQ-002, REQ-014, REQ-018, REQ-026. Estimate: 1.25 / 2 / 3.25 days, low / likely / high.
 
 - [ ] Capture death-to-control distribution and reason codes.
 - [ ] Protected spawn does not enter a lethal loop.
@@ -151,7 +151,7 @@ Requirements: REQ-004, REQ-008, REQ-009. Estimate: 4.5 / 7 / 11.25 days, low / l
 
 Prototype silhouette and feedback.
 
-Requirements: REQ-014, REQ-015. Estimate: 4 / 6 / 9.5 days, low / likely / high.
+Requirements: REQ-014, REQ-015, REQ-026. Estimate: 4 / 6 / 9.5 days, low / likely / high.
 
 - [ ] Visual result aligns with useful proxy.
 - [ ] Feedback uses pattern and does not delay respawn.

@@ -13,7 +13,7 @@ Use automated fixtures for idempotency, state transitions, proxy queries, snapsh
 | ID | Requirements | Setup and action | Expected result |
 | --- | --- | --- | --- |
 | TC-001 | REQ-001 | Traverse flat ground walls stairs a one-body step and three-body pile with each movement action on keyboard and controller | Responsive actions, no snag or launch, no vault through blocked destination |
-| TC-002 | REQ-002 | Record at least 200 deaths across empty and full-budget scenes, with capture effects and saves active | p95 lethal-hit-to-first-accepted-movement at most 150 ms on benchmark; no map reload or blocked control |
+| TC-002 | REQ-002 | Record at least 200 deaths across empty and full-budget scenes, with capture effects and saves active | Current ragdoll-camera slice returns control within 1.2 s; no map reload; later full-gate benchmark follows the accepted death presentation |
 | TC-003 | REQ-003 | Commit a body, die nearby repeatedly, shoot it, fill visual pool, cross checkpoint and return | Authoritative transforms support and occlusion remain unchanged |
 | TC-004 | REQ-004 | Clean courtyard, compare zero one two and three intentional placements; observe eight new players | Placement changes a demonstrated route; at least six deliberately place and exploit a body without a supplied solution |
 | TC-005 | REQ-005 | Die at wall edges over pits on ledges and on existing bodies, including invalid endpoints | Supported bounded anchors only; no wall crossing floating support or distant teleport |
@@ -40,10 +40,12 @@ Use automated fixtures for idempotency, state transitions, proxy queries, snapsh
 | TC-026 | REQ-013 | Empty half-full full-budget 10-minute traces plus 1000-death soak and final two saturated 10-minute windows | p95 frame at most 16.7 ms p99 at most 25 ms on benchmark; memory plateaus, growth above 5% investigated; useful cover retained |
 | TC-027 | REQ-012 | Interrupt writes corrupt newest generation load older supported and unknown newer fixtures exhaust disk space | Previous valid generation recoverable; migrations explicit; newer or failed saves not silently overwritten |
 | TC-028 | REQ-002 REQ-016 | Die while holding inputs, open menu during possession, switch device and lose/regain focus | No stuck fire repeated interaction accidental capture or extra pawn; focus loss pauses offline siege |
-
 | TC-029 | REQ-025 | Build the turret-approach slice, exercise safe spawn, walk/sprint/jump, exposed approach, cover, lethal reset, mute and quit in the packaged Windows game | Visible procedural locomotion/aim/recoil/hit animations and audible effects; first blocking trace governs damage; bounded burst and one reset per life; standalone launch works |
+| TC-030 | REQ-002 REQ-003 REQ-026 | Kill the player twice, inject duplicate lethal requests and R during death, inspect pull-back/return, actual falling physics, frozen poses and old-body collision, then retry again | One corpse per lethal life, all earlier corpses retained and stable, visible fall, protected first-person return within 1.2 s, one camera completion and no temporary camera leak |
+
 
 ## Matrix and evidence requirements
+
 
 
 At M2, use the nominated performance PC at 1080p and record the actual preset and drivers. At M4, add a lower-spec candidate and a higher-spec reference machine, supported window modes and aspect ratios, keyboard/mouse and controller, minimum and large text, full and reduced gore, and camera comfort settings. These machines determine published specifications; no hardware requirement is invented here.

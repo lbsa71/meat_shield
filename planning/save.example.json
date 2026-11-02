@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "rules_version": "prototype-0.1",
+  "rules_version": "prototype-0.2",
   "content_version": "fortress-fixture-0.1",
   "generation": 7,
   "run_id": "fixture-run-001",

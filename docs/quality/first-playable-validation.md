@@ -2,6 +2,8 @@
 
 2 November 2026. REQ-025 / TC-029; partial MS-001, MS-005 and MS-008. Tested on the setup workstation recorded in [toolchain validation](toolchain-validation.md), with Unreal 5.8.4 / changelist 58902052. The scope is the [turret approach](../design/first-playable.md), not acceptance of the full siege.
 
+This records the original instant-reset build. The subsequent [persistent-death validation](persistent-deaths-validation.md) covers the owner's ragdoll/camera continuation and supersedes that reset behavior.
+
 ## Executed checks
 
 | Check | Result |

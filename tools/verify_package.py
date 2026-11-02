@@ -22,16 +22,17 @@ def inspect_evidence(saved, started, log_text, returncode):
     if not reports:
         raise EvidenceError('Current process did not emit its completion marker')
     report=reports[-1]
-    if report.get('status')!='passed' or report.get('checks',0)<12:
+    if (report.get('status')!='passed' or report.get('checks',0)<25
+            or report.get('corpses')!=2 or report.get('deployments')!=2):
         raise EvidenceError('Scenario did not pass all current checks')
     saved=Path(saved)
-    for name in ('turret-scenario.json','turret-spawn.png','turret-hit.png','turret-audio.wav'):
+    for name in ('turret-scenario.json','turret-spawn.png','turret-hit.png','ragdoll-fall.png','ragdoll-two.png','turret-audio.wav'):
         p=saved/name
         if not p.is_file() or p.stat().st_mtime<started:
             raise EvidenceError(f'Missing or stale output: {name}')
     if json.loads((saved/'turret-scenario.json').read_text(encoding='utf-8-sig'))!=report:
         raise EvidenceError('Saved report does not match the current process')
-    for name in ('turret-spawn.png','turret-hit.png'):
+    for name in ('turret-spawn.png','turret-hit.png','ragdoll-fall.png','ragdoll-two.png'):
         data=(saved/name).read_bytes()
         if len(data)<1000 or not data.startswith(b'\x89PNG\r\n\x1a\n'):
             raise EvidenceError(f'Invalid render capture: {name}')

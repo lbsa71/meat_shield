@@ -18,7 +18,7 @@ flowchart LR
     D -->|Final breach| G[Stop timer and show route]
 ```
 
-The world remains loaded across deaths. Only the controlled pawn is replaced. Defenders and objective timers continue. There is no death screen, killcam, per-life score, resource fee, or life limit.
+The world remains loaded across deaths. Only the controlled pawn is replaced. Defenders and objective timers continue. There is no menu death screen, per-life score, resource fee, or life limit. The accepted prototype now uses a short [ragdoll pull-back/return camera](persistent-deaths.md) before first-person control resumes.
 
 ## Movement and placement
 
@@ -45,7 +45,7 @@ Bodies are material, not inventory. There is no pickup, construction menu, body 
 
 The lethal hit is accepted once per life. In the same simulation update, commit the new construction body if valid, increment the deployment count, preserve weapon and world state, and request the next pawn at the captured spawn. The next pawn starts healthy, facing the active approach, with the same magazine, reserve ammunition, and reload progress. Clear stale held fire and interact commands; require a new press for interaction. Movement held across death may resume after possession to preserve flow.
 
-Target death-to-controllable time is at most 150 ms at the 95th percentile on the nominated test PC. This is measured from lethal damage to the first simulation update that accepts movement on the replacement pawn. It includes any safety relocation and possession. It excludes initial level loading and does not promise display or device latency. Cosmetic settling lasts no more than 350 ms and does not gate respawn.
+The current user-directed prototype targets death-to-controllable time of at most 1.2 s, including its 1.05 s ragdoll observation/return sequence. This supersedes the earlier 150 ms target. This is measured from lethal damage to the first simulation update that accepts movement on the replacement pawn. It includes any safety relocation and possession. It excludes initial level loading and does not promise display or device latency. In this slice, ragdoll physics commits a fixed pose at 0.75 s before control returns. The earlier immediate authored proxy is a future constrained-placement proposal, as recorded in ADR 0006.
 
 Spawn anchors have authored backup positions. Newly spawned pawns cannot create construction inside the safety zone. Threats cannot directly fire into an anchor. If all backups are obstructed, use the protected spawn alcove and record a test failure; do not recursively kill and respawn the player.
 
@@ -55,7 +55,7 @@ The baseline rifle has a 30-round magazine, 90-round reserve, hitscan nonpenetra
 
 The rifle temporarily suppresses exposed emplacement sensors. Three valid hits within a 1-second window suppress a threat for 4 seconds. Suppression cannot be refreshed indefinitely: subsequent hits during suppression do not extend its end time. The threat then enters a visible 1-second recovery state before reacquiring. Physical access to the sector control permanently disables it. These starting rules create a movement opportunity without allowing distant shooting to clear the siege.
 
-Threats use `Idle → Acquire → Telegraph → Burst → Recover`; `Suppressed` interrupts acquisition, telegraph, or burst, and `Disabled` is terminal for the current sector. Telegraphs include a visible emitter and an audio cue. Emplacement bursts stop on construction collision. A second variant changes angle and burst cadence, using the same state machine. No roaming AI or corpse navigation is required for this release.
+Threats use `Idle â†’ Acquire â†’ Telegraph â†’ Burst â†’ Recover`; `Suppressed` interrupts acquisition, telegraph, or burst, and `Disabled` is terminal for the current sector. Telegraphs include a visible emitter and an audio cue. Emplacement bursts stop on construction collision. A second variant changes angle and burst cadence, using the same state machine. No roaming AI or corpse navigation is required for this release.
 
 ## Persistence and reset rules
 

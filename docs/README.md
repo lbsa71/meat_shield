@@ -9,6 +9,7 @@ This handoff defines the proposed game and the work required to prove, build, an
 | Provenance | [Source decisions and assumptions](source-and-decisions.md) | Leads and reviewers |
 | Mechanics | [Game design](design/game-design.md) | Design and engineering |
 | First build | [Turret approach slice](design/first-playable.md) | Development and product owner |
+| Death loop | [Persistent ragdoll and return camera](design/persistent-deaths.md) | Development and product owner |
 | Run | [Run and rebuild the prototype](engineering/running-the-prototype.md) | Product owner and development |
 | Content | [Level design](design/level-design.md) | Level design and environment art |
 | Presentation | [Art audio UX and accessibility](design/presentation.md) | Art audio UI and design |
@@ -19,6 +20,7 @@ This handoff defines the proposed game and the work required to prove, build, an
 | Environment | [Unreal and Blender setup](engineering/toolchain-setup.md) | Development agent and product owner |
 | Setup evidence | [Toolchain validation and open issues](quality/toolchain-validation.md) | Engineering and QA |
 | Playable evidence | [First playable validation](quality/first-playable-validation.md) | Engineering and product owner |
+| Death-loop evidence | [Persistent ragdoll validation](quality/persistent-deaths-validation.md) | Engineering and product owner |
 | Automation decision | [Pinned editor and local MCP](engineering/adr/0004-editor-automation.md) | Engineering |
 | Engine | [Engine decision proposal](engineering/adr/0001-engine.md) | Technical lead |
 | Bodies | [Corpse construction proposal](engineering/adr/0002-corpse-geometry.md) | Engineering and design |

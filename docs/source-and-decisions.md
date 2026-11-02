@@ -48,6 +48,8 @@ All entries below are **proposed** unless explicitly labeled source requirement.
 
 ## External engineering references
 
+DEC-22: User direction accepts a visible ragdoll death, short camera pull-back/return and retention of every old body. [ADR 0006](engineering/adr/0006-persistent-ragdolls.md) replaces the earlier timing and describes the first implementation contract.
+
 DEC-21: Accepted by the product owner's 2 November 2026 request: deliver the [turret approach](design/first-playable.md) as the first runnable slice. [ADR 0005](engineering/adr/0005-first-playable.md) records procedural proxy presentation and the staged scope.
 
 Reviewed 1 November 2026. Pin the engine patch at M0 and check these references against that patch. The architecture and budgets are project proposals inferred from these capabilities; the documentation does not establish their suitability for this game.
