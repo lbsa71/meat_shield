@@ -1,0 +1,129 @@
+{
+  "schema_version": 1,
+  "date": "2026-11-05",
+  "profile": "low-crawl-puzzle",
+  "rules_version": "prototype-0.6",
+  "requirements": [
+    "REQ-030"
+  ],
+  "source_revision": "ae40669335539b769ecd9a80a0ef1f1536f78f96",
+  "engine": {
+    "major": 5,
+    "minor": 8,
+    "patch": 4,
+    "changelist": 58902052
+  },
+  "launch_arguments": [
+    "-MSRealism",
+    "-MSPuzzle"
+  ],
+  "puzzle": {
+    "version": 1,
+    "seed": 71031,
+    "initial_bodies": 18,
+    "pose_sha256": "e87ea861584c54cf31e19798dc8fc8f5a92b5e26d97c79a1fd0daa251e8e5973",
+    "render_collision_vertices": 9633,
+    "triangles": 18816
+  },
+  "files": [
+    {
+      "path": "MeatShield/Binaries/Win64/MeatShield.exe",
+      "bytes": 332106240,
+      "sha256": "826524c744a0124ddcf07f1b53ee1400a20b7fb378bb09da4e7537e3105a955a"
+    },
+    {
+      "path": "MeatShield/Content/Paks/global.ucas",
+      "bytes": 3586352,
+      "sha256": "668e9f781d1634ac20c2e314e785727dc6344452f0365919d89058bff1fd1ce6"
+    },
+    {
+      "path": "MeatShield/Content/Paks/global.utoc",
+      "bytes": 854,
+      "sha256": "593c7245a8d7c8d21dcf7087f535463cb2d8077d08f69b27bfaea531eb2c6c50"
+    },
+    {
+      "path": "MeatShield/Content/Paks/MeatShield-Windows.pak",
+      "bytes": 11554828,
+      "sha256": "fe35d9ac6ac407557e448d98d28a573144c14b7166a51c796995cc5c71ac306a"
+    },
+    {
+      "path": "MeatShield/Content/Paks/MeatShield-Windows.ucas",
+      "bytes": 872659472,
+      "sha256": "0d3a64d1a8719fe2ced96ce37e7b6d3775e61e90e21043c030fe9e451a4d65a3"
+    },
+    {
+      "path": "MeatShield/Content/Paks/MeatShield-Windows.utoc",
+      "bytes": 409536,
+      "sha256": "24f7441b8f1257a6a2cf52c4448ac576251516e9a8453e6e812b1f647f10a8ba"
+    }
+  ],
+  "checks": {
+    "rules": {
+      "checks": 145,
+      "failures": 0
+    },
+    "python": {
+      "tests": 37,
+      "failures": 0
+    },
+    "puzzle": {
+      "status": "passed",
+      "runs": [
+        {
+          "status": "passed",
+          "checks": 18,
+          "failures": 0,
+          "layout_hash": 126475818,
+          "route_waypoints": 7
+        },
+        {
+          "status": "passed",
+          "checks": 18,
+          "failures": 0,
+          "layout_hash": 126475818,
+          "route_waypoints": 7
+        }
+      ]
+    },
+    "human_regression": {
+      "status": "passed",
+      "scenario": {
+        "status": "passed",
+        "checks": 47,
+        "shots": 15,
+        "hits": 16,
+        "deployments": 2,
+        "corpses": 2,
+        "actors": 74
+      },
+      "audio_rms": 0.027998590195208107,
+      "audio_peak": 0.347503662109375
+    },
+    "primitive_regression": {
+      "status": "passed",
+      "scenario": {
+        "status": "passed",
+        "checks": 43,
+        "shots": 15,
+        "hits": 16,
+        "deployments": 2,
+        "corpses": 2,
+        "actors": 71
+      },
+      "audio_rms": 0.027225308135099553,
+      "audio_peak": 0.347137451171875
+    }
+  },
+  "screenshots": {
+    "directory": "docs/quality/evidence/crawl-puzzle-2026-11-05",
+    "width": 1280,
+    "height": 720
+  },
+  "limitations": [
+    "Route traversal isolates movement from automatic combat pacing; combat balance requires playtest.",
+    "Compact character capsule with procedural FK crawl; full-body terrain-contact IK is not implemented.",
+    "Initial layout is deterministic; subsequent player-death Chaos solves are not promised bit-identical.",
+    "Player deaths persist in scene only, not across quitting.",
+    "No minimum hardware or frame-tail performance acceptance claimed."
+  ]
+}
