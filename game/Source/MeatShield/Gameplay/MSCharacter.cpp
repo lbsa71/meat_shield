@@ -1,4 +1,5 @@
 #include "Gameplay/MSCharacter.h"
+#include "Rules/PuzzleRules.h"
 #include "Engine/World.h"
 #include "Gameplay/MSGameMode.h"
 #include "Presentation/MSAudio.h"
@@ -62,6 +63,7 @@ void AMSCharacter::SetupPlayerInputComponent(UInputComponent* Component)
     auto* JumpAction = Button(TEXT("Jump"),EKeys::SpaceBar);
     Input->BindAction(JumpAction,ETriggerEvent::Started,this,&AMSCharacter::JumpStart);
     Input->BindAction(JumpAction,ETriggerEvent::Completed,this,&AMSCharacter::JumpEnd);
+    Input->BindAction(Button(TEXT("LowCrawl"),EKeys::Z),ETriggerEvent::Started,this,&AMSCharacter::ToggleCrawl);
     auto* Duck=Button(TEXT("Crouch"),EKeys::LeftControl); Mapping->MapKey(Duck,EKeys::C);
     Input->BindAction(Duck,ETriggerEvent::Started,this,&AMSCharacter::CrouchStart);
     Input->BindAction(Duck,ETriggerEvent::Completed,this,&AMSCharacter::CrouchEnd);
@@ -101,12 +103,12 @@ void AMSCharacter::Tick(float Delta)
     const float Speed=GetVelocity().Size2D();
     const float Movement=FMath::Clamp(Speed/450,0.f,1.5f);
     Stride += Delta * (Sprinting?13.f:9.f) * FMath::Min(Movement,1.f);
-    if(Human) if(auto* Anim=Cast<UMSBodyAnim>(GetMesh()->GetAnimInstance())) { Anim->Phase=Stride; Anim->Movement=Movement; Anim->Crouched=bIsCrouched; }
+    if(Human) if(auto* Anim=Cast<UMSBodyAnim>(GetMesh()->GetAnimInstance())) { Anim->Phase=Stride; Anim->Movement=Movement; Anim->Crouched=bIsCrouched; Anim->Crawling=LowCrawling; }
     const bool Ground=GetCharacterMovement()->IsMovingOnGround();
     const float Bob=Ground ? FMath::Sin(Stride*2)*1.25f*Movement : 0;
-    Camera->SetRelativeLocation(FVector(Human?10:0,0,FMath::FInterpTo(Camera->GetRelativeLocation().Z,EyeOffset()+Bob,Delta,12)));
+    Camera->SetRelativeLocation(FVector(LowCrawling?35:Human?10:0,0,FMath::FInterpTo(Camera->GetRelativeLocation().Z,EyeOffset()+Bob,Delta,12)));
     Camera->SetRelativeRotation(FRotator(HitPulse*FMath::Sin(HitPulse*19)*2,0,HitPulse*2));
-    Camera->SetFieldOfView(FMath::FInterpTo(Camera->FieldOfView,Sprinting&&!bIsCrouched&&Speed>40?102.f:96.f,Delta,6));
+    Camera->SetFieldOfView(FMath::FInterpTo(Camera->FieldOfView,Sprinting&&!bIsCrouched&&!LowCrawling&&Speed>40?102.f:96.f,Delta,6));
     if (LeftArm && RightArm)
     {
         const float Swing=FMath::Sin(Stride)*Movement;
@@ -122,14 +124,38 @@ void AMSCharacter::Forward(const FInputActionValue& V) { AddMovementInput(GetAct
 void AMSCharacter::Right(const FInputActionValue& V) { AddMovementInput(GetActorRightVector(),V.Get<float>()); }
 void AMSCharacter::Yaw(const FInputActionValue& V) { AddControllerYawInput(V.Get<float>()*.85f); }
 void AMSCharacter::Pitch(const FInputActionValue& V) { AddControllerPitchInput(-V.Get<float>()*.85f); }
-void AMSCharacter::SprintStart() { Sprinting=true; GetCharacterMovement()->MaxWalkSpeed=800; }
-void AMSCharacter::SprintEnd() { Sprinting=false; GetCharacterMovement()->MaxWalkSpeed=450; }
-void AMSCharacter::JumpStart() { Jump(); }
+void AMSCharacter::SprintStart() { Sprinting=true; GetCharacterMovement()->MaxWalkSpeed=LowCrawling?MeatShield::Puzzle::CrawlSpeed:800; }
+void AMSCharacter::SprintEnd() { Sprinting=false; GetCharacterMovement()->MaxWalkSpeed=LowCrawling?MeatShield::Puzzle::CrawlSpeed:450; }
+void AMSCharacter::JumpStart() { if(!LowCrawling) Jump(); }
 void AMSCharacter::JumpEnd() { StopJumping(); }
-void AMSCharacter::CrouchStart() { Crouch(); }
-void AMSCharacter::CrouchEnd() { UnCrouch(); }
+void AMSCharacter::CrouchStart() { if(!LowCrawling) Crouch(); }
+void AMSCharacter::CrouchEnd() { if(!LowCrawling) UnCrouch(); }
 void AMSCharacter::Impact() { HitPulse=1; Audio->Play(MSound::Impact,GetActorLocation()); }
 void AMSCharacter::Retry() { if (auto* Mode=GetWorld()->GetAuthGameMode<AMSGameMode>()) Mode->Retry(this); }
 void AMSCharacter::Mute() { auto* Settings=GetWorld()->GetSubsystem<UMSAudioSettings>(); Settings->Muted=!Settings->Muted; }
 void AMSCharacter::Quit() { UKismetSystemLibrary::QuitGame(this,Cast<APlayerController>(GetController()),EQuitPreference::Quit,false); }
 void AMSCharacter::RefreshAvatar(uint64 Life) { if(Human) Human->SetLife(Life,true); }
+
+// REQ-030: preserve feet while resizing; failed expansion changes no state.
+bool AMSCharacter::SetLowCrawl(bool Enabled)
+{
+    if(Enabled==LowCrawling) return true;
+    auto* Capsule=GetCapsuleComponent(); auto* Move=GetCharacterMovement();
+    const auto P=MeatShield::Puzzle::Profile(Enabled);
+    const FVector Feet=GetActorLocation()-FVector(0,0,Capsule->GetScaledCapsuleHalfHeight());
+    const FVector Center=Feet+FVector(0,0,P.HalfHeight);
+    FCollisionQueryParams Query(SCENE_QUERY_STAT(CrawlClearance),false,this);
+    if(!Enabled && GetWorld()->OverlapBlockingTestByChannel(Center+FVector(0,0,.5),FQuat::Identity,ECC_Pawn,FCollisionShape::MakeCapsule(P.Radius,P.HalfHeight-.5),Query)) return false;
+    // Clear native crouch before installing the distinct prone capsule.
+    Move->bWantsToCrouch=false; bIsCrouched=false;
+    LowCrawling=Enabled; StopJumping(); Sprinting=false;
+    Capsule->SetCapsuleSize(P.Radius,P.HalfHeight,true);
+    SetActorLocation(Center,false,nullptr,ETeleportType::TeleportPhysics);
+    GetMesh()->SetRelativeLocation(FVector(0,0,-P.HalfHeight));
+    Move->MaxWalkSpeed=P.Speed; Move->MaxStepHeight=Enabled?12:45;
+    Move->bForceNextFloorCheck=true;
+    Camera->SetRelativeLocation(FVector(LowCrawling?35:Human?10:0,0,EyeOffset()));
+    if(Human) if(auto* Anim=Cast<UMSBodyAnim>(GetMesh()->GetAnimInstance())) { Anim->Crawling=Enabled; Anim->Crouched=false; }
+    return true;
+}
+void AMSCharacter::ToggleCrawl() { SetLowCrawl(!LowCrawling); }

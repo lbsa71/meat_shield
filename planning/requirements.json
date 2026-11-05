@@ -332,6 +332,17 @@
         "TC-033"
       ],
       "acceptance": "Both upper arms and forearms must articulate relative to the torso under real gravity and impacts, without animation drives holding a dead pose. Validate bilateral joint motion before settlement, supported rest and immutable old bodies. The living first-person avatar uses the same human skeletal mesh, outfit seed and evaluated pose that becomes the corpse; no proxy arms, outfit reroll or reference-pose pop at death. Crouch and movement pose must transfer. Seed at least three military fabric variants with actual fitted garments, not painted bare skin. Clothing follows the live skeleton, falling body and committed pose without adding invisible cover. Missing wardrobe data fails actionably. Validate real engine physics, seed repeatability, identity/pose continuity, dressed first-person and corpse captures, packaged gameplay regression and bounded costs."
+    },
+    {
+      "id": "REQ-030",
+      "title": "Low crawl and repeatable terrain cover puzzle",
+      "provenance": "source",
+      "gate": "M1",
+      "document": "docs/design/crawl-puzzle.md",
+      "tests": [
+        "TC-034"
+      ],
+      "acceptance": "Z toggles low crawl with a 36 cm capsule, 30 cm eye, 85 cm/s speed and prone human pose; sprint and jump cannot bypass stance, and standing requires clearance. A 30 cm turret muzzle and actual first-hit traces make one prone body sufficient at a designated shelter while an exposed crawler can still be hit. The default human launch uses deterministic hilly collision terrain and a versioned physics-baked initial body layout with stable IDs. Same recipe gives the same terrain, initial bone poses and cover on fresh launches; retry never duplicates or rearranges initial or player bodies. Terrain rays and character traversal match the rendered mesh, bounded slopes allow a demonstrated route to the turret, and safe spawn remains clear. Missing or mismatched pose data fails actionably. Validate stance clearance, single-body shot interception and exposed damage, native traversal, repeatable layout across two packaged runs, death/pose continuity, fresh screenshots and startup cost. This supersedes REQ-027 central pouring and REQ-028 cosmetic-only terrain for puzzle mode; legacy diagnostics retain the old arena."
     }
   ]
 }

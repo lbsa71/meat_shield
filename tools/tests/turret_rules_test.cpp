@@ -3,6 +3,7 @@
 #include "SettleRules.h"
 #include "FaceRules.h"
 #include "AvatarRules.h"
+#include "PuzzleRules.h"
 #include <iostream>
 #include <limits>
 #include <stdexcept>
@@ -101,6 +102,27 @@ int main()
     for(unsigned I=1;I<=64;++I) { auto S=UniformFor(I); Check(S.Palette<3 && S.Pattern>=0 && S.Pattern<1000,"uniform parameters bounded"); Palettes[S.Palette]=true; Vest|=S.Vest; NoVest|=!S.Vest; }
     Check(Palettes[0] && Palettes[1] && Palettes[2] && Vest && NoVest,"uniform seed yields three palettes and optional vest");
     Check(UniformFor(19).Pattern==UniformFor(19).Pattern && UniformFor(19).Pattern!=UniformFor(20).Pattern,"uniform pattern repeats per life and varies between lives");
+    Check(Puzzle::Profile(true).HalfHeight==18 && Puzzle::Profile(true).Speed==85 && Puzzle::Profile(false).HalfHeight==90,"low crawl differs from standing capsule and movement");
+    // REQ-030: terrain is traversable and repeatable; initial shelters avoid spawn.
+    Check(Puzzle::Height(-2900,0)==0,"puzzle protected spawn level");
+    Check(Puzzle::Height(-1200,700)>100,"puzzle has real hills");
+    Check(Puzzle::Height(-1200,700)==Puzzle::Height(-1200,700),"puzzle height repeatable");
+    bool Slopes=true; for(int X=-1900;X<1500;X+=50) for(int Y=-1300;Y<1300;Y+=50)
+        Slopes &= std::hypot((Puzzle::Height(X+1,Y)-Puzzle::Height(X-1,Y))/2,(Puzzle::Height(X,Y+1)-Puzzle::Height(X,Y-1))/2)<.65;
+    Check(Slopes,"puzzle terrain slopes bounded below walking limit");
+    const auto Layout=Puzzle::Layout(); bool Clear=true,Separated=true;
+    for(size_t I=0;I<Layout.size();++I) { Clear &= Layout[I].X>-1850 && Layout[I].X<1350 && std::abs(Layout[I].Y)<1100;
+        for(size_t J=0;J<I;++J) Separated &= std::hypot(Layout[I].X-Layout[J].X,Layout[I].Y-Layout[J].Y)>180; }
+    Check(Clear && Separated,"initial bodies dispersed outside spawn with stable slots");
+    Check(Puzzle::Layout()[0].X==-1650 && Puzzle::Layout()[0].Y==0,"first single-body shelter has stable authored location");
+    Check(Puzzle::CrawlHalfHeight*2<=36 && Puzzle::CrawlHalfHeight+Puzzle::CrawlEye<=30 && Puzzle::CrawlSpeed<100,"crawl dimensions and speed fit low shelter");
+    bool RouteClear=true; double AX=-1900,AY=-400;
+    for(const auto& B:Puzzle::Route()) { const double DX=B.X-AX,DY=B.Y-AY;
+        for(const auto& Body:Puzzle::Layout()) { double T=((Body.X-AX)*DX+(Body.Y-AY)*DY)/(DX*DX+DY*DY); T=std::fmax(0.,std::fmin(1.,T));
+            RouteClear &= std::hypot(Body.X-AX-T*DX,Body.Y-AY-T*DY)>180; }
+        AX=B.X; AY=B.Y;
+    }
+    Check(RouteClear,"terrain traversal route clears authored body footprints");
     std::cout << Checks << " checks, " << Failures << " failures\n";
     return Failures ? 1 : 0;
 }

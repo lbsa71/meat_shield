@@ -21,8 +21,10 @@ public:
     void Retry();
     void RefreshAvatar(uint64 Life);
     UPROPERTY() TObjectPtr<class UMSHumanAppearance> Human;
-    FVector TargetPoint() const { return GetActorLocation()+FVector(0,0,bIsCrouched?5:25); }
-    float EyeOffset() const { return Human?(bIsCrouched?45.f:75.f):(bIsCrouched?35.f:65.f); }
+    bool LowCrawling=false;
+    bool SetLowCrawl(bool Enabled);
+    FVector TargetPoint() const { return GetActorLocation()+FVector(0,0,LowCrawling?0:bIsCrouched?5:25); }
+    float EyeOffset() const { return LowCrawling?12.f:Human?(bIsCrouched?45.f:75.f):(bIsCrouched?35.f:65.f); }
     bool Sprinting = false;
     float HitPulse = 0, StepClock = 0;
     UPROPERTY() TObjectPtr<UCameraComponent> Camera;
@@ -43,6 +45,7 @@ private:
     void SprintEnd();
     void JumpStart();
     void JumpEnd();
+    void ToggleCrawl();
     void CrouchStart();
     void CrouchEnd();
     void Quit();

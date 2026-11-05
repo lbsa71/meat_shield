@@ -23,6 +23,12 @@ try {
         if ($LASTEXITCODE -ne 0) { throw 'Packaging failed. Inspect .local/package.log.' }
         $exe = Join-Path $archive 'Windows/MeatShield.exe'
         if (-not (Test-Path -LiteralPath $exe -PathType Leaf)) { throw "Package exited without expected executable: $exe" }
+        $launcher = @'
+@echo off
+setlocal
+start "Meat Shield" "%~dp0MeatShield.exe" -MSRealism -MSPuzzle -windowed -ResX=1600 -ResY=900 %*
+'@
+        Set-Content -LiteralPath (Join-Path $archive 'Windows/Run-MeatShield.cmd') -Value $launcher -Encoding ascii
         Write-Output "Runnable build: $exe"
     }
 } finally { [Environment]::SetEnvironmentVariable('UE-LocalDataCachePath',$oldCache,'Process') }

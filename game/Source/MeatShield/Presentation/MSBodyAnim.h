@@ -9,7 +9,7 @@ class UMSBodyAnim : public UAnimInstance
     GENERATED_BODY()
 public:
     FPoseSnapshot CapturedPose;
-    bool UseCapturedPose=false,Crouched=false;
+    bool UseCapturedPose=false,Crouched=false,Crawling=false;
     float Phase=0,Movement=0;
 protected:
     virtual FAnimInstanceProxy* CreateAnimInstanceProxy() override;

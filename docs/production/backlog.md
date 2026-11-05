@@ -178,10 +178,11 @@ Requirements: REQ-001, REQ-002, REQ-003, REQ-005, REQ-006, REQ-007, REQ-008, REQ
 
 M1 review and forecast.
 
-Requirements: REQ-022, REQ-028, REQ-029. Estimate: 0.75 / 1 / 1.5 days, low / likely / high.
+Requirements: REQ-022, REQ-028, REQ-029, REQ-030. Estimate: 0.75 / 1 / 1.5 days, low / likely / high.
 
 - [ ] Review observed intent and technical targets.
 - [ ] Authorize next phase revise or stop with recorded rationale.
+- [ ] TC-034: low crawl, single-body cover and deterministic collision-terrain puzzle; packaged route and layout replay evidence.
 
 ## M2 Representative vertical slice
 

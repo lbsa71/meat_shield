@@ -13,6 +13,8 @@ class UMSHumanRagdoll : public UActorComponent
 public:
     bool Initialize(uint64 Seed,FVector Velocity,bool Crouched,USkeletalMeshComponent* Source=nullptr);
     UPROPERTY() TObjectPtr<class UMSHumanAppearance> Appearance;
+    void RestorePose(const struct FMSPuzzlePose& Pose);
+    void CapturePose(struct FMSPuzzlePose& Pose) const;
     void Sync();
     void Freeze();
     void Motion(MeatShield::SettleSample& Sample) const;

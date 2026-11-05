@@ -2,7 +2,8 @@
   "schema_version": 1,
   "requirements": [
     "REQ-028",
-    "REQ-029"
+    "REQ-029",
+    "REQ-030"
   ],
   "engine": "5.8.4-58902052",
   "character": {
@@ -23,7 +24,7 @@
       "script": "tools/create_realism_assets.py",
       "output": "/Game/MeatShield/Environment",
       "seed": 71031,
-      "collision": "cosmetic; authored lane remains authoritative"
+      "collision": "cosmetic in legacy arena; puzzle uses the shared render/collision triangle mesh from PuzzleRules.h"
     },
     {
       "script": "tools/create_uniform_assets.py",
@@ -36,6 +37,18 @@
       ],
       "vest_inflation_cm": 3.8,
       "runtime_cloth_simulation": false
+    },
+    {
+      "source": "game/Source/MeatShield/Rules/PuzzleRules.h",
+      "runtime_adapter": "game/Source/MeatShield/World/MSPuzzle.cpp",
+      "version": 1,
+      "seed": 71031,
+      "grid_spacing_cm": 50,
+      "collision": "same triangles as rendered surface",
+      "initial_poses": "game/Content/MeatShield/Data/puzzle-01.json",
+      "initial_pose_sha256": "e87ea861584c54cf31e19798dc8fc8f5a92b5e26d97c79a1fd0daa251e8e5973",
+      "bake": "packaged runtime -MSRealism -MSPuzzle -MSPuzzleBake; accept only supported settled poses; copy Saved output and rebuild",
+      "initial_bodies": 18
     }
   ],
   "variation": {

@@ -1,4 +1,6 @@
 # Crouch, meat cover and physics pile
+
+Default play now follows [the low-crawl puzzle contract](crawl-puzzle.md), REQ-030. The flat floor and central pile described below remain legacy comparison fixtures.
 
 Current owner-directed contract, 2 November 2026. REQ-001, REQ-006, REQ-026, REQ-027 / TC-031. See [ADR 0007](../engineering/adr/0007-crouch-and-settling.md) for decisions and superseded approaches.
 

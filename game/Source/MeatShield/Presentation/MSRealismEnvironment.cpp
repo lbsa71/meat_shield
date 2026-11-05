@@ -1,4 +1,5 @@
 #include "Presentation/MSRealismEnvironment.h"
+#include "World/MSPuzzle.h"
 #include "Components/StaticMeshComponent.h"
 #include "Components/BoxComponent.h"
 #include "Components/DirectionalLightComponent.h"
@@ -17,9 +18,11 @@ void MSRealismEnvironment::Build(AActor* Yard,ADirectionalLight* Sun,ASkyLight* 
     auto* Terrain=LoadObject<UStaticMesh>(nullptr,TEXT("/Game/MeatShield/Environment/SM_RangeSurface"));
     auto* Graph=LoadObject<UPCGGraph>(nullptr,TEXT("/Game/MeatShield/Environment/PCG_EdgeGravel"));
     if(!Terrain || !Graph) { UE_LOG(LogTemp,Error,TEXT("REQ-028 missing environment bake; run tools/create_realism_assets.py in editor.")); return; }
+    if(!MSPuzzle::Enabled()) {
     auto* Surface=NewObject<UStaticMeshComponent>(Yard,TEXT("ProceduralGround")); Yard->AddInstanceComponent(Surface);
     Surface->SetupAttachment(Yard->GetRootComponent()); Surface->SetStaticMesh(Terrain);
     Surface->SetCollisionEnabled(ECollisionEnabled::NoCollision); Surface->RegisterComponent();
+    }
     for(int Side:{-1,1})
     {
         auto* Edge=Yard->GetWorld()->SpawnActor<AActor>(FVector(0,Side*1250,0),FRotator::ZeroRotator);

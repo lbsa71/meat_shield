@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "rules_version": "prototype-0.5",
+  "rules_version": "prototype-0.6",
   "status": "prototype_hypothesis",
   "movement": {
     "standing_height_m": 1.8,
@@ -10,7 +10,13 @@
     "step_height_m": 0.45,
     "vault_height_m": 0.9,
     "dive_duration_s": 0.45,
-    "crouch_speed_m_s": 2.2
+    "crouch_speed_m_s": 2.2,
+    "crawl_height_m": 0.36,
+    "crawl_radius_m": 0.18,
+    "crawl_eye_height_m": 0.3,
+    "crawl_target_height_m": 0.18,
+    "crawl_speed_m_s": 0.85,
+    "crawl_step_height_m": 0.12
   },
   "respawn": {
     "death_to_control_p95_ms": 1200,
@@ -131,5 +137,14 @@
     "pose_quiet_angle_deg": 5,
     "solver_position_iterations": 16,
     "solver_velocity_iterations": 8
+  },
+  "puzzle": {
+    "recipe_version": 1,
+    "seed": 71031,
+    "height_grid_spacing_m": 0.5,
+    "initial_body_count": 18,
+    "turret_pivot_height_m": 0.3,
+    "initial_pose_source": "game/Content/MeatShield/Data/puzzle-01.json",
+    "runtime_rules_source": "game/Source/MeatShield/Rules/PuzzleRules.h"
   }
 }

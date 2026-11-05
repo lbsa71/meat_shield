@@ -14,6 +14,7 @@
 #include "Kismet/GameplayStatics.h"
 #include "Diagnostics/MSSliceScenario.h"
 #include "Diagnostics/MSRealismScenario.h"
+#include "Diagnostics/MSPuzzleScenario.h"
 #include "Presentation/MSHumanAppearance.h"
 #include "Misc/CommandLine.h"
 AMSGameMode::AMSGameMode()
@@ -28,6 +29,7 @@ void AMSGameMode::BeginPlay()
     Turret=GetWorld()->SpawnActor<AMSTurret>(FVector(1600,0,0),FRotator(0,180,0));
     const bool Scenario=FParse::Param(FCommandLine::Get(),TEXT("MSScenario"));
 #if !UE_BUILD_SHIPPING
+    if(FParse::Param(FCommandLine::Get(),TEXT("MSPuzzleScenario"))) GetWorld()->SpawnActor<AMSPuzzleScenario>();
     if(Scenario) GetWorld()->SpawnActor<AMSSliceScenario>();
     if(FParse::Param(FCommandLine::Get(),TEXT("MSRealismGallery")) || FParse::Param(FCommandLine::Get(),TEXT("MSRealismBenchmark")) || FParse::Param(FCommandLine::Get(),TEXT("MSArmProbe"))) GetWorld()->SpawnActor<AMSRealismScenario>();
 #endif

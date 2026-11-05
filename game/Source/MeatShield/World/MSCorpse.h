@@ -17,6 +17,8 @@ public:
     bool Initialize(uint64 Life,FVector Velocity,FVector ShotDirection,bool Crouched=false,class USkeletalMeshComponent* Source=nullptr);
     bool ApplyBulletImpact(UPrimitiveComponent* Part,FVector Point,FVector Direction);
     bool InitializeDowned(uint64 Id);
+    bool RestoreInitialPose(uint64 Id,const struct FMSPuzzlePose& Pose);
+    bool CaptureInitialPose(struct FMSPuzzlePose& Pose) const;
     int BulletImpacts=0;
     FVector LastImpactTorque=FVector::ZeroVector;
     virtual void Tick(float Delta) override;

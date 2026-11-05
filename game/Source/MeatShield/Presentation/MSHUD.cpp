@@ -17,13 +17,14 @@ void AMSHUD::DrawHUD()
     const FLinearColor White(.9f,.93f,.9f), Amber(1,.55f,.14f), Green(.35f,.95f,.65f);
     DrawRect(FLinearColor(.018f,.028f,.035f,.85f),24*S,24*S,370*S,100*S);
     DrawText(TEXT("MEAT SHIELD"),White,42*S,36*S,nullptr,1.6f*S);
-    DrawText(TEXT("RANGE 01  /  LIVE FIRE PROTOTYPE"),Amber,42*S,74*S,nullptr,.85f*S);
+    DrawText(TEXT("APPROACH 01  /  LIVE FIRE"),Amber,42*S,74*S,nullptr,.85f*S);
     DrawRect(FLinearColor(.018f,.028f,.035f,.85f),24*S,H-116*S,460*S,90*S);
     DrawText(FString::Printf(TEXT("HEALTH  %03d"),Mode->Run.Health),White,42*S,H-100*S,nullptr,1.35f*S);
     DrawRect(FLinearColor(.3f,.12f,.1f),42*S,H-68*S,200*S,8*S);
     DrawRect(Mode->Run.Health>30?Green:Amber,42*S,H-68*S,2.f*Mode->Run.Health*S,8*S);
     DrawText(FString::Printf(TEXT("DEPLOYMENTS  %llu"),static_cast<unsigned long long>(Mode->Run.Deployments)),White,265*S,H-99*S,nullptr,.85f*S);
-    DrawText(TEXT("WASD move  CTRL/C crouch  SHIFT run  SPACE jump  R retry  M sound  ESC quit"),White,42*S,H-43*S,nullptr,.65f*S);
+    DrawText(TEXT("WASD move  Z crawl  CTRL/C crouch  SHIFT run  SPACE jump  R retry  M sound  ESC quit"),White,42*S,H-43*S,nullptr,.65f*S);
+    if(Player->LowCrawling) DrawText(TEXT("LOW CRAWL  [Z to stand]"),Green,42*S,H-140*S,nullptr,.85f*S);
     FString Status=TEXT("SAFE ZONE  /  CROSS THE GREEN LINE TO ADVANCE");
     FLinearColor StatusColor=Green;
     if(!AMSGameMode::IsProtected(Player->GetActorLocation()))

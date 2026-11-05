@@ -1,4 +1,6 @@
 #include "Gameplay/MSTurret.h"
+#include "World/MSPuzzle.h"
+#include "Rules/PuzzleRules.h"
 #include "Engine/World.h"
 #include "World/MSCorpse.h"
 #include "Gameplay/MSCharacter.h"
@@ -31,13 +33,15 @@ AMSTurret::AMSTurret()
 void AMSTurret::BeginPlay()
 {
     Super::BeginPlay();
+    const bool Low=MSPuzzle::Enabled();
+    if(Low) Aim->SetRelativeLocation(FVector(0,0,MeatShield::Puzzle::MuzzleHeight));
     const FLinearColor Armor(.14f,.2f,.18f), Metal(.045f,.06f,.07f), Orange(.85f,.25f,.015f);
-    MSVisuals::Part(this,GetRootComponent(),TEXT("Foundation"),{0,0,28},{4.5f,4.5f,.56f},Metal,true);
-    MSVisuals::Part(this,GetRootComponent(),TEXT("Pedestal"),{0,0,50},{1.7f,1.7f,.9f},Armor,true,TEXT("Cylinder"));
-    MSVisuals::Part(this,GetRootComponent(),TEXT("Collar"),{0,0,80},{2.3f,2.3f,.3f},Orange,true,TEXT("Cylinder"));
-    MSVisuals::Part(this,Aim,TEXT("ArmoredHead"),{0,0,0},{2.5f,2.1f,1.3f},Armor,true);
-    MSVisuals::Part(this,Aim,TEXT("HeadTrim"),{0,0,67},{2.6f,2.2f,.12f},Orange);
-    Sensor=MSVisuals::Part(this,Aim,TEXT("Sensor"),{130,0,50},{.25f,.55f,.25f},Orange);
+    MSVisuals::Part(this,GetRootComponent(),TEXT("Foundation"),{0,0,Low?6.f:28.f},{4.5f,4.5f,Low?.12f:.56f},Metal,true);
+    MSVisuals::Part(this,GetRootComponent(),TEXT("Pedestal"),{0,0,Low?12.f:50.f},{1.7f,1.7f,Low?.24f:.9f},Armor,true,TEXT("Cylinder"));
+    MSVisuals::Part(this,GetRootComponent(),TEXT("Collar"),{0,0,Low?20.f:80.f},{2.3f,2.3f,Low?.1f:.3f},Orange,true,TEXT("Cylinder"));
+    MSVisuals::Part(this,Aim,TEXT("ArmoredHead"),{0,0,0},{2.5f,2.1f,Low?.4f:1.3f},Armor,true);
+    MSVisuals::Part(this,Aim,TEXT("HeadTrim"),{0,0,Low?22.f:67.f},{2.6f,2.2f,.12f},Orange);
+    Sensor=MSVisuals::Part(this,Aim,TEXT("Sensor"),{130,0,Low?18.f:50.f},{.25f,.55f,.25f},Orange);
     for(int I=0;I<6;++I)
     {
         const float Angle=I*PI/3;

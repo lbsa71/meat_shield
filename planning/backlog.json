@@ -383,7 +383,8 @@
       "requirements": [
         "REQ-022",
         "REQ-028",
-        "REQ-029"
+        "REQ-029",
+        "REQ-030"
       ],
       "estimate_days": {
         "low": 0.75,
@@ -393,7 +394,8 @@
       "deliverable": "M1 review and forecast",
       "acceptance": [
         "Review observed intent and technical targets.",
-        "Authorize next phase revise or stop with recorded rationale."
+        "Authorize next phase revise or stop with recorded rationale.",
+        "TC-034: low crawl, single-body cover and deterministic collision-terrain puzzle; packaged route and layout replay evidence."
       ]
     },
     {

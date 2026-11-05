@@ -1,4 +1,5 @@
 #include "World/MSCorpse.h"
+#include "World/MSPuzzlePoseStore.h"
 #include "Presentation/MSVisuals.h"
 #include "Components/BoxComponent.h"
 #include "Components/CapsuleComponent.h"
@@ -204,3 +205,12 @@ bool AMSCorpse::InitializeDowned(uint64 Id)
 bool AMSCorpse::HumanFaceAttached() const { return Human && Human->FaceAttached(); }
 bool AMSCorpse::IsTransferredAvatar() const { return Human && Human->TransferredAvatar && Human->Appearance && Human->Appearance->Seed==LifeId; }
 TArray<FTransform> AMSCorpse::RenderPose() const { return Human?Human->RenderPose():Pose(); }
+
+bool AMSCorpse::RestoreInitialPose(uint64 Id,const FMSPuzzlePose& Saved)
+{
+    SetActorTransform(Saved.Actor); Tags.AddUnique(TEXT("PreDowned"));
+    if(!Initialize(Id,FVector::ZeroVector,FVector::ZeroVector) || !Human) return false;
+    Human->RestorePose(Saved); CommitPose(); return true;
+}
+bool AMSCorpse::CaptureInitialPose(FMSPuzzlePose& Out) const
+{ if(!Stable || !Human) return false; Human->CapturePose(Out); return true; }

@@ -68,3 +68,5 @@ DEC-25: Owner replaces scattered pre-downed poses with a central gravity-built p
 DEC-26: Owner rejects serial pouring and requests lower fire so one or two bodies can provide crouched cover. The batch collision and lowered turret refinement supersedes DEC-25 timing.
 
 DEC-27 / DEC-28: MetaHuman realism POC, continuous live/dead human avatar, limp arms and procedural military wardrobe. See [ADR 0008](engineering/adr/0008-human-avatar-and-wardrobe.md).
+
+DEC-29: Low crawl, single-body shelter and repeatable hilly puzzle replace the default flat pile arena. See [ADR 0009](engineering/adr/0009-crawl-puzzle.md).

@@ -3,6 +3,7 @@
 #include "Gameplay/MSCharacter.h"
 #include "Gameplay/MSTurret.h"
 #include "World/MSCorpse.h"
+#include "World/MSHumanRagdoll.h"
 #include "Presentation/MSAudio.h"
 #include "Presentation/MSVisuals.h"
 #include "Components/CapsuleComponent.h"
@@ -172,7 +173,11 @@ void AMSSliceScenario::Tick(float Delta)
                 FirstCorpse=Mode->GetCorpses()[0]; FirstPose=FirstCorpse->Pose();
                 FirstRenderPose=FirstCorpse->RenderPose();
                 Check(FirstCorpse->MaxOffAxisRotation>(FirstCorpse->IsHuman()?15.f:53.f),FirstCorpse->IsHuman()?TEXT("visible_offaxis_human_torso_rotation"):TEXT("visible_sideways_torso_roll"));
-                Check(FirstPose.Num()>1 && FMath::Abs(FirstPose[1].GetUnitAxis(EAxis::Z).Z)<.85 && FirstCorpse->Center().Z<80,TEXT("body_topples_to_ground"));
+                // MetaHuman collision capsules are not all aligned with the spine.
+                // Measure actual neck-to-pelvis collapse for the native rig.
+                const bool Collapsed=FirstCorpse->IsHuman()?FirstCorpse->Human->Collapsed():(FirstPose.Num()>1 && FMath::Abs(FirstPose[1].GetUnitAxis(EAxis::Z).Z)<.85);
+                Check(Collapsed && FirstCorpse->Center().Z<80,TEXT("body_topples_to_ground"));
+                FScreenshotRequest::RequestScreenshot(FPaths::ProjectSavedDir()/TEXT("settled-death.png"),true,false);
                 Check(FirstCorpse->PhysicsMoved && FirstCorpse->Stable && FirstCorpse->ProxyCount()==FirstCorpse->Pose().Num(),TEXT("ragdoll_moves_then_commits"));
                 Check(FirstCorpse->CommittedAt>=1.2f,TEXT("no_fixed_075_second_commit"));
                 FHitResult Hit; const FVector Center=FirstCorpse->Center();

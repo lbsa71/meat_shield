@@ -1,4 +1,5 @@
 #include "World/MSHumanRagdoll.h"
+#include "World/MSPuzzlePoseStore.h"
 #include "Presentation/MSFaceExpressionAnim.h"
 #include "Presentation/MSHumanAppearance.h"
 #include "Presentation/MSBodyAnim.h"
@@ -138,4 +139,18 @@ bool UMSHumanRagdoll::Impact(FVector Point,FVector Direction,FVector& Torque)
     const FVector Impulse=Direction.GetSafeNormal()*5000;
     Torque=FVector::CrossProduct(Point-Body->GetBodyInstance(Nearest)->GetCOMPosition(),Impulse);
     Body->WakeAllRigidBodies(); Body->AddImpulseAtLocation(Impulse,Point,Nearest); return true;
+}
+
+void UMSHumanRagdoll::CapturePose(FMSPuzzlePose& Out) const
+{
+    Out.Actor=GetOwner()->GetActorTransform(); Out.Mesh=Body->GetComponentTransform(); Body->SnapshotPose(Out.Pose);
+}
+void UMSHumanRagdoll::RestorePose(const FMSPuzzlePose& Saved)
+{
+    Body->SetAllBodiesSimulatePhysics(false); Body->SetSimulatePhysics(false);
+    Body->SetWorldTransform(Saved.Mesh);
+    auto* Anim=CastChecked<UMSBodyAnim>(Body->GetAnimInstance()); Anim->CapturedPose=Saved.Pose; Anim->CapturedPose.SkeletalMeshName=Body->GetSkeletalMeshAsset()->GetFName(); Anim->UseCapturedPose=true;
+    Body->TickAnimation(0,false); Body->RefreshBoneTransforms(); Body->UpdateComponentToWorld();
+    for(int I=0;I<Shapes.Num();++I) Shapes[I]->SetWorldTransform(LocalShapes[I]*Body->GetSocketTransform(Bones[I]));
+    for(auto* C:{Face.Get(),Appearance->Uniform.Get(),Appearance->Vest.Get()}) { C->TickAnimation(0,false); C->RefreshBoneTransforms(); C->UpdateComponentToWorld(); }
 }

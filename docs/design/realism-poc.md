@@ -1,5 +1,7 @@
 # MetaHuman realism proof of concept
 
+Default play now follows [the low-crawl puzzle contract](crawl-puzzle.md), REQ-030. The flat floor and central pile described below remain legacy comparison fixtures.
+
 REQ-028 / TC-032, owner direction 2 November 2026. Realistic human bodies and varied pained facial expressions are core presentation experiments, not final release acceptance.
 
 Use Epic MetaHuman Creator to assemble a small optimized source set. Seed identity/appearance and expression per life. Compare neutral, brow pinch/squint grimace, jaw tension and open-mouth pain, with bounded intensity and asymmetry. Inspect close-ups before the full pile. Maintain face/body pose synchronization through falling physics and fixed settlement. Evaluate a frozen expression on settled corpses before enabling continuing facial evaluation for every old body. Do not claim realistic or distinct expressions from curve values alone; require visible packaged differences.

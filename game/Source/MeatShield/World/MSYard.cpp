@@ -1,4 +1,5 @@
 #include "World/MSYard.h"
+#include "World/MSPuzzle.h"
 #include "World/MSMeatField.h"
 #include "Engine/World.h"
 #include "Presentation/MSVisuals.h"
@@ -17,12 +18,13 @@ AMSYard::AMSYard() { SetRootComponent(CreateDefaultSubobject<USceneComponent>(TE
 void AMSYard::BeginPlay()
 {
     Super::BeginPlay();
-    MSMeatField::Build(GetWorld());
+    const bool Puzzle=MSPuzzle::Enabled();
     const FLinearColor Concrete(.24f,.27f,.28f), Dark(.07f,.1f,.12f), Orange(.9f,.32f,.04f);
     int N = 0;
     auto Box = [&](FVector P, FVector S, FLinearColor C, bool Collision = true)
     { return MSVisuals::Part(this, GetRootComponent(), FName(*FString::Printf(TEXT("Yard_%03d"), N++)), P, S, C, Collision); };
-    Box({0,0,-30},{84,28,.6f},Concrete);
+    if(Puzzle) MSPuzzle::BuildTerrain(this); else Box({0,0,-30},{84,28,.6f},Concrete);
+    MSMeatField::Build(GetWorld());
     Box({0,-1420,250},{84,.4f,5},Dark); Box({0,1420,250},{84,.4f,5},Dark);
     Box({-4200,0,250},{.4f,28,5},Dark); Box({4200,0,250},{.4f,28,5},Dark);
     for (int X=-3800; X<=3800; X+=400)
@@ -30,8 +32,8 @@ void AMSYard::BeginPlay()
         Box({float(X),-1380,310},{.7f,.9f,6.2f},Concrete); Box({float(X),1380,310},{.7f,.9f,6.2f},Concrete);
         Box({float(X),-1150,2},{1.4f,.10f,.03f},Orange,false); Box({float(X),1150,2},{1.4f,.10f,.03f},Orange,false);
     }
-    for (int X=-2200; X<1200; X+=350) Box({float(X),0,1},{1.2f,.06f,.02f},FLinearColor(.65f,.68f,.62f),false);
-    for (const FVector P : {FVector(-1000,-500,100), FVector(200,500,100), FVector(900,-500,100)})
+    if(!Puzzle) for (int X=-2200; X<1200; X+=350) Box({float(X),0,1},{1.2f,.06f,.02f},FLinearColor(.65f,.68f,.62f),false);
+    if(!Puzzle) for (const FVector P : {FVector(-1000,-500,100), FVector(200,500,100), FVector(900,-500,100)})
     {
         Box(P,{3.6f,3.5f,2},Concrete);
         Box(P+FVector(0,0,104),{3.8f,3.7f,.12f},Orange,false);
